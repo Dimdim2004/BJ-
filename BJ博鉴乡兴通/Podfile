@@ -1,0 +1,14 @@
+#platform:ios,'17.5'
+
+target 'BJ博鉴乡兴通' do
+ 
+pod 'YYModel'
+  pod 'Masonry'
+  pod 'LookinServer'
+  pod 'SDWebImage', '~> 5.0'
+  pod 'AFNetworking', '~> 4.0'  # 添加 AFNetworking 库
+  pod 'SDWebImage', '~> 5.0'    # 添加 SDWebImage 库
+
+
+end
+
