@@ -2,3 +2,5 @@
 *.xcuserdatad/
 *.xcworkspace/
 /Pods/
+*.xcuserstate
+

@@ -6,6 +6,14 @@
 //
 
 #import "SceneDelegate.h"
+#import "BJHomePageViewController.h"
+#import "BJShopViewController.h"
+#import "BJPostViewController.h"
+#import "BJCommunityViewController.h"
+#import "BJMyPageViewController.h"
+
+#import "BJTabBarController.h"
+
 
 @interface SceneDelegate ()
 
@@ -15,6 +23,33 @@
 
 
 - (void)scene:(UIScene *)scene willConnectToSession:(UISceneSession *)session options:(UISceneConnectionOptions *)connectionOptions {
+    // 创建 BJHomePageViewController 并设置相关属性
+    BJHomePageViewController *homePageVC = [[BJHomePageViewController alloc] init];
+    homePageVC.view.backgroundColor = [UIColor whiteColor];
+    homePageVC.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"主页" image:[UIImage imageNamed:@"home.png"] tag:0];
+    
+    // 创建 BJShopViewController 并设置相关属性
+    BJShopViewController *shopVC = [[BJShopViewController alloc] init];
+    shopVC.view.backgroundColor = [UIColor whiteColor];
+    shopVC.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"商城" image:[UIImage imageNamed:@"shop.png"] tag:1];
+    
+    // 创建 BJPostViewController 并设置相关属性
+    BJCommunityViewController *communityVC = [[BJCommunityViewController alloc] init];
+    communityVC.view.backgroundColor = [UIColor whiteColor];
+    communityVC.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"社区" image:[UIImage imageNamed:@"community.png"] tag:2];
+    
+    // 创建 BJMyPageViewController 并设置相关属性
+    BJMyPageViewController *myPageVC = [[BJMyPageViewController alloc] init];
+    myPageVC.view.backgroundColor = [UIColor whiteColor];
+    myPageVC.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"我的" image:[UIImage imageNamed:@"myPage.png"] tag:3];
+    
+    // 创建 UITabBarController 并添加视图控制器
+    BJTabBarController *tabBarController = [[BJTabBarController alloc] init];
+    tabBarController.viewControllers = @[homePageVC, shopVC, communityVC, myPageVC];
+    
+    // 将 tabBarController 设置为窗口的根视图控制器
+    self.window.rootViewController = tabBarController;
+    [self.window makeKeyAndVisible];
 }
 
 

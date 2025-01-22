@@ -17,6 +17,18 @@
 		216DB6C12D2FDEF3005BF4C2 /* BJ_____Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 216DB6C02D2FDEF3005BF4C2 /* BJ_____Tests.m */; };
 		216DB6CB2D2FDEF3005BF4C2 /* BJ_____UITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 216DB6CA2D2FDEF3005BF4C2 /* BJ_____UITests.m */; };
 		216DB6CD2D2FDEF3005BF4C2 /* BJ_____UITestsLaunchTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 216DB6CC2D2FDEF3005BF4C2 /* BJ_____UITestsLaunchTests.m */; };
+		219F0E8D2D3E7E2300F69C9B /* BJHomePageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 219F0E8C2D3E7E2200F69C9B /* BJHomePageViewController.m */; };
+		219F0E902D3E7E5D00F69C9B /* BJShopViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 219F0E8F2D3E7E5D00F69C9B /* BJShopViewController.m */; };
+		219F0E932D3E7EAC00F69C9B /* BJPostViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 219F0E922D3E7EAC00F69C9B /* BJPostViewController.m */; };
+		219F0E962D3E7EC000F69C9B /* BJCommunityViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 219F0E952D3E7EC000F69C9B /* BJCommunityViewController.m */; };
+		219F0E992D3E7ED200F69C9B /* BJMyPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 219F0E982D3E7ED200F69C9B /* BJMyPageViewController.m */; };
+		219F0E9F2D3E843100F69C9B /* jiahao.png in Resources */ = {isa = PBXBuildFile; fileRef = 219F0E9E2D3E843100F69C9B /* jiahao.png */; };
+		219F0EA22D3E848100F69C9B /* BJTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 219F0EA12D3E848100F69C9B /* BJTabBarController.m */; };
+		219F0EA52D3E849200F69C9B /* BJTabBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 219F0EA42D3E849200F69C9B /* BJTabBar.m */; };
+		219F0EAB2D3E8B5C00F69C9B /* home.png in Resources */ = {isa = PBXBuildFile; fileRef = 219F0EA62D3E8B5B00F69C9B /* home.png */; };
+		219F0EAD2D3E8B5C00F69C9B /* myPage.png in Resources */ = {isa = PBXBuildFile; fileRef = 219F0EA82D3E8B5C00F69C9B /* myPage.png */; };
+		219F0EAE2D3E8B5C00F69C9B /* community.png in Resources */ = {isa = PBXBuildFile; fileRef = 219F0EA92D3E8B5C00F69C9B /* community.png */; };
+		219F0EAF2D3E8B5C00F69C9B /* shop.png in Resources */ = {isa = PBXBuildFile; fileRef = 219F0EAA2D3E8B5C00F69C9B /* shop.png */; };
 		2707B9E64770065027B653A9 /* libPods-BJ博鉴乡兴通.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1C9BCFB67B8FE7DD9598BE59 /* libPods-BJ博鉴乡兴通.a */; };
 /* End PBXBuildFile section */
 
@@ -52,10 +64,29 @@
 		216DB6B52D2FDEF3005BF4C2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		216DB6B62D2FDEF3005BF4C2 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		216DB6BC2D2FDEF3005BF4C2 /* BJ博鉴乡兴通Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "BJ博鉴乡兴通Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		216DB6C02D2FDEF3005BF4C2 /* BJ_____Tests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BJ_____Tests.m; sourceTree = "<group>"; };
+		216DB6C02D2FDEF3005BF4C2 /* BJ_____Tests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "BJ_____Tests.m"; sourceTree = "<group>"; };
 		216DB6C62D2FDEF3005BF4C2 /* BJ博鉴乡兴通UITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "BJ博鉴乡兴通UITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		216DB6CA2D2FDEF3005BF4C2 /* BJ_____UITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BJ_____UITests.m; sourceTree = "<group>"; };
-		216DB6CC2D2FDEF3005BF4C2 /* BJ_____UITestsLaunchTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BJ_____UITestsLaunchTests.m; sourceTree = "<group>"; };
+		216DB6CA2D2FDEF3005BF4C2 /* BJ_____UITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "BJ_____UITests.m"; sourceTree = "<group>"; };
+		216DB6CC2D2FDEF3005BF4C2 /* BJ_____UITestsLaunchTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "BJ_____UITestsLaunchTests.m"; sourceTree = "<group>"; };
+		219F0E8B2D3E7E2200F69C9B /* BJHomePageViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BJHomePageViewController.h; sourceTree = "<group>"; };
+		219F0E8C2D3E7E2200F69C9B /* BJHomePageViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BJHomePageViewController.m; sourceTree = "<group>"; };
+		219F0E8E2D3E7E5D00F69C9B /* BJShopViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BJShopViewController.h; sourceTree = "<group>"; };
+		219F0E8F2D3E7E5D00F69C9B /* BJShopViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BJShopViewController.m; sourceTree = "<group>"; };
+		219F0E912D3E7EAC00F69C9B /* BJPostViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BJPostViewController.h; sourceTree = "<group>"; };
+		219F0E922D3E7EAC00F69C9B /* BJPostViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BJPostViewController.m; sourceTree = "<group>"; };
+		219F0E942D3E7EC000F69C9B /* BJCommunityViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BJCommunityViewController.h; sourceTree = "<group>"; };
+		219F0E952D3E7EC000F69C9B /* BJCommunityViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BJCommunityViewController.m; sourceTree = "<group>"; };
+		219F0E972D3E7ED200F69C9B /* BJMyPageViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BJMyPageViewController.h; sourceTree = "<group>"; };
+		219F0E982D3E7ED200F69C9B /* BJMyPageViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BJMyPageViewController.m; sourceTree = "<group>"; };
+		219F0E9E2D3E843100F69C9B /* jiahao.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = jiahao.png; sourceTree = "<group>"; };
+		219F0EA02D3E848100F69C9B /* BJTabBarController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BJTabBarController.h; sourceTree = "<group>"; };
+		219F0EA12D3E848100F69C9B /* BJTabBarController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BJTabBarController.m; sourceTree = "<group>"; };
+		219F0EA32D3E849200F69C9B /* BJTabBar.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BJTabBar.h; sourceTree = "<group>"; };
+		219F0EA42D3E849200F69C9B /* BJTabBar.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BJTabBar.m; sourceTree = "<group>"; };
+		219F0EA62D3E8B5B00F69C9B /* home.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = home.png; sourceTree = "<group>"; };
+		219F0EA82D3E8B5C00F69C9B /* myPage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = myPage.png; sourceTree = "<group>"; };
+		219F0EA92D3E8B5C00F69C9B /* community.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = community.png; sourceTree = "<group>"; };
+		219F0EAA2D3E8B5C00F69C9B /* shop.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = shop.png; sourceTree = "<group>"; };
 		AAE3039BA091A97AB111073F /* Pods-BJ博鉴乡兴通.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BJ博鉴乡兴通.debug.xcconfig"; path = "Target Support Files/Pods-BJ博鉴乡兴通/Pods-BJ博鉴乡兴通.debug.xcconfig"; sourceTree = "<group>"; };
 		EFB8F9864B0D050C6D268266 /* Pods-BJ博鉴乡兴通.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BJ博鉴乡兴通.release.xcconfig"; path = "Target Support Files/Pods-BJ博鉴乡兴通/Pods-BJ博鉴乡兴通.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -92,7 +123,6 @@
 				AAE3039BA091A97AB111073F /* Pods-BJ博鉴乡兴通.debug.xcconfig */,
 				EFB8F9864B0D050C6D268266 /* Pods-BJ博鉴乡兴通.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -121,11 +151,13 @@
 		216DB6A32D2FDEF2005BF4C2 /* BJ博鉴乡兴通 */ = {
 			isa = PBXGroup;
 			children = (
+				219F0E9B2D3E83D600F69C9B /* 图片 */,
+				219F0E9A2D3E83C400F69C9B /* 通用 */,
 				216DB6D92D2FDF7C005BF4C2 /* 首页 */,
 				216DB6DA2D2FDF87005BF4C2 /* 商城 */,
-				216DB6DE2D2FDFBD005BF4C2 /* 我的 */,
+				216DB6DE2D2FDFBD005BF4C2 /* 发布 */,
 				216DB6DD2D2FDFB5005BF4C2 /* 社区 */,
-				216DB6DC2D2FDFAB005BF4C2 /* 发布 */,
+				216DB6DC2D2FDFAB005BF4C2 /* 我的 */,
 				216DB6A42D2FDEF2005BF4C2 /* AppDelegate.h */,
 				216DB6A52D2FDEF2005BF4C2 /* AppDelegate.m */,
 				216DB6A72D2FDEF2005BF4C2 /* SceneDelegate.h */,
@@ -161,6 +193,8 @@
 		216DB6D92D2FDF7C005BF4C2 /* 首页 */ = {
 			isa = PBXGroup;
 			children = (
+				219F0E8B2D3E7E2200F69C9B /* BJHomePageViewController.h */,
+				219F0E8C2D3E7E2200F69C9B /* BJHomePageViewController.m */,
 			);
 			path = "首页";
 			sourceTree = "<group>";
@@ -168,29 +202,60 @@
 		216DB6DA2D2FDF87005BF4C2 /* 商城 */ = {
 			isa = PBXGroup;
 			children = (
+				219F0E8E2D3E7E5D00F69C9B /* BJShopViewController.h */,
+				219F0E8F2D3E7E5D00F69C9B /* BJShopViewController.m */,
 			);
 			path = "商城";
 			sourceTree = "<group>";
 		};
-		216DB6DC2D2FDFAB005BF4C2 /* 发布 */ = {
+		216DB6DC2D2FDFAB005BF4C2 /* 我的 */ = {
 			isa = PBXGroup;
 			children = (
+				219F0E972D3E7ED200F69C9B /* BJMyPageViewController.h */,
+				219F0E982D3E7ED200F69C9B /* BJMyPageViewController.m */,
 			);
-			path = "发布";
+			path = "我的";
 			sourceTree = "<group>";
 		};
 		216DB6DD2D2FDFB5005BF4C2 /* 社区 */ = {
 			isa = PBXGroup;
 			children = (
+				219F0E942D3E7EC000F69C9B /* BJCommunityViewController.h */,
+				219F0E952D3E7EC000F69C9B /* BJCommunityViewController.m */,
 			);
 			path = "社区";
 			sourceTree = "<group>";
 		};
-		216DB6DE2D2FDFBD005BF4C2 /* 我的 */ = {
+		216DB6DE2D2FDFBD005BF4C2 /* 发布 */ = {
 			isa = PBXGroup;
 			children = (
+				219F0E912D3E7EAC00F69C9B /* BJPostViewController.h */,
+				219F0E922D3E7EAC00F69C9B /* BJPostViewController.m */,
 			);
-			path = "我的";
+			path = "发布";
+			sourceTree = "<group>";
+		};
+		219F0E9A2D3E83C400F69C9B /* 通用 */ = {
+			isa = PBXGroup;
+			children = (
+				219F0EA02D3E848100F69C9B /* BJTabBarController.h */,
+				219F0EA12D3E848100F69C9B /* BJTabBarController.m */,
+				219F0EA32D3E849200F69C9B /* BJTabBar.h */,
+				219F0EA42D3E849200F69C9B /* BJTabBar.m */,
+			);
+			path = "通用";
+			sourceTree = "<group>";
+		};
+		219F0E9B2D3E83D600F69C9B /* 图片 */ = {
+			isa = PBXGroup;
+			children = (
+				219F0E9E2D3E843100F69C9B /* jiahao.png */,
+				219F0EAA2D3E8B5C00F69C9B /* shop.png */,
+				219F0EA62D3E8B5B00F69C9B /* home.png */,
+				219F0EA82D3E8B5C00F69C9B /* myPage.png */,
+				219F0EA92D3E8B5C00F69C9B /* community.png */,
+			);
+			path = "图片";
 			sourceTree = "<group>";
 		};
 		BF4B121A5B2F0C29668C3871 /* Frameworks */ = {
@@ -306,7 +371,12 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				219F0EAF2D3E8B5C00F69C9B /* shop.png in Resources */,
+				219F0EAD2D3E8B5C00F69C9B /* myPage.png in Resources */,
 				216DB6B12D2FDEF3005BF4C2 /* Assets.xcassets in Resources */,
+				219F0EAE2D3E8B5C00F69C9B /* community.png in Resources */,
+				219F0EAB2D3E8B5C00F69C9B /* home.png in Resources */,
+				219F0E9F2D3E843100F69C9B /* jiahao.png in Resources */,
 				216DB6B42D2FDEF3005BF4C2 /* Base in Resources */,
 				216DB6AF2D2FDEF2005BF4C2 /* Base in Resources */,
 			);
@@ -375,10 +445,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				219F0E902D3E7E5D00F69C9B /* BJShopViewController.m in Sources */,
+				219F0EA22D3E848100F69C9B /* BJTabBarController.m in Sources */,
 				216DB6AC2D2FDEF2005BF4C2 /* ViewController.m in Sources */,
 				216DB6A62D2FDEF2005BF4C2 /* AppDelegate.m in Sources */,
+				219F0E992D3E7ED200F69C9B /* BJMyPageViewController.m in Sources */,
 				216DB6B72D2FDEF3005BF4C2 /* main.m in Sources */,
+				219F0EA52D3E849200F69C9B /* BJTabBar.m in Sources */,
 				216DB6A92D2FDEF2005BF4C2 /* SceneDelegate.m in Sources */,
+				219F0E8D2D3E7E2300F69C9B /* BJHomePageViewController.m in Sources */,
+				219F0E962D3E7EC000F69C9B /* BJCommunityViewController.m in Sources */,
+				219F0E932D3E7EAC00F69C9B /* BJPostViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -471,7 +548,7 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
-				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -532,7 +609,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
