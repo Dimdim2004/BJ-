@@ -7,25 +7,31 @@
 
 #import "BJHomePageViewController.h"
 
-@interface BJHomePageViewController ()
-
+@interface BJHomePageViewController ()<UITableViewDelegate,UITableViewDataSource>
+@property (nonatomic,strong) UITableView *tableView;
 @end
 
 @implementation BJHomePageViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
+    [self setupViews];
 }
 
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+-(void)setupViews {
+    
+    self.tableView = [[UITableView alloc] initWithFrame:[UIScreen mainScreen].bounds style:UITableViewStyleGrouped];
+    self.tableView.delegate = self;
+    self.tableView.dataSource = self;
+    
+    
+    UIImageView *logoImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"logo2.png"]];
+    logoImageView.frame = CGRectMake(0, 0, 130, 30);
+    logoImageView.contentMode = UIViewContentModeCenter;
+    self.navigationItem.titleView = logoImageView;
 }
-*/
+
+
+
 
 @end

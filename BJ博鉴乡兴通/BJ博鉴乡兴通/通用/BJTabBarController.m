@@ -16,9 +16,12 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.view.backgroundColor = [UIColor clearColor];
+    
     BJTabBar *customTabBar = [[BJTabBar alloc] init];
     [self setValue:customTabBar forKey:@"tabBar"];
+    
+    
+
 }
 
 /*

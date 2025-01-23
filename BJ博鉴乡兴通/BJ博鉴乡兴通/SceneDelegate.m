@@ -25,6 +25,7 @@
 - (void)scene:(UIScene *)scene willConnectToSession:(UISceneSession *)session options:(UISceneConnectionOptions *)connectionOptions {
     // 创建 BJHomePageViewController 并设置相关属性
     BJHomePageViewController *homePageVC = [[BJHomePageViewController alloc] init];
+    UINavigationController *nav1 = [[UINavigationController alloc] initWithRootViewController:homePageVC];
     homePageVC.view.backgroundColor = [UIColor whiteColor];
     homePageVC.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"主页" image:[UIImage imageNamed:@"home.png"] tag:0];
     
@@ -45,7 +46,7 @@
     
     // 创建 UITabBarController 并添加视图控制器
     BJTabBarController *tabBarController = [[BJTabBarController alloc] init];
-    tabBarController.viewControllers = @[homePageVC, shopVC, communityVC, myPageVC];
+    tabBarController.viewControllers = @[nav1, shopVC, communityVC, myPageVC];
     
     // 将 tabBarController 设置为窗口的根视图控制器
     self.window.rootViewController = tabBarController;

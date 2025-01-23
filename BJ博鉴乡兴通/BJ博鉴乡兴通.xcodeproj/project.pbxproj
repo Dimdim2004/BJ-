@@ -29,6 +29,9 @@
 		219F0EAD2D3E8B5C00F69C9B /* myPage.png in Resources */ = {isa = PBXBuildFile; fileRef = 219F0EA82D3E8B5C00F69C9B /* myPage.png */; };
 		219F0EAE2D3E8B5C00F69C9B /* community.png in Resources */ = {isa = PBXBuildFile; fileRef = 219F0EA92D3E8B5C00F69C9B /* community.png */; };
 		219F0EAF2D3E8B5C00F69C9B /* shop.png in Resources */ = {isa = PBXBuildFile; fileRef = 219F0EAA2D3E8B5C00F69C9B /* shop.png */; };
+		219F0EB72D4160DD00F69C9B /* logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 219F0EB62D4160DD00F69C9B /* logo.png */; };
+		219F0EBB2D41CEDE00F69C9B /* BJScrollViewTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 219F0EBA2D41CEDE00F69C9B /* BJScrollViewTableViewCell.m */; };
+		219F0EBD2D41DA2B00F69C9B /* logo2.png in Resources */ = {isa = PBXBuildFile; fileRef = 219F0EBC2D41DA2B00F69C9B /* logo2.png */; };
 		2707B9E64770065027B653A9 /* libPods-BJ博鉴乡兴通.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1C9BCFB67B8FE7DD9598BE59 /* libPods-BJ博鉴乡兴通.a */; };
 /* End PBXBuildFile section */
 
@@ -87,6 +90,10 @@
 		219F0EA82D3E8B5C00F69C9B /* myPage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = myPage.png; sourceTree = "<group>"; };
 		219F0EA92D3E8B5C00F69C9B /* community.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = community.png; sourceTree = "<group>"; };
 		219F0EAA2D3E8B5C00F69C9B /* shop.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = shop.png; sourceTree = "<group>"; };
+		219F0EB62D4160DD00F69C9B /* logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = logo.png; sourceTree = "<group>"; };
+		219F0EB92D41CEDE00F69C9B /* BJScrollViewTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BJScrollViewTableViewCell.h; sourceTree = "<group>"; };
+		219F0EBA2D41CEDE00F69C9B /* BJScrollViewTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BJScrollViewTableViewCell.m; sourceTree = "<group>"; };
+		219F0EBC2D41DA2B00F69C9B /* logo2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = logo2.png; sourceTree = "<group>"; };
 		AAE3039BA091A97AB111073F /* Pods-BJ博鉴乡兴通.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BJ博鉴乡兴通.debug.xcconfig"; path = "Target Support Files/Pods-BJ博鉴乡兴通/Pods-BJ博鉴乡兴通.debug.xcconfig"; sourceTree = "<group>"; };
 		EFB8F9864B0D050C6D268266 /* Pods-BJ博鉴乡兴通.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BJ博鉴乡兴通.release.xcconfig"; path = "Target Support Files/Pods-BJ博鉴乡兴通/Pods-BJ博鉴乡兴通.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -193,6 +200,7 @@
 		216DB6D92D2FDF7C005BF4C2 /* 首页 */ = {
 			isa = PBXGroup;
 			children = (
+				219F0EB82D41CE8600F69C9B /* cell */,
 				219F0E8B2D3E7E2200F69C9B /* BJHomePageViewController.h */,
 				219F0E8C2D3E7E2200F69C9B /* BJHomePageViewController.m */,
 			);
@@ -249,13 +257,24 @@
 		219F0E9B2D3E83D600F69C9B /* 图片 */ = {
 			isa = PBXGroup;
 			children = (
+				219F0EB62D4160DD00F69C9B /* logo.png */,
 				219F0E9E2D3E843100F69C9B /* jiahao.png */,
 				219F0EAA2D3E8B5C00F69C9B /* shop.png */,
 				219F0EA62D3E8B5B00F69C9B /* home.png */,
+				219F0EBC2D41DA2B00F69C9B /* logo2.png */,
 				219F0EA82D3E8B5C00F69C9B /* myPage.png */,
 				219F0EA92D3E8B5C00F69C9B /* community.png */,
 			);
 			path = "图片";
+			sourceTree = "<group>";
+		};
+		219F0EB82D41CE8600F69C9B /* cell */ = {
+			isa = PBXGroup;
+			children = (
+				219F0EB92D41CEDE00F69C9B /* BJScrollViewTableViewCell.h */,
+				219F0EBA2D41CEDE00F69C9B /* BJScrollViewTableViewCell.m */,
+			);
+			path = cell;
 			sourceTree = "<group>";
 		};
 		BF4B121A5B2F0C29668C3871 /* Frameworks */ = {
@@ -375,6 +394,8 @@
 				219F0EAD2D3E8B5C00F69C9B /* myPage.png in Resources */,
 				216DB6B12D2FDEF3005BF4C2 /* Assets.xcassets in Resources */,
 				219F0EAE2D3E8B5C00F69C9B /* community.png in Resources */,
+				219F0EB72D4160DD00F69C9B /* logo.png in Resources */,
+				219F0EBD2D41DA2B00F69C9B /* logo2.png in Resources */,
 				219F0EAB2D3E8B5C00F69C9B /* home.png in Resources */,
 				219F0E9F2D3E843100F69C9B /* jiahao.png in Resources */,
 				216DB6B42D2FDEF3005BF4C2 /* Base in Resources */,
@@ -456,6 +477,7 @@
 				219F0E8D2D3E7E2300F69C9B /* BJHomePageViewController.m in Sources */,
 				219F0E962D3E7EC000F69C9B /* BJCommunityViewController.m in Sources */,
 				219F0E932D3E7EAC00F69C9B /* BJPostViewController.m in Sources */,
+				219F0EBB2D41CEDE00F69C9B /* BJScrollViewTableViewCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
