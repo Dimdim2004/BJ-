@@ -7,7 +7,7 @@
 
 #import "BJTabBar.h"
 #import "Masonry.h"
-
+#import "BJPostViewController.h"
 @implementation BJTabBar
 
 - (instancetype)initWithFrame:(CGRect)frame {

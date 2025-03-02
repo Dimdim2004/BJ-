@@ -8,7 +8,6 @@ pod 'YYModel'
   pod 'SDWebImage', '~> 5.0'
   pod 'AFNetworking', '~> 4.0'  # 添加 AFNetworking 库
   pod 'SDWebImage', '~> 5.0'    # 添加 SDWebImage 库
-
-
+  pod 'TZImagePickerController'
 end
 
