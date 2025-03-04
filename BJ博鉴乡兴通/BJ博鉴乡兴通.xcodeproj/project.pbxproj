@@ -17,6 +17,11 @@
 		216DB6C12D2FDEF3005BF4C2 /* BJ_____Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 216DB6C02D2FDEF3005BF4C2 /* BJ_____Tests.m */; };
 		216DB6CB2D2FDEF3005BF4C2 /* BJ_____UITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 216DB6CA2D2FDEF3005BF4C2 /* BJ_____UITests.m */; };
 		216DB6CD2D2FDEF3005BF4C2 /* BJ_____UITestsLaunchTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 216DB6CC2D2FDEF3005BF4C2 /* BJ_____UITestsLaunchTests.m */; };
+		216E87132D73FF360027E674 /* BJMapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 216E87122D73FF360027E674 /* BJMapViewController.m */; };
+		219A069B2D754C6E00EA43BA /* BJAnnotationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 219A069A2D754C6E00EA43BA /* BJAnnotationView.m */; };
+		219A069E2D754EF500EA43BA /* BJAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 219A069D2D754EF500EA43BA /* BJAnnotation.m */; };
+		219A06AA2D755C2200EA43BA /* annotation.png in Resources */ = {isa = PBXBuildFile; fileRef = 219A06A92D755C2200EA43BA /* annotation.png */; };
+		219A06AC2D75F83000EA43BA /* minsu.png in Resources */ = {isa = PBXBuildFile; fileRef = 219A06AB2D75F83000EA43BA /* minsu.png */; };
 		219F0E8D2D3E7E2300F69C9B /* BJHomePageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 219F0E8C2D3E7E2200F69C9B /* BJHomePageViewController.m */; };
 		219F0E902D3E7E5D00F69C9B /* BJShopViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 219F0E8F2D3E7E5D00F69C9B /* BJShopViewController.m */; };
 		219F0E932D3E7EAC00F69C9B /* BJPostViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 219F0E922D3E7EAC00F69C9B /* BJPostViewController.m */; };
@@ -71,6 +76,14 @@
 		216DB6C62D2FDEF3005BF4C2 /* BJ博鉴乡兴通UITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "BJ博鉴乡兴通UITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		216DB6CA2D2FDEF3005BF4C2 /* BJ_____UITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "BJ_____UITests.m"; sourceTree = "<group>"; };
 		216DB6CC2D2FDEF3005BF4C2 /* BJ_____UITestsLaunchTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "BJ_____UITestsLaunchTests.m"; sourceTree = "<group>"; };
+		216E87112D73FF360027E674 /* BJMapViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BJMapViewController.h; sourceTree = "<group>"; };
+		216E87122D73FF360027E674 /* BJMapViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BJMapViewController.m; sourceTree = "<group>"; };
+		219A06992D754C6E00EA43BA /* BJAnnotationView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BJAnnotationView.h; sourceTree = "<group>"; };
+		219A069A2D754C6E00EA43BA /* BJAnnotationView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BJAnnotationView.m; sourceTree = "<group>"; };
+		219A069C2D754EF500EA43BA /* BJAnnotation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BJAnnotation.h; sourceTree = "<group>"; };
+		219A069D2D754EF500EA43BA /* BJAnnotation.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BJAnnotation.m; sourceTree = "<group>"; };
+		219A06A92D755C2200EA43BA /* annotation.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = annotation.png; path = ../../../../../../Downloads/annotation.png; sourceTree = "<group>"; };
+		219A06AB2D75F83000EA43BA /* minsu.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = minsu.png; sourceTree = "<group>"; };
 		219F0E8B2D3E7E2200F69C9B /* BJHomePageViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BJHomePageViewController.h; sourceTree = "<group>"; };
 		219F0E8C2D3E7E2200F69C9B /* BJHomePageViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BJHomePageViewController.m; sourceTree = "<group>"; };
 		219F0E8E2D3E7E5D00F69C9B /* BJShopViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BJShopViewController.h; sourceTree = "<group>"; };
@@ -161,7 +174,6 @@
 				219F0E9B2D3E83D600F69C9B /* 图片 */,
 				219F0E9A2D3E83C400F69C9B /* 通用 */,
 				216DB6D92D2FDF7C005BF4C2 /* 首页 */,
-				216DB6DA2D2FDF87005BF4C2 /* 商城 */,
 				216DB6DE2D2FDFBD005BF4C2 /* 发布 */,
 				216DB6DD2D2FDFB5005BF4C2 /* 社区 */,
 				216DB6DC2D2FDFAB005BF4C2 /* 我的 */,
@@ -200,9 +212,13 @@
 		216DB6D92D2FDF7C005BF4C2 /* 首页 */ = {
 			isa = PBXGroup;
 			children = (
+				219A06982D75491300EA43BA /* View */,
 				219F0EB82D41CE8600F69C9B /* cell */,
 				219F0E8B2D3E7E2200F69C9B /* BJHomePageViewController.h */,
 				219F0E8C2D3E7E2200F69C9B /* BJHomePageViewController.m */,
+				216E87112D73FF360027E674 /* BJMapViewController.h */,
+				216E87122D73FF360027E674 /* BJMapViewController.m */,
+				216DB6DA2D2FDF87005BF4C2 /* 商城 */,
 			);
 			path = "首页";
 			sourceTree = "<group>";
@@ -243,6 +259,17 @@
 			path = "发布";
 			sourceTree = "<group>";
 		};
+		219A06982D75491300EA43BA /* View */ = {
+			isa = PBXGroup;
+			children = (
+				219A06992D754C6E00EA43BA /* BJAnnotationView.h */,
+				219A069A2D754C6E00EA43BA /* BJAnnotationView.m */,
+				219A069C2D754EF500EA43BA /* BJAnnotation.h */,
+				219A069D2D754EF500EA43BA /* BJAnnotation.m */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
 		219F0E9A2D3E83C400F69C9B /* 通用 */ = {
 			isa = PBXGroup;
 			children = (
@@ -263,7 +290,9 @@
 				219F0EA62D3E8B5B00F69C9B /* home.png */,
 				219F0EBC2D41DA2B00F69C9B /* logo2.png */,
 				219F0EA82D3E8B5C00F69C9B /* myPage.png */,
+				219A06A92D755C2200EA43BA /* annotation.png */,
 				219F0EA92D3E8B5C00F69C9B /* community.png */,
+				219A06AB2D75F83000EA43BA /* minsu.png */,
 			);
 			path = "图片";
 			sourceTree = "<group>";
@@ -390,6 +419,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				219A06AA2D755C2200EA43BA /* annotation.png in Resources */,
 				219F0EAF2D3E8B5C00F69C9B /* shop.png in Resources */,
 				219F0EAD2D3E8B5C00F69C9B /* myPage.png in Resources */,
 				216DB6B12D2FDEF3005BF4C2 /* Assets.xcassets in Resources */,
@@ -397,6 +427,7 @@
 				219F0EB72D4160DD00F69C9B /* logo.png in Resources */,
 				219F0EBD2D41DA2B00F69C9B /* logo2.png in Resources */,
 				219F0EAB2D3E8B5C00F69C9B /* home.png in Resources */,
+				219A06AC2D75F83000EA43BA /* minsu.png in Resources */,
 				219F0E9F2D3E843100F69C9B /* jiahao.png in Resources */,
 				216DB6B42D2FDEF3005BF4C2 /* Base in Resources */,
 				216DB6AF2D2FDEF2005BF4C2 /* Base in Resources */,
@@ -466,14 +497,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				219A069E2D754EF500EA43BA /* BJAnnotation.m in Sources */,
 				219F0E902D3E7E5D00F69C9B /* BJShopViewController.m in Sources */,
 				219F0EA22D3E848100F69C9B /* BJTabBarController.m in Sources */,
 				216DB6AC2D2FDEF2005BF4C2 /* ViewController.m in Sources */,
+				216E87132D73FF360027E674 /* BJMapViewController.m in Sources */,
 				216DB6A62D2FDEF2005BF4C2 /* AppDelegate.m in Sources */,
 				219F0E992D3E7ED200F69C9B /* BJMyPageViewController.m in Sources */,
 				216DB6B72D2FDEF3005BF4C2 /* main.m in Sources */,
 				219F0EA52D3E849200F69C9B /* BJTabBar.m in Sources */,
 				216DB6A92D2FDEF2005BF4C2 /* SceneDelegate.m in Sources */,
+				219A069B2D754C6E00EA43BA /* BJAnnotationView.m in Sources */,
 				219F0E8D2D3E7E2300F69C9B /* BJHomePageViewController.m in Sources */,
 				219F0E962D3E7EC000F69C9B /* BJCommunityViewController.m in Sources */,
 				219F0E932D3E7EAC00F69C9B /* BJPostViewController.m in Sources */,
@@ -657,6 +691,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 4WJS482H6C;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "BJ博鉴乡兴通/Info.plist";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -664,6 +699,7 @@
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -684,6 +720,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 4WJS482H6C;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "BJ博鉴乡兴通/Info.plist";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -691,6 +728,7 @@
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

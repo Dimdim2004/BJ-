@@ -6,6 +6,7 @@
 //
 
 #import "BJHomePageViewController.h"
+#import "BJMapViewController.h"
 
 @interface BJHomePageViewController ()<UITableViewDelegate,UITableViewDataSource>
 @property (nonatomic,strong) UITableView *tableView;
@@ -16,6 +17,11 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self setupViews];
+}
+
+- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
+    BJMapViewController *mapVC = [[BJMapViewController alloc] init];
+    [self.navigationController pushViewController:mapVC animated:YES];
 }
 
 -(void)setupViews {
