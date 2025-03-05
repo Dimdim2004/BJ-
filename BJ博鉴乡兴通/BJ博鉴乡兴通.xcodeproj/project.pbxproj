@@ -370,12 +370,9 @@
 		219F0E9B2D3E83D600F69C9B /* 图片 */ = {
 			isa = PBXGroup;
 			children = (
-<<<<<<< HEAD
 				E9F8F0F42D5078AE0040ABA6 /* WechatIMG17.jpg */,
 				E9F8F0EF2D4FA53D0040ABA6 /* likes.png */,
-=======
 				219F0EB62D4160DD00F69C9B /* logo.png */,
->>>>>>> upstream/main
 				219F0E9E2D3E843100F69C9B /* jiahao.png */,
 				219F0EAA2D3E8B5C00F69C9B /* shop.png */,
 				219F0EA62D3E8B5B00F69C9B /* home.png */,
@@ -602,12 +599,9 @@
 				E9F8F0F02D4FA53D0040ABA6 /* likes.png in Resources */,
 				216DB6B12D2FDEF3005BF4C2 /* Assets.xcassets in Resources */,
 				219F0EAE2D3E8B5C00F69C9B /* community.png in Resources */,
-<<<<<<< HEAD
 				E9F8F0F52D5078AE0040ABA6 /* WechatIMG17.jpg in Resources */,
-=======
 				219F0EB72D4160DD00F69C9B /* logo.png in Resources */,
 				219F0EBD2D41DA2B00F69C9B /* logo2.png in Resources */,
->>>>>>> upstream/main
 				219F0EAB2D3E8B5C00F69C9B /* home.png in Resources */,
 				219A06AC2D75F83000EA43BA /* minsu.png in Resources */,
 				219F0E9F2D3E843100F69C9B /* jiahao.png in Resources */,
@@ -679,11 +673,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-<<<<<<< HEAD
 				E98B0CCD2D73466100439CCE /* BJDataModel.m in Sources */,
-=======
 				219A069E2D754EF500EA43BA /* BJAnnotation.m in Sources */,
->>>>>>> upstream/main
 				219F0E902D3E7E5D00F69C9B /* BJShopViewController.m in Sources */,
 				E98B0CC72D7344C600439CCE /* BJRegisterSuccessModel.m in Sources */,
 				E9F8F0E12D40CB720040ABA6 /* BJCommunityUIColectionViewFlowLayout.m in Sources */,
@@ -691,11 +682,8 @@
 				E98B0C692D70697400439CCE /* BJPostTableViewCell.m in Sources */,
 				219F0EA22D3E848100F69C9B /* BJTabBarController.m in Sources */,
 				216DB6AC2D2FDEF2005BF4C2 /* ViewController.m in Sources */,
-<<<<<<< HEAD
 				E98B0C712D70858600439CCE /* BJLoginViewController.m in Sources */,
-=======
 				216E87132D73FF360027E674 /* BJMapViewController.m in Sources */,
->>>>>>> upstream/main
 				216DB6A62D2FDEF2005BF4C2 /* AppDelegate.m in Sources */,
 				E9F8F0F32D4FB0FD0040ABA6 /* BJInvitationViewController.m in Sources */,
 				E9F8F0E52D40EFBF0040ABA6 /* BJMainCommunityView.m in Sources */,
@@ -712,11 +700,8 @@
 				E9F8F0EC2D4A220B0040ABA6 /* BJCommityCollectionViewCell.m in Sources */,
 				E9F8F13C2D54D29E0040ABA6 /* BJInvitationTopContentView.m in Sources */,
 				216DB6A92D2FDEF2005BF4C2 /* SceneDelegate.m in Sources */,
-<<<<<<< HEAD
 				E98B0C5A2D6CA40D00439CCE /* CommentsModel.m in Sources */,
-=======
 				219A069B2D754C6E00EA43BA /* BJAnnotationView.m in Sources */,
->>>>>>> upstream/main
 				219F0E8D2D3E7E2300F69C9B /* BJHomePageViewController.m in Sources */,
 				E98B0C6C2D707ACD00439CCE /* BJPostImageViewController.m in Sources */,
 				E98B0C5D2D6CA41A00439CCE /* SubCommentsModel.m in Sources */,
@@ -725,11 +710,11 @@
 				E98B0C772D70875E00439CCE /* BJLoginViewModel.m in Sources */,
 				E9F8F1362D54CD2B0040ABA6 /* BJInvitationTableViewCell.m in Sources */,
 				219F0E932D3E7EAC00F69C9B /* BJPostViewController.m in Sources */,
-<<<<<<< HEAD
+
 				E98B0C7A2D72F9B900439CCE /* BJRegisterViewController.m in Sources */,
-=======
+
 				219F0EBB2D41CEDE00F69C9B /* BJScrollViewTableViewCell.m in Sources */,
->>>>>>> upstream/main
+
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
