@@ -19,7 +19,9 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) UITextField* passwordField;
 @property (nonatomic, strong) UIButton* submmitButton;
 @property (nonatomic, strong) UIButton* registerButton;
+@property (nonatomic, strong) UIScrollView* scrollView;
 @property (nonatomic, strong) UILabel* errorLabel;
+@property (nonatomic, strong) UILabel* titleLabel;
 @property (nonatomic, strong) BJLoginViewModel* viewModel;
 @property (nonatomic, weak) id<tabControllDelgate> delegate;
 @end

@@ -53,7 +53,12 @@
 		E98B0CC72D7344C600439CCE /* BJRegisterSuccessModel.m in Sources */ = {isa = PBXBuildFile; fileRef = E98B0CC62D7344C600439CCE /* BJRegisterSuccessModel.m */; };
 		E98B0CCA2D73455600439CCE /* BJSuccessModel.m in Sources */ = {isa = PBXBuildFile; fileRef = E98B0CC92D73455600439CCE /* BJSuccessModel.m */; };
 		E98B0CCD2D73466100439CCE /* BJDataModel.m in Sources */ = {isa = PBXBuildFile; fileRef = E98B0CCC2D73466100439CCE /* BJDataModel.m */; };
+<<<<<<< Updated upstream
 		E9CBA33E2D78950C00113436 /* annotation.jpg in Resources */ = {isa = PBXBuildFile; fileRef = E9CBA33D2D78950C00113436 /* annotation.jpg */; };
+=======
+		E98B0CD12D74925B00439CCE /* santiao.png in Resources */ = {isa = PBXBuildFile; fileRef = E98B0CD02D74925A00439CCE /* santiao.png */; };
+		E98B0CD52D75E33900439CCE /* jiesuo.png in Resources */ = {isa = PBXBuildFile; fileRef = E98B0CD42D75E33900439CCE /* jiesuo.png */; };
+>>>>>>> Stashed changes
 		E9F8F0E12D40CB720040ABA6 /* BJCommunityUIColectionViewFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = E9F8F0E02D40CB710040ABA6 /* BJCommunityUIColectionViewFlowLayout.m */; };
 		E9F8F0E52D40EFBF0040ABA6 /* BJMainCommunityView.m in Sources */ = {isa = PBXBuildFile; fileRef = E9F8F0E42D40EFBE0040ABA6 /* BJMainCommunityView.m */; };
 		E9F8F0EC2D4A220B0040ABA6 /* BJCommityCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E9F8F0EB2D4A220B0040ABA6 /* BJCommityCollectionViewCell.m */; };
@@ -165,7 +170,12 @@
 		E98B0CC92D73455600439CCE /* BJSuccessModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BJSuccessModel.m; sourceTree = "<group>"; };
 		E98B0CCB2D73466100439CCE /* BJDataModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BJDataModel.h; sourceTree = "<group>"; };
 		E98B0CCC2D73466100439CCE /* BJDataModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BJDataModel.m; sourceTree = "<group>"; };
+
 		E9CBA33D2D78950C00113436 /* annotation.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = annotation.jpg; sourceTree = "<group>"; };
+
+		E98B0CD02D74925A00439CCE /* santiao.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = santiao.png; sourceTree = "<group>"; };
+		E98B0CD42D75E33900439CCE /* jiesuo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = jiesuo.png; sourceTree = "<group>"; };
+
 		E9F8F0DF2D40CB710040ABA6 /* BJCommunityUIColectionViewFlowLayout.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BJCommunityUIColectionViewFlowLayout.h; sourceTree = "<group>"; };
 		E9F8F0E02D40CB710040ABA6 /* BJCommunityUIColectionViewFlowLayout.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BJCommunityUIColectionViewFlowLayout.m; sourceTree = "<group>"; };
 		E9F8F0E32D40EFBE0040ABA6 /* BJMainCommunityView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BJMainCommunityView.h; sourceTree = "<group>"; };
@@ -380,7 +390,12 @@
 				219F0EA82D3E8B5C00F69C9B /* myPage.png */,
 				E9CBA33D2D78950C00113436 /* annotation.jpg */,
 				219F0EA92D3E8B5C00F69C9B /* community.png */,
+
 				219A06AB2D75F83000EA43BA /* minsu.png */,
+
+				E98B0CD02D74925A00439CCE /* santiao.png */,
+				E98B0CD42D75E33900439CCE /* jiesuo.png */,
+
 			);
 			path = "图片";
 			sourceTree = "<group>";
@@ -594,6 +609,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				219F0EAF2D3E8B5C00F69C9B /* shop.png in Resources */,
+				E98B0CD12D74925B00439CCE /* santiao.png in Resources */,
 				219F0EAD2D3E8B5C00F69C9B /* myPage.png in Resources */,
 				E9F8F0F02D4FA53D0040ABA6 /* likes.png in Resources */,
 				216DB6B12D2FDEF3005BF4C2 /* Assets.xcassets in Resources */,
@@ -603,7 +619,10 @@
 				219F0EB72D4160DD00F69C9B /* logo.png in Resources */,
 				219F0EBD2D41DA2B00F69C9B /* logo2.png in Resources */,
 				219F0EAB2D3E8B5C00F69C9B /* home.png in Resources */,
+
 				219A06AC2D75F83000EA43BA /* minsu.png in Resources */,
+
+				E98B0CD52D75E33900439CCE /* jiesuo.png in Resources */,
 				219F0E9F2D3E843100F69C9B /* jiahao.png in Resources */,
 				216DB6B42D2FDEF3005BF4C2 /* Base in Resources */,
 				216DB6AF2D2FDEF2005BF4C2 /* Base in Resources */,

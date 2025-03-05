@@ -10,7 +10,8 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface BJMainCommunityView : UIView
-@property (nonatomic, strong) UICollectionView* FlowView;
+@property (nonatomic, strong) NSMutableArray<UICollectionView*> *flowViewArray;
+@property (nonatomic, strong) UIScrollView* contentView;
 @end
 
 NS_ASSUME_NONNULL_END
