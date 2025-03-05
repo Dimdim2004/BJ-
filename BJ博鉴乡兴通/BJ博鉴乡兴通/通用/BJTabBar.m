@@ -13,6 +13,7 @@
 - (instancetype)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
+
         self.tintColor = [UIColor systemGreenColor];
         [self setupCenterButton];
     }
@@ -25,6 +26,16 @@
 
     [self.centerButton setImage:[UIImage imageNamed:@"jiahao.png"] forState:UIControlStateNormal];
     [self addSubview:self.centerButton];
+    
+//    UIView *view = [[UIView alloc] init];
+//    view.backgroundColor = [UIColor lightGrayColor];
+//    [self addSubview:view];
+//    
+//    [view mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.top.equalTo(self.mas_top);
+//        make.width.equalTo(self);
+//        make.height.equalTo(@1);
+//    }];
 }
 
 
