@@ -6,11 +6,11 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import "BJMainCommunityView.h"
 NS_ASSUME_NONNULL_BEGIN
 
-@interface BJCommunityViewController : UIViewController
-
+@interface BJCommunityViewController : UIViewController <UICollectionViewDelegate, UICollectionViewDataSource, UIScrollViewDelegate>
+@property (nonatomic, strong) BJMainCommunityView* iView;
 @end
 
 NS_ASSUME_NONNULL_END

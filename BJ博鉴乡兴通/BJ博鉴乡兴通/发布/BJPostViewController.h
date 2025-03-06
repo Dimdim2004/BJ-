@@ -6,11 +6,12 @@
 //
 
 #import <UIKit/UIKit.h>
-
+@class  BJPostView;
+#import "TZImagePickerController.h"
 NS_ASSUME_NONNULL_BEGIN
 
-@interface BJPostViewController : UIViewController
-
+@interface BJPostViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, TZImagePickerControllerDelegate>
+@property (nonatomic, strong) BJPostView* postView;
 @end
 
 NS_ASSUME_NONNULL_END
