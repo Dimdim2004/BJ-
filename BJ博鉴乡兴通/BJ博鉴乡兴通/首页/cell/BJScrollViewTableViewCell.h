@@ -13,6 +13,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) UIScrollView *scrollView;
 @property (nonatomic, strong) UIPageControl *pageControl;
 @property (nonatomic, strong) NSTimer *timer;
+
+- (void)configureWithTopStories:(NSArray *)images;
 @end
 
 NS_ASSUME_NONNULL_END
