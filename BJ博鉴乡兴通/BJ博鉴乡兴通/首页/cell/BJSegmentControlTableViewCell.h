@@ -10,7 +10,9 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface BJSegmentControlTableViewCell : UITableViewCell
+@property (strong, nonatomic)UIScrollView *scrollView;
 
+- (void)selectButtonAtIndex:(NSInteger)index animated:(BOOL)animated;
 @end
 
 NS_ASSUME_NONNULL_END

@@ -45,8 +45,8 @@
         [btn setTitleColor:[UIColor colorWithRed:16/255.0 green:89/255.0 blue:45/255.0 alpha:1]
                  forState:UIControlStateNormal];
         btn.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
-        btn.titleEdgeInsets = UIEdgeInsetsMake(0, 15, 0, 0);  // 文字右移
-        btn.imageEdgeInsets = UIEdgeInsetsMake(0, 10, 0, -10); // 图片左移
+        btn.titleEdgeInsets = UIEdgeInsetsMake(0, 15, 0, 0);
+        btn.imageEdgeInsets = UIEdgeInsetsMake(0, 10, 0, -10);
     };
     
     // 配置"我的家乡"按钮

@@ -9,6 +9,8 @@
 #import "BJMapViewController.h"
 #import "BJScrollViewTableViewCell.h"
 #import "BJButtonTableViewCell.h"
+#import "BJSegmentControlTableViewCell.h"
+
 
 #import <Masonry.h>
 #import "BJSearchBar.h"
@@ -16,6 +18,7 @@
 @interface BJHomePageViewController ()<UITableViewDelegate,UITableViewDataSource,UISearchBarDelegate>
 @property (nonatomic,strong) UITableView *tableView;
 @property (nonatomic,strong) BJSearchBar *searchBar;
+
 @end
 
 @implementation BJHomePageViewController
@@ -40,23 +43,30 @@
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    
+    self.tableView.backgroundColor = [UIColor colorWithRed:243/255.0 green:245/255.0 blue:247/255.0 alpha:1];
     [self.view addSubview:self.tableView];
     [self.tableView registerClass:[BJScrollViewTableViewCell class] forCellReuseIdentifier:@"ScrollViewCell"];
     [self.tableView registerClass:[BJButtonTableViewCell class] forCellReuseIdentifier:@"ButtonTableViewCell"];
-    
+    [self.tableView registerClass:[BJSegmentControlTableViewCell class] forCellReuseIdentifier:@"SegmentControlTableViewCell"];
     
     UIImageView *logoImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"logo2.png"]];
     logoImageView.frame = CGRectMake(0, 0, 130, 30);
     logoImageView.contentMode = UIViewContentModeCenter;
     self.navigationItem.titleView = logoImageView;
     
+    // 设置导航栏透明
     [self.navigationController.navigationBar setBackgroundImage:[UIImage new] forBarMetrics:UIBarMetricsDefault];
-    UIView *backgroundView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.navigationController.navigationBar.bounds.size.width, self.navigationController.navigationBar.bounds.size.height)];
-    backgroundView.backgroundColor = [UIColor clearColor];
-    [self.navigationController.navigationBar.subviews.firstObject insertSubview:backgroundView atIndex:0];
     [self.navigationController.navigationBar setShadowImage:[UIImage new]];
+
+
+    UINavigationBarAppearance *appearance = [[UINavigationBarAppearance alloc] init];
+    [appearance configureWithOpaqueBackground];
+    appearance.backgroundColor = [UIColor.whiteColor colorWithAlphaComponent:0];
+    appearance.shadowColor = [UIColor clearColor];
+    self.navigationController.navigationBar.standardAppearance = appearance;
+    self.navigationController.navigationBar.scrollEdgeAppearance = appearance;
     
+
     
     UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"backView.png"]];
     imageView.frame = CGRectMake(0, -130, self.view.frame.size.width, 180);
@@ -78,7 +88,7 @@
 //将BJScrollViewTableViewCell作为section0
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 2;
+    return 3;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -91,6 +101,8 @@
             return 223;
         case 1:
             return 120;
+        case 2:
+            return 800;
         default:
             return 0;
     }
@@ -139,6 +151,11 @@
             [cell.btnToMyHometown addTarget:self action:@selector(ToMyHometown) forControlEvents:UIControlEventTouchUpInside];
             return cell;
         }
+        case 2: {
+            BJSegmentControlTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"SegmentControlTableViewCell"];
+            cell.backgroundColor = [UIColor clearColor];
+            return cell;
+        }
         default:
             return [[UITableViewCell alloc] init];
     }
@@ -156,6 +173,25 @@
 
     BJMapViewController *mapVC = [[BJMapViewController alloc] init];
     [self.navigationController pushViewController:mapVC animated:YES];
+}
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+    UINavigationBarAppearance *appearance = [self.navigationController.navigationBar.standardAppearance copy];
+    
+    CGFloat offsetY = scrollView.contentOffset.y - 180.0;
+    CGFloat threshold = 100.0;
+    if (offsetY < 0) {
+        appearance.backgroundColor = [UIColor.whiteColor colorWithAlphaComponent:0];
+        return;
+    }
+    // 计算透明度（范围限制在 0~1）
+    NSLog(@"%.2f",offsetY);
+    CGFloat alpha = offsetY / threshold;
+    alpha = MAX(0, MIN(alpha, 1.0));
+    
+    appearance.backgroundColor = [UIColor.whiteColor colorWithAlphaComponent:alpha];
+    self.navigationController.navigationBar.standardAppearance = appearance;
+    self.navigationController.navigationBar.scrollEdgeAppearance = appearance;
 }
 
 @end

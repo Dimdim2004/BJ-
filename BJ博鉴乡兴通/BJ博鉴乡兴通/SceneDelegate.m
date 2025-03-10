@@ -23,11 +23,7 @@
 
 
 - (void)scene:(UIScene *)scene willConnectToSession:(UISceneSession *)session options:(UISceneConnectionOptions *)connectionOptions {
-    
-    BJLoginViewController* loginViewController = [[BJLoginViewController alloc] init];
-    loginViewController.delegate = self;
-    self.window.rootViewController = loginViewController;
-    [self.window makeKeyAndVisible];
+    [self changeTab];
 }
 - (void)changeTab {
     // 创建 BJHomePageViewController 并设置相关属性

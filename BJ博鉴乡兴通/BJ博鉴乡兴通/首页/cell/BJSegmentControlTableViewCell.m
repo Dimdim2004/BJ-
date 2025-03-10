@@ -15,7 +15,6 @@
 
 @property (assign, nonatomic)BOOL isLocked;
 @property (strong, nonatomic)UIView *segmentView;
-@property (strong, nonatomic)UIScrollView *scrollView;
 @property (strong, nonatomic)UIView *lineView;
 @property (strong, nonatomic)NSArray *array;
 @end

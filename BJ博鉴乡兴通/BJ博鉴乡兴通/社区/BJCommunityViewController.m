@@ -54,7 +54,7 @@
         button.titleLabel.font = [UIFont systemFontOfSize:16 weight:UIFontWeightMedium];
         button.tag = 100 + i;
         [button addTarget:self action:@selector(segmentButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
-        if (i == 1) {
+        if (i == 0) {
             button.selected = YES;
         }
         [constantView addSubview:button];
@@ -81,8 +81,22 @@
     }];
 }
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-    CGFloat offset = self.iView.contentView.contentOffset.x;
-    NSInteger currentIndex = round(offset / [UIScreen mainScreen].bounds.size.width);
+    CGFloat offsetX = scrollView.contentOffset.x;
+    CGFloat pageWidth = [UIScreen mainScreen].bounds.size.width;
+    CGFloat progress = offsetX / (pageWidth);
+
+    CGRect frame = _indicatorLine.frame;
+    frame.origin.x = 60 + (progress * 60);
+    _indicatorLine.frame = frame;
+    
+    
+}
+
+-(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
+    CGFloat offsetX = scrollView.contentOffset.x;
+    CGFloat pageWidth = [UIScreen mainScreen].bounds.size.width;
+    CGFloat progress = offsetX / (pageWidth);
+    NSInteger currentIndex = round(progress);
     [self selectSegmentAtIndex:currentIndex];
 }
 - (void)setupLine {
@@ -91,7 +105,7 @@
     [self.navigationItem.titleView addSubview:_indicatorLine];
 }
 
-- (__kindof UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     BJCommityCollectionViewCell* cell = [collectionView dequeueReusableCellWithReuseIdentifier: @"Cell" forIndexPath: indexPath];
     CGFloat red = arc4random_uniform(256) / 255.0;
     CGFloat green = arc4random_uniform(256) / 255.0;
