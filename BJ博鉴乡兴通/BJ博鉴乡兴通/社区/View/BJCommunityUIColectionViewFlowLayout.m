@@ -54,11 +54,12 @@
         currentMaxR =  [colHeight[1] floatValue];
         currentMaxL = [colHeight[0] floatValue];
         maxHeight = MAX(maxHeight, currentMaxR);
+        maxHeight = MAX(maxHeight, currentMaxL);
         NSLog(@"%lf", maxHeight);
     }
 }
 - (CGSize)collectionViewContentSize {
-    return CGSizeMake(self.collectionView.bounds.size.width, maxHeight + self.sectionInset.top);
+    return CGSizeMake(self.collectionView.bounds.size.width, maxHeight + self.sectionInset.bottom);
 }
 - (NSArray<__kindof UICollectionViewLayoutAttributes *> *)layoutAttributesForElementsInRect:(CGRect)rect {
     return [NSArray arrayWithArray:self.ary];

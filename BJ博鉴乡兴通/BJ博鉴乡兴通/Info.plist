@@ -27,5 +27,22 @@
 			</array>
 		</dict>
 	</dict>
+    <key>NSAppTransportSecurity</key>
+        <dict>
+            <key>NSExceptionDomains</key>
+            <dict>
+                <key>3.112.71.79</key>
+                <dict>
+                    <key>NSExceptionAllowsInsecureHTTPLoads</key>
+                    <true/>
+                    <key>NSIncludesSubdomains</key>
+                    <true/>
+                    <key>NSTemporaryExceptionMinimumTLSVersion</key>
+                    <string>TLSv1.1</string>
+                </dict>
+            </dict>
+        </dict>
+        <key>NSPhotoLibraryUsageDescription</key>
+        <string>需要访问您的相册以便选择要上传的图片</string>
 </dict>
 </plist>

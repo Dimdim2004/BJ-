@@ -25,7 +25,6 @@
         self.iView.flowViewArray[i].dataSource = self;
         [self.iView.flowViewArray[i] registerClass:[BJCommityCollectionViewCell class] forCellWithReuseIdentifier:@"Cell"];
     }
-
     [self.view addSubview:self.iView];
     [self setNavgationBar];
     [self setSegmentControl];
@@ -38,7 +37,7 @@
     apperance.shadowImage = [[UIImage alloc] init];
     self.navigationController.navigationBar.standardAppearance = apperance;
     self.navigationController.navigationBar.scrollEdgeAppearance = apperance;
-    NSString* string = @"santiao.png";
+    NSString* string = @"santiaogang.png";
     UIBarButtonItem* leftButton = [[UIBarButtonItem alloc] initWithCustomView:[[UIImageView alloc] initWithImage:[UIImage imageNamed:string]]];
     self.navigationItem.leftBarButtonItem = leftButton;
 }

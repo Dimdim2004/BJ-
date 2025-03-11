@@ -6,11 +6,15 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "BJPostTableViewCell.h"
+
 NS_ASSUME_NONNULL_BEGIN
 
 @interface BJPostView : UIView
-@property (nonatomic, strong) UITableView* mainView;
+@property (nonatomic, strong) UIButton* commityButton;
+@property (nonatomic, strong) UIButton* privateButton;
+@property (nonatomic, strong) UILabel* nameLabel;
+@property (nonatomic, strong) UIImageView* iconView;
+@property (nonatomic, strong) UIButton* backButton;
 @end
 
 NS_ASSUME_NONNULL_END
