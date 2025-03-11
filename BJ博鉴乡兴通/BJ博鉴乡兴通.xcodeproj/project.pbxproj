@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		2166BAF92D7C875B009C0CB1 /* BJSegmentControlTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2166BAF82D7C875B009C0CB1 /* BJSegmentControlTableViewCell.m */; };
+		2166BB052D7FE779009C0CB1 /* BJPostModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 2166BB042D7FE779009C0CB1 /* BJPostModel.m */; };
+		2166BB092D7FE919009C0CB1 /* BJSegmentModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 2166BB082D7FE919009C0CB1 /* BJSegmentModel.m */; };
 		216DB6A62D2FDEF2005BF4C2 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 216DB6A52D2FDEF2005BF4C2 /* AppDelegate.m */; };
 		216DB6A92D2FDEF2005BF4C2 /* SceneDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 216DB6A82D2FDEF2005BF4C2 /* SceneDelegate.m */; };
 		216DB6AF2D2FDEF2005BF4C2 /* Base in Resources */ = {isa = PBXBuildFile; fileRef = 216DB6AE2D2FDEF2005BF4C2 /* Base */; };
@@ -104,6 +106,10 @@
 		2166BAF72D7C875B009C0CB1 /* BJSegmentControlTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BJSegmentControlTableViewCell.h; sourceTree = "<group>"; };
 		2166BAF82D7C875B009C0CB1 /* BJSegmentControlTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BJSegmentControlTableViewCell.m; sourceTree = "<group>"; };
 		2166BAFA2D7E90DC009C0CB1 /* BJHomePageViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BJHomePageViewController.h; sourceTree = "<group>"; };
+		2166BB032D7FE779009C0CB1 /* BJPostModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BJPostModel.h; sourceTree = "<group>"; };
+		2166BB042D7FE779009C0CB1 /* BJPostModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BJPostModel.m; sourceTree = "<group>"; };
+		2166BB072D7FE919009C0CB1 /* BJSegmentModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BJSegmentModel.h; sourceTree = "<group>"; };
+		2166BB082D7FE919009C0CB1 /* BJSegmentModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BJSegmentModel.m; sourceTree = "<group>"; };
 		216DB6A12D2FDEF2005BF4C2 /* BJ博鉴乡兴通.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "BJ博鉴乡兴通.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		216DB6A42D2FDEF2005BF4C2 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		216DB6A52D2FDEF2005BF4C2 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -258,6 +264,17 @@
 			path = Pods;
 			sourceTree = "<group>";
 		};
+		2166BB062D7FE77F009C0CB1 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				2166BB032D7FE779009C0CB1 /* BJPostModel.h */,
+				2166BB042D7FE779009C0CB1 /* BJPostModel.m */,
+				2166BB072D7FE919009C0CB1 /* BJSegmentModel.h */,
+				2166BB082D7FE919009C0CB1 /* BJSegmentModel.m */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
 		216DB6982D2FDEF2005BF4C2 = {
 			isa = PBXGroup;
 			children = (
@@ -324,6 +341,7 @@
 		216DB6D92D2FDF7C005BF4C2 /* 首页 */ = {
 			isa = PBXGroup;
 			children = (
+				2166BB062D7FE77F009C0CB1 /* Model */,
 				219A06982D75491300EA43BA /* View */,
 				219F0EB82D41CE8600F69C9B /* cell */,
 				2166BAFA2D7E90DC009C0CB1 /* BJHomePageViewController.h */,
@@ -768,6 +786,7 @@
 				E98B0C692D70697400439CCE /* BJPostTableViewCell.m in Sources */,
 				219F0EA22D3E848100F69C9B /* BJTabBarController.m in Sources */,
 				E98B0C712D70858600439CCE /* BJLoginViewController.m in Sources */,
+				2166BB092D7FE919009C0CB1 /* BJSegmentModel.m in Sources */,
 				216E87132D73FF360027E674 /* BJMapViewController.m in Sources */,
 				216DB6A62D2FDEF2005BF4C2 /* AppDelegate.m in Sources */,
 				E9F8F0F32D4FB0FD0040ABA6 /* BJInvitationViewController.m in Sources */,
@@ -792,6 +811,7 @@
 				E98B0C5A2D6CA40D00439CCE /* CommentsModel.m in Sources */,
 				219A069B2D754C6E00EA43BA /* BJAnnotationView.m in Sources */,
 				219F0E8D2D3E7E2300F69C9B /* BJHomePageViewController.m in Sources */,
+				2166BB052D7FE779009C0CB1 /* BJPostModel.m in Sources */,
 				E98B0C6C2D707ACD00439CCE /* BJPostImageViewController.m in Sources */,
 				E98B0C5D2D6CA41A00439CCE /* SubCommentsModel.m in Sources */,
 				E98B0C662D7068B800439CCE /* BJPostView.m in Sources */,

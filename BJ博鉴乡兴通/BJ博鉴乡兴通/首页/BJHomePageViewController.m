@@ -15,10 +15,18 @@
 #import <Masonry.h>
 #import "BJSearchBar.h"
 
-@interface BJHomePageViewController ()<UITableViewDelegate,UITableViewDataSource,UISearchBarDelegate>
+@interface BJHomePageViewController ()<UITableViewDelegate,UITableViewDataSource,UISearchBarDelegate,BJSegmentControlTableViewCellDelegate>
+{
+    BJSegmentControlTableViewCell *_segmentCell;
+}
 @property (nonatomic,strong) UITableView *tableView;
 @property (nonatomic,strong) BJSearchBar *searchBar;
 
+@property (strong, nonatomic)UIView *lineView;
+@property (strong, nonatomic) UIView *stickyView;
+@property (strong, nonatomic)NSArray *array;
+@property (assign, nonatomic)BOOL isLocked;
+@property ( nonatomic , assign ) CGFloat stickyViewBaseY ; // 吸顶临界点Y值
 @end
 
 @implementation BJHomePageViewController
@@ -27,6 +35,11 @@
     [super viewDidLoad];
     
     [self setupViews];
+    [self setupStickyView];
+    [self setupLineView];
+    [self selectButtonAtIndex:0 animated:NO];
+    
+    _stickyViewBaseY = [UIApplication sharedApplication].statusBarFrame.size.height + self.navigationController.navigationBar.frame.size.height;
 }
 
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
@@ -53,16 +66,13 @@
     logoImageView.frame = CGRectMake(0, 0, 130, 30);
     logoImageView.contentMode = UIViewContentModeCenter;
     self.navigationItem.titleView = logoImageView;
-    
-    // 设置导航栏透明
-    [self.navigationController.navigationBar setBackgroundImage:[UIImage new] forBarMetrics:UIBarMetricsDefault];
-    [self.navigationController.navigationBar setShadowImage:[UIImage new]];
 
 
     UINavigationBarAppearance *appearance = [[UINavigationBarAppearance alloc] init];
     [appearance configureWithOpaqueBackground];
     appearance.backgroundColor = [UIColor.whiteColor colorWithAlphaComponent:0];
     appearance.shadowColor = [UIColor clearColor];
+
     self.navigationController.navigationBar.standardAppearance = appearance;
     self.navigationController.navigationBar.scrollEdgeAppearance = appearance;
     
@@ -153,6 +163,8 @@
         }
         case 2: {
             BJSegmentControlTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"SegmentControlTableViewCell"];
+            _segmentCell = cell;
+            cell.delegate = self;
             cell.backgroundColor = [UIColor clearColor];
             return cell;
         }
@@ -184,14 +196,164 @@
         appearance.backgroundColor = [UIColor.whiteColor colorWithAlphaComponent:0];
         return;
     }
-    // 计算透明度（范围限制在 0~1）
-    NSLog(@"%.2f",offsetY);
+
     CGFloat alpha = offsetY / threshold;
     alpha = MAX(0, MIN(alpha, 1.0));
     
     appearance.backgroundColor = [UIColor.whiteColor colorWithAlphaComponent:alpha];
     self.navigationController.navigationBar.standardAppearance = appearance;
     self.navigationController.navigationBar.scrollEdgeAppearance = appearance;
+    
+    [self updateStickyViewPosition] ;
+}
+
+- (void)updateStickyViewPosition {
+    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:2];
+    CGRect cellRectInTableView = [self.tableView rectForRowAtIndexPath:indexPath];
+    CGRect cellRectInWindow = [self.tableView convertRect:cellRectInTableView toView:self.view.window];
+    
+    CGFloat criticalY = _stickyViewBaseY - cellRectInWindow.origin.y;
+    
+    if (criticalY > 0) {
+        self.stickyView.hidden = NO;
+        _segmentCell.stickyView.hidden = YES;
+
+        [self syncStickyViewStateFromSource:self.stickyView toTarget:_segmentCell.stickyView];
+    } else {
+        self.stickyView.hidden = YES;
+        _segmentCell.stickyView.hidden = NO;
+        
+        [self syncStickyViewStateFromSource:_segmentCell.stickyView toTarget:self.stickyView];
+    }
+}
+
+
+-(void)setupStickyView {
+    
+    self.stickyView = [[UIView alloc] initWithFrame:CGRectMake(0, self.navigationController.navigationBar.frame.size.height + 50, [UIScreen mainScreen].bounds.size.width, 40)];
+    self.stickyView.backgroundColor = [UIColor whiteColor];
+    self.stickyView.hidden = YES;
+    [self.view addSubview:self.stickyView];
+    self.array = @[@"关注", @"周边", @"精选",@"陕西省"];
+   
+    for(int i = 0; i < self.array.count; i++) {
+        NSString *name = self.array[i];
+        CGFloat width = [UIScreen mainScreen].bounds.size.width / self.array.count;
+        UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(i * width, 0, width, 40)];
+        [button setTitle:name forState:UIControlStateNormal];
+        [button setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
+        [button setTitleColor:[UIColor colorWithRed:16/255.0 green:89/255.0 blue:45/255.0 alpha:1] forState:UIControlStateSelected];
+        button.tag = 100 + i;
+        button.titleLabel.font = [UIFont systemFontOfSize:16 weight:UIFontWeightMedium];
+        [button addTarget:self action:@selector(buttonClicked:) forControlEvents:UIControlEventTouchUpInside];
+        [self.stickyView addSubview:button];
+    }
+    UIBezierPath *path = [UIBezierPath bezierPathWithRoundedRect:self.stickyView.bounds byRoundingCorners:UIRectCornerTopLeft | UIRectCornerTopRight cornerRadii:CGSizeMake(30, 20)];
+    CAShapeLayer *layer = [[CAShapeLayer alloc] init];
+    layer.frame = self.stickyView.bounds;
+    layer.path = path.CGPath;
+    self.stickyView.layer.mask = layer;
+}
+
+-(void)buttonClicked:(UIButton*)sender {
+    self.isLocked = YES;
+    [self.stickyView.subviews enumerateObjectsUsingBlock:^(UIView *obj, NSUInteger idx, BOOL *stop) {
+        if ([obj isKindOfClass:[UIButton class]]) {
+            UIButton *btn = (UIButton *)obj;
+            btn.selected = (btn == sender);
+            if (btn != sender) {
+                btn.transform = CGAffineTransformIdentity;
+            }
+        }
+    }];
+    
+    [UIView animateWithDuration:0.3 delay:0 usingSpringWithDamping:0.5 initialSpringVelocity:1 options:UIViewAnimationOptionCurveEaseInOut animations:^{
+        sender.transform = CGAffineTransformMakeScale(1.2, 1.2);
+    } completion:nil];
+    
+    [UIView animateWithDuration:0.3 animations:^{
+        CGRect frame = self.lineView.frame;
+        frame.origin.x = sender.frame.origin.x + 17;
+        self.lineView.frame = frame;
+    }];
+    NSInteger tag = sender.tag - 100;
+    [_segmentCell setScrollViewOffsetWithTag:tag animated:YES];
+    
+}
+
+-(void)setupLineView {
+    self.lineView = [[UIView alloc] initWithFrame:CGRectMake(17, 38, [UIScreen mainScreen].bounds.size.width / self.array.count - 15, 2)];
+    self.lineView.clipsToBounds = YES;
+    self.lineView.layer.cornerRadius = 1;
+    self.lineView.backgroundColor = [UIColor colorWithRed:16/255.0 green:89/255.0 blue:45/255.0 alpha:1];
+    [self.stickyView addSubview:self.lineView];
+}
+
+- (void)selectButtonAtIndex:(NSInteger)index animated:(BOOL)animated {
+    UIButton *targetBtn = [self.stickyView viewWithTag:100 + index];
+    
+    // 取消所有按钮选中
+    [self.stickyView.subviews enumerateObjectsUsingBlock:^(UIView *subview, NSUInteger idx, BOOL *stop) {
+        if ([subview isKindOfClass:[UIButton class]]) {
+            UIButton *btn = (UIButton *)subview;
+            btn.selected = (btn == targetBtn);
+            btn.transform = (btn == targetBtn) ? CGAffineTransformMakeScale(1.2, 1.2) : CGAffineTransformIdentity;
+        }
+    }];
+    
+    // 移动横线
+    if (animated) {
+        [UIView animateWithDuration:0.3 animations:^{
+            self.lineView.frame = CGRectMake(targetBtn.frame.origin.x + 17, self.lineView.frame.origin.y, self.lineView.frame.size.width, self.lineView.frame.size.height);
+        }];
+    } else {
+        self.lineView.frame = CGRectMake(targetBtn.frame.origin.x + 17, self.lineView.frame.origin.y, self.lineView.frame.size.width, self.lineView.frame.size.height);
+    }
+}
+
+
+// 添加同步方法
+- (void)syncStickyViewStateFromSource:(UIView *)sourceView toTarget:(UIView *)targetView {
+    // 1. 获取当前选中按钮索引
+    __block NSInteger selectedIndex = -1;
+    [sourceView.subviews enumerateObjectsUsingBlock:^(UIView *obj, NSUInteger idx, BOOL *stop) {
+        if ([obj isKindOfClass:[UIButton class]] && ((UIButton *)obj).selected) {
+            selectedIndex = idx;
+            *stop = YES;
+        }
+    }];
+    
+    if (selectedIndex == -1) return;
+    NSLog(@"%d",selectedIndex);
+    // 2. 同步按钮状态
+    UIButton *targetButton = targetView.subviews[selectedIndex];
+    [targetView.subviews enumerateObjectsUsingBlock:^(UIView *obj, NSUInteger idx, BOOL *stop) {
+        if ([obj isKindOfClass:[UIButton class]]) {
+            if (idx == selectedIndex) {
+                UIButton *btn = (UIButton *)obj;
+                btn.selected = YES;
+                btn.transform = CGAffineTransformMakeScale(1.2, 1.2);
+            } else {
+                UIButton *btn = (UIButton *)obj;
+                btn.selected = NO;
+                btn.transform = CGAffineTransformIdentity;
+            }
+                
+            
+        }
+    }];
+    UIView *targetLineView = nil;
+    if ([targetView isEqual:self.stickyView]) {
+        targetLineView = self.lineView;
+    } else {
+        targetLineView = _segmentCell.lineView;
+    }
+    CGRect lineFrame = targetLineView.frame;
+    lineFrame.origin.x = targetButton.frame.origin.x + 17;
+    targetLineView.frame = lineFrame;
+    
+    
+    
 }
 
 @end
