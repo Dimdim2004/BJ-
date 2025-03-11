@@ -25,6 +25,7 @@
     [self.view addSubview:self.iView];
     self.iView.mainView.delegate = self;
     self.iView.mainView.dataSource = self;
+    [self setNavgationBar];
     // Do any additional setup after loading the view.
 }
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -67,6 +68,40 @@
 }
 -(void) expandSubComment {
    
+}
+
+- (void)setNavgationBar {
+    UINavigationBarAppearance* apperance = [[UINavigationBarAppearance alloc] init];
+    apperance.shadowColor = [UIColor clearColor];
+    apperance.shadowImage = [[UIImage alloc] init];
+    self.navigationController.navigationBar.standardAppearance = apperance;
+    self.navigationController.navigationBar.scrollEdgeAppearance = apperance;
+    NSString* string = @"back2.png";
+    UIButton* button = [UIButton buttonWithType:UIButtonTypeCustom];
+    [button addTarget:self action:@selector(popViewController) forControlEvents:UIControlEventTouchUpInside];
+    [button setImage:[UIImage imageNamed:string] forState:UIControlStateNormal];
+    
+    UIButton* iconButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [iconButton setImage:[UIImage imageNamed:@"title.jpg"] forState:UIControlStateNormal];
+    iconButton.layer.masksToBounds = YES;
+    iconButton.layer.cornerRadius = 20;
+    
+    UIBarButtonItem *space = [[UIBarButtonItem alloc]
+        initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace
+        target:nil action:nil];
+    space.width = 8;
+    
+    UIBarButtonItem* leftButton = [[UIBarButtonItem alloc] initWithCustomView:button];
+    UIBarButtonItem* headButton = [[UIBarButtonItem alloc] initWithCustomView:iconButton];
+    UILabel* nameLabel = [[UILabel alloc] init];
+    nameLabel.text = @"名字";
+    UIBarButtonItem* titleButton = [[UIBarButtonItem alloc] initWithCustomView:nameLabel];
+    
+    self.navigationItem.leftBarButtonItems = @[leftButton, space, headButton, space, titleButton];
+    
+}
+- (void)popViewController {
+    [self.navigationController popViewControllerAnimated:YES];
 }
 /*
 #pragma mark - Navigation

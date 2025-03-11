@@ -7,9 +7,11 @@
 
 #import <Foundation/Foundation.h>
 @class BJUserRegisterModel;
-@class BJSuccessModel;
+@class BJCodeSuccessModel;
+@class BJRegisterSuccessModel;
 NS_ASSUME_NONNULL_BEGIN
-typedef void(^success)(BJSuccessModel* userModel);
+typedef void(^success)(BJCodeSuccessModel* userModel);
+typedef void(^registerSuccess)(BJRegisterSuccessModel* userModel);
 typedef void(^error)(NSError* error);
 @interface BJRegisterViewModel : NSObject
 @property (nonatomic, assign) NSInteger authType;
@@ -20,7 +22,8 @@ typedef void(^error)(NSError* error);
 
 @property (nonatomic, readonly) BOOL isSendCode;
 @property (nonatomic, copy) NSString* comfirmPassword;
-- (void)submmitWithSuccess:(success)success failure:(error)error;
+- (void)submmitWithSuccess:(registerSuccess)success failure:(error)error;
+- (void)sendCodeWithSuccess:(success)success failure:(error)error;
 @end
 
 NS_ASSUME_NONNULL_END

@@ -16,6 +16,12 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) UITextField* codeField;
 @property (nonatomic, strong) UIButton* codeButton;
 @property (nonatomic, strong) UIButton* registerButton;
+@property (nonatomic, strong) UIView* backView;
+@property (nonatomic, strong) UILabel* titleLabel;
+@property (nonatomic, strong) UITextField* registerUserTextField;
+@property (nonatomic, strong) UILabel* userErrorLabel;
+@property (nonatomic, strong) UILabel* passwordErrorLabel;
+@property (nonatomic, strong) UILabel* repeatErrorLabel;
 @property (nonatomic, strong) BJRegisterViewModel* viewModel;
 @end
 

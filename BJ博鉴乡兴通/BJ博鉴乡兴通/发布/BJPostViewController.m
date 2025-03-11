@@ -8,6 +8,7 @@
 #import "BJPostViewController.h"
 #import "BJPostView.h"
 #import "BJPostTableViewCell.h"
+#import "BJPostCommityViewController.h"
 @interface BJPostViewController ()
 
 @end
@@ -17,26 +18,20 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.postView = [[BJPostView alloc] initWithFrame:self.view.bounds];
-    [self.postView.mainView registerClass:[BJPostTableViewCell class] forCellReuseIdentifier:@"comments"];
+    self.postView.backgroundColor = UIColor.whiteColor;
     [self.view addSubview:self.postView];
-    self.postView.mainView.delegate = self;
-    self.postView.mainView.dataSource = self;
+    [self.postView.commityButton addTarget:self action:@selector(pushCommityPostViewController) forControlEvents:UIControlEventTouchUpInside];
+    [self.postView.backButton addTarget:self action:@selector(dismiss) forControlEvents:UIControlEventTouchUpInside];
     // Do any additional setup after loading the view.
 }
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 30;
+- (void) pushCommityPostViewController {
+    BJPostCommityViewController* commityViewController = [[BJPostCommityViewController alloc] init];
+    commityViewController.modalPresentationStyle = UIModalPresentationFullScreen;
+    [self presentViewController:commityViewController animated:YES completion:nil];
 }
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    if (section == 0) {
-        return 1;
-    } else {
-        return 3;
-    }
+- (void)dismiss {
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return UITableViewAutomaticDimension;
-}
-
 /*
 #pragma mark - Navigation
 

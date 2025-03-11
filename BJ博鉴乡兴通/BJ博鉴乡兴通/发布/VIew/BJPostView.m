@@ -6,15 +6,49 @@
 //
 
 #import "BJPostView.h"
-
+#import "Masonry.h"
 @implementation BJPostView
 - (void)setUI {
-    self.backgroundColor = UIColor.whiteColor;
-    self.mainView = [[UITableView alloc] initWithFrame:self.bounds style:UITableViewStylePlain];
-    self.mainView.backgroundColor = [UIColor whiteColor];
-    [self addSubview:_mainView];
-    self.mainView.estimatedRowHeight = 100;
-    self.mainView.rowHeight = UITableViewAutomaticDimension;
+    self.commityButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    self.privateButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    self.iconView = [[UIImageView alloc] init];
+    self.nameLabel = [[UILabel alloc] init];
+    self.commityButton.backgroundColor = UIColor.redColor;
+    self.privateButton.backgroundColor = UIColor.blueColor;
+    [self.privateButton setTitle:@"个人动态" forState:UIControlStateNormal];
+    [self.commityButton setTitle:@"图文社区" forState:UIControlStateNormal];
+    self.backButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [self.backButton setImage:[UIImage imageNamed:@"back1.png"] forState:UIControlStateNormal];
+    [self addSubview:_commityButton];
+    [self addSubview:_privateButton];
+    [self addSubview:_iconView];
+    [self addSubview:_nameLabel];
+    [self addSubview:_backButton];
+    [_commityButton mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self);
+        make.width.height.equalTo(@100);
+        make.top.equalTo(@300);
+    }];
+    [_privateButton mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.right.equalTo(self);
+        make.width.height.equalTo(@100);
+        make.top.equalTo(@300);
+    }];
+    [_backButton mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self);
+        make.width.height.equalTo(@45);
+        make.top.equalTo(@60);
+    }];
+    [_iconView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self);
+        make.width.height.equalTo(@100);
+        make.top.equalTo(@200);
+    }];
+    [_nameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.right.equalTo(self);
+        make.width.height.equalTo(@100);
+        make.top.equalTo(@0);
+    }];
 }
 - (instancetype)initWithFrame:(CGRect)frame
 {

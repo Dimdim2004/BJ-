@@ -7,9 +7,9 @@
 
 #import <Foundation/Foundation.h>
 @class BJUserModel;
-@class BJSuccessModel;
+@class BJLoginSuccessModel;
 NS_ASSUME_NONNULL_BEGIN
-typedef void(^success)(BJSuccessModel* successModel);
+typedef void(^loginSuccess)(BJLoginSuccessModel* successModel);
 typedef void(^error)(NSError* error);
 @interface BJLoginViewModel : NSObject
 @property (nonatomic, strong) BJUserModel* user;
@@ -17,7 +17,7 @@ typedef void(^error)(NSError* error);
 @property (nonatomic, readonly) BOOL isValidPassword;
 @property (nonatomic, readonly) BOOL isValidLogin;
 
-- (void)submmitWithSuccess:(success)success failure:(error)error;
+- (void)submmitWithSuccess:(loginSuccess)success failure:(error)error;
 @end
 
 NS_ASSUME_NONNULL_END
