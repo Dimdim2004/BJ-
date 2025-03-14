@@ -10,6 +10,7 @@
 #import "BJInvitationViewController.h"
 @interface BJCommunityViewController () {
     UIView* _indicatorLine;
+    BOOL _isLocked;
 }
 
 @end
@@ -17,6 +18,7 @@
 @implementation BJCommunityViewController
 
 - (void)viewDidLoad {
+    _isLocked = NO;
     [super viewDidLoad];
     self.iView = [[BJMainCommunityView alloc] initWithFrame:self.view.bounds];
     self.iView.contentView.delegate = self;
@@ -38,6 +40,7 @@
     self.navigationController.navigationBar.standardAppearance = apperance;
     self.navigationController.navigationBar.scrollEdgeAppearance = apperance;
     NSString* string = @"santiaogang.png";
+    apperance.backgroundColor = UIColor.whiteColor;
     UIBarButtonItem* leftButton = [[UIBarButtonItem alloc] initWithCustomView:[[UIImageView alloc] initWithImage:[UIImage imageNamed:string]]];
     self.navigationItem.leftBarButtonItem = leftButton;
 }
@@ -61,12 +64,15 @@
     self.navigationItem.titleView = constantView;
 }
 - (void)segmentButtonClicked:(UIButton*)button {
+    _isLocked = YES;
     NSInteger index = button.tag - 100;
     [self selectSegmentAtIndex:index];
     CGFloat offset = self.iView.contentView.contentOffset.y;
     [self.iView.contentView setContentOffset:CGPointMake(index * self.view.bounds.size.width, offset) animated:YES];
+    
 }
 - (void)selectSegmentAtIndex:(NSInteger)index {
+    
     for (UIView* view in self.navigationItem.titleView.subviews) {
         if ([view isKindOfClass:[UIButton class]]) {
             UIButton* button = (UIButton*)view;
@@ -79,7 +85,13 @@
         _indicatorLine.frame = frame;
     }];
 }
+-(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
+    _isLocked = NO;
+}
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+    if (_isLocked) {
+        return;
+    }
     CGFloat offset = self.iView.contentView.contentOffset.x;
     NSInteger currentIndex = round(offset / [UIScreen mainScreen].bounds.size.width);
     [self selectSegmentAtIndex:currentIndex];

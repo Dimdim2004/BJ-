@@ -22,6 +22,7 @@
         BJCommunityUIColectionViewFlowLayout* layout = [[BJCommunityUIColectionViewFlowLayout alloc] initWithFlowLayoutWithCount:20 andSection:3];
         layout.sectionInset = UIEdgeInsetsMake(5, 5, 5, 5);
         UICollectionView* flowView = [[UICollectionView alloc] initWithFrame:CGRectMake(i * self.bounds.size.width, 0, self.bounds.size.width, self.bounds.size.height - 83 - 97.67) collectionViewLayout:layout];
+        flowView.backgroundColor = UIColor.whiteColor;
         flowView.tag = 100 + i;
         [self.contentView addSubview:flowView];
         [self.flowViewArray addObject:flowView];

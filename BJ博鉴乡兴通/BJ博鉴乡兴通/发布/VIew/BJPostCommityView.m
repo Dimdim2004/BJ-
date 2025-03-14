@@ -16,7 +16,7 @@
     self.mainView.estimatedRowHeight = 100;
     self.mainView.rowHeight = UITableViewAutomaticDimension;
     self.backButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [self.backButton setImage:[UIImage imageNamed:@"back1.png"] forState:UIControlStateNormal];
+    [self.backButton setImage:[UIImage imageNamed:@"back2.png"] forState:UIControlStateNormal];
     [self addSubview:self.backButton];
     [_backButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self);

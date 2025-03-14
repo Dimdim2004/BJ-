@@ -10,6 +10,7 @@
 #import "BJUserModel.h"
 #import "BJRegisterViewController.h"
 #import "Masonry/Masonry.h"
+#import "BJCheckEmailViewController.h"
 @interface BJLoginViewController ()
 
 @end
@@ -181,10 +182,28 @@
         make.height.equalTo(@30);
         make.top.equalTo(self.passwordField.mas_top).offset(5);
     }];
-//    [self.view addSubview:_submmitButton];
-//    [self.view addSubview:_usernameField];
-//    [self.view addSubview:_passwordField];
-//    [self.view addSubview:_registerButton];
+    
+    
+    self.checkEmailButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    self.checkEmailButton.backgroundColor = UIColor.whiteColor;
+    [self.checkEmailButton setTitle:@"忘记密码" forState:UIControlStateNormal];
+    self.checkEmailButton.titleLabel.font = [UIFont systemFontOfSize:13];
+    [self.checkEmailButton addTarget:self action:@selector(presentCheck) forControlEvents:UIControlEventTouchUpInside];
+    //self.registerButton.frame = CGRectMake(200, 460, 80, 40);
+    self.checkEmailButton.tintColor = UIColor.lightGrayColor;
+    [_backView addSubview:_checkEmailButton];
+    [_checkEmailButton mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.right.equalTo(self.passwordField.mas_right).offset(10);
+        make.top.equalTo(self.passwordField.mas_bottom).offset(5);
+        make.width.equalTo(@100);
+        make.height.equalTo(@20);
+    }];
+}
+- (void)presentCheck {
+    NSLog(@"111");
+    BJCheckEmailViewController* checkEmailViewController = [[BJCheckEmailViewController alloc] init];
+    checkEmailViewController.modalPresentationStyle = UIModalPresentationFullScreen;
+    [self presentViewController:checkEmailViewController animated:YES completion:nil];
 }
 - (void)quickPush {
     [self.delegate changeTab];
@@ -253,10 +272,11 @@
 }
 - (void)showSuccessAlert {
     UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"成功" message:@"登陆成功" preferredStyle:UIAlertControllerStyleAlert];
-    [alert addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:nil]];
-    [self presentViewController:alert animated:YES completion:^{
+    [alert addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         [self.delegate changeTab];
-    }];
+    }]];
+    [self presentViewController:alert animated:YES completion:nil];
+    
 }
 - (void)showFailureAlert {
     UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"失败" message:@"登陆失败，密码或邮箱错误" preferredStyle:UIAlertControllerStyleAlert];

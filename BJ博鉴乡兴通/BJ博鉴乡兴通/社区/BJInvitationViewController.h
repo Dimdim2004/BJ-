@@ -7,10 +7,12 @@
 
 #import <UIKit/UIKit.h>
 #import "BJInvitationView.h"
+#import "BJCommentsModel.h"
 NS_ASSUME_NONNULL_BEGIN
 
 @interface BJInvitationViewController : UIViewController<UITableViewDelegate, UITableViewDataSource>
 @property (nonatomic, strong) BJInvitationView* iView;
+@property (nonatomic, strong) BJCommentsModel* commentModel;
 @end
 
 NS_ASSUME_NONNULL_END

@@ -14,7 +14,6 @@ typedef void(^success)(BJCodeSuccessModel* userModel);
 typedef void(^registerSuccess)(BJRegisterSuccessModel* userModel);
 typedef void(^error)(NSError* error);
 @interface BJRegisterViewModel : NSObject
-@property (nonatomic, assign) NSInteger authType;
 @property (nonatomic, strong) BJUserRegisterModel* registerUser;
 @property (nonatomic, readonly) BOOL isValidEmail;
 @property (nonatomic, readonly) BOOL isValidPassword;

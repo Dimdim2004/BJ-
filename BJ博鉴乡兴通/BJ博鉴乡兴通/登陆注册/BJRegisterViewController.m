@@ -349,6 +349,7 @@
             [weakSelf showSuccessAlert];
         } failure:^(NSError * _Nonnull error) {
             NSLog(@"error");
+            [weakSelf showFailureAlert];
         }];
     }
 }
