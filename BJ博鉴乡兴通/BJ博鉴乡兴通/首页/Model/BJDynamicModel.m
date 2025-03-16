@@ -5,8 +5,8 @@
 //  Created by wjc on 2025/3/11.
 //
 
-#import "BJPostModel.h"
+#import "BJDynamicModel.h"
 
-@implementation BJPostModel
+@implementation BJDynamicModel
 
 @end

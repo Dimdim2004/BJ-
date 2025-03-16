@@ -8,7 +8,11 @@
 #import <UIKit/UIKit.h>
 
 NS_ASSUME_NONNULL_BEGIN
+@protocol dynamicViewDidReachTopAndScrollUpDelegate <NSObject>
 
+-(void)dynamicViewDidReachTopAndScrollUp;
+
+@end
 @interface BJHomePageViewController : UIViewController
 
 @end

@@ -10,6 +10,7 @@
 #import "BJInvitationViewController.h"
 @interface BJCommunityViewController () {
     UIView* _indicatorLine;
+    BOOL _isLocked;
 }
 
 @end
@@ -18,6 +19,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    _isLocked = NO;
     self.iView = [[BJMainCommunityView alloc] initWithFrame:self.view.bounds];
     self.iView.contentView.delegate = self;
     for (int i = 0; i < 3; i++) {
@@ -62,6 +64,7 @@
     self.navigationItem.titleView = constantView;
 }
 - (void)segmentButtonClicked:(UIButton*)button {
+    _isLocked = YES;
     NSInteger index = button.tag - 100;
     [self selectSegmentAtIndex:index];
     CGFloat offset = self.iView.contentView.contentOffset.y;
@@ -75,12 +78,13 @@
         }
     }
     [UIView animateWithDuration:0.25 animations:^{
-        CGRect frame = _indicatorLine.frame;
+        CGRect frame = self->_indicatorLine.frame;
         frame.origin.x = index * 60 + 60;
-        _indicatorLine.frame = frame;
+        self->_indicatorLine.frame = frame;
     }];
 }
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+    if(_isLocked) return;
     CGFloat offsetX = scrollView.contentOffset.x;
     CGFloat pageWidth = [UIScreen mainScreen].bounds.size.width;
     CGFloat progress = offsetX / (pageWidth);
@@ -98,6 +102,8 @@
     CGFloat progress = offsetX / (pageWidth);
     NSInteger currentIndex = round(progress);
     [self selectSegmentAtIndex:currentIndex];
+    _isLocked = NO;
+
 }
 - (void)setupLine {
     _indicatorLine = [[UIView alloc] initWithFrame:CGRectMake(60, 40, 60, 2)];

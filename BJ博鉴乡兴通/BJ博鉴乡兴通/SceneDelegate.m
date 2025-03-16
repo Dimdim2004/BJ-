@@ -53,6 +53,11 @@
     // 创建 UITabBarController 并添加视图控制器
     BJTabBarController *tabBarController = [[BJTabBarController alloc] init];
     tabBarController.viewControllers = @[nav1, shopVC, communityNavgationColler, postNavgationColler];
+    tabBarController.tabBar.barTintColor = [UIColor whiteColor];
+    UITabBarAppearance *appearance = [UITabBarAppearance new];
+    appearance.backgroundColor = [UIColor whiteColor];
+    tabBarController.tabBar.standardAppearance = appearance;
+    tabBarController.tabBar.scrollEdgeAppearance = appearance;
     
     // 将 tabBarController 设置为窗口的根视图控制器
     self.window.rootViewController = tabBarController;
