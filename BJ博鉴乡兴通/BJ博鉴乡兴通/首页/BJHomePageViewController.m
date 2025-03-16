@@ -9,15 +9,6 @@
 #import "BJMapViewController.h"
 #import "BJScrollViewTableViewCell.h"
 #import "BJButtonTableViewCell.h"
-<<<<<<< HEAD
-
-#import <Masonry.h>
-#import "BJSearchBar.h"
-
-@interface BJHomePageViewController ()<UITableViewDelegate,UITableViewDataSource,UISearchBarDelegate>
-@property (nonatomic,strong) UITableView *tableView;
-@property (nonatomic,strong) BJSearchBar *searchBar;
-=======
 #import "BJSegmentControlTableViewCell.h"
 #import "BJMyHometownViewController.h"
 #import "BJSearchBarTableViewCell.h"
@@ -39,18 +30,13 @@
 @property (strong, nonatomic)NSArray *array;
 @property (assign, nonatomic)BOOL isLocked;
 @property ( nonatomic , assign ) CGFloat stickyViewBaseY ; // 吸顶临界点Y值
->>>>>>> temp-branch
 @end
 
 @implementation BJHomePageViewController
 - (void)viewDidLoad {
     
     [super viewDidLoad];
-<<<<<<< HEAD
-    
-=======
     self.isLocked = NO;
->>>>>>> temp-branch
     [self setupViews];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -60,19 +46,12 @@
     _stickyViewBaseY = [UIApplication sharedApplication].statusBarFrame.size.height + self.navigationController.navigationBar.frame.size.height + 30;
 }
 
-<<<<<<< HEAD
-- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
-   
-}
-
-=======
 - (void)handleEnableOuterScroll:(NSNotification *)notification {
     
     self.tableView.scrollEnabled = YES;
 }
 
 
->>>>>>> temp-branch
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     self.navigationController.tabBarController.tabBar.hidden = NO;
@@ -82,15 +61,6 @@
     self.tableView = [[UITableView alloc] initWithFrame:[UIScreen mainScreen].bounds style:UITableViewStylePlain];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
-<<<<<<< HEAD
-    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    
-    [self.view addSubview:self.tableView];
-    [self.tableView registerClass:[BJScrollViewTableViewCell class] forCellReuseIdentifier:@"ScrollViewCell"];
-    [self.tableView registerClass:[BJButtonTableViewCell class] forCellReuseIdentifier:@"ButtonTableViewCell"];
-    
-    
-=======
     self.tableView.bounces = NO;
     self.tableView.panGestureRecognizer.delegate = self.tableView;
     self.tableView.showsVerticalScrollIndicator = NO;
@@ -104,19 +74,11 @@
     UIPanGestureRecognizer *panGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePan:)];
     panGesture.delegate = self; // 这里的self是实现了代理方法的对象
     [self.tableView addGestureRecognizer:panGesture];
->>>>>>> temp-branch
     UIImageView *logoImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"logo2.png"]];
     logoImageView.frame = CGRectMake(0, 0, 130, 30);
     logoImageView.contentMode = UIViewContentModeCenter;
     self.navigationItem.titleView = logoImageView;
     
-<<<<<<< HEAD
-    [self.navigationController.navigationBar setBackgroundImage:[UIImage new] forBarMetrics:UIBarMetricsDefault];
-    UIView *backgroundView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.navigationController.navigationBar.bounds.size.width, self.navigationController.navigationBar.bounds.size.height)];
-    backgroundView.backgroundColor = [UIColor clearColor];
-    [self.navigationController.navigationBar.subviews.firstObject insertSubview:backgroundView atIndex:0];
-    [self.navigationController.navigationBar setShadowImage:[UIImage new]];
-=======
     
     UINavigationBarAppearance *appearance = [[UINavigationBarAppearance alloc] init];
     [appearance configureWithOpaqueBackground];
@@ -126,32 +88,10 @@
     self.navigationController.navigationBar.standardAppearance = appearance;
     self.navigationController.navigationBar.scrollEdgeAppearance = appearance;
     
->>>>>>> temp-branch
     
     
     UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"backView.png"]];
     imageView.frame = CGRectMake(0, -130, self.view.frame.size.width, 180);
-<<<<<<< HEAD
-
-
-    CAGradientLayer *gradientLayer = [CAGradientLayer layer];
-    gradientLayer.frame = imageView.bounds;
-    gradientLayer.colors = @[(id)[UIColor whiteColor].CGColor,
-                            (id)[UIColor clearColor].CGColor];
-    gradientLayer.startPoint = CGPointMake(0.5, 0);
-    gradientLayer.endPoint = CGPointMake(0.5, 1);
-    gradientLayer.locations = @[@0.5, @1.0];
-
-    imageView.layer.mask = gradientLayer;
-
-    [self.tableView addSubview:imageView];
-}
-
-//将BJScrollViewTableViewCell作为section0
-
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 2;
-=======
     
     
     CAGradientLayer *gradientLayer = [CAGradientLayer layer];
@@ -171,7 +111,6 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return 4;
->>>>>>> temp-branch
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -181,11 +120,6 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     switch (indexPath.section) {
         case 0:
-<<<<<<< HEAD
-            return 223;
-        case 1:
-            return 120;
-=======
             return 10;
         case 1:
             return 223;
@@ -193,7 +127,6 @@
             return 120;
         case 3:
             return [UIScreen mainScreen].bounds.size.height - _stickyViewBaseY - 35;
->>>>>>> temp-branch
         default:
             return 0;
     }
@@ -204,12 +137,6 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-<<<<<<< HEAD
-    if (section == 0) {
-        return 56;
-    } else {
-        return 0;
-=======
     if (section == 3) {
         return 40;
     }
@@ -424,59 +351,11 @@
         }];
     } else {
         self.lineView.frame = CGRectMake(targetBtn.frame.origin.x + 17, self.lineView.frame.origin.y, self.lineView.frame.size.width, self.lineView.frame.size.height);
->>>>>>> temp-branch
     }
 }
 
 
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-    if (section == 0) {
-        self.searchBar = [[BJSearchBar alloc] init];
-        self.searchBar.placeholder = @"搜索乡村/民俗/土货";
-        self.searchBar.delegate = self;
-        self.searchBar.searchBarStyle = UISearchBarStyleMinimal;
-        self.searchBar.frame = CGRectMake(0, 0, self.view.frame.size.width - 20, 5);
-        [self.searchBar setSearchFieldBackgroundImage:[UIImage imageNamed:@"search"] forState:UIControlStateNormal];
-        return self.searchBar;
-    }
-    return nil;
-}
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    switch (indexPath.section) {
-        case 0: {
-            BJScrollViewTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ScrollViewCell"];
-            cell.contentView.clipsToBounds = YES;
-            cell.contentView.layer.cornerRadius = 15.0;
-            NSArray *arr = @[@"1.png",@"2.png",@"3.png",@"4.png",@"5.png"];
-            [cell configureWithTopStories:arr];
-            return cell;
-        }
-        case 1: {
-            BJButtonTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ButtonTableViewCell"];
-            cell.backgroundColor = [UIColor clearColor];
-            [cell.btnToMap addTarget:self action:@selector(ToMap) forControlEvents:UIControlEventTouchUpInside];
-            [cell.btnToMyHometown addTarget:self action:@selector(ToMyHometown) forControlEvents:UIControlEventTouchUpInside];
-            return cell;
-        }
-        default:
-            return [[UITableViewCell alloc] init];
-    }
-
-}
-
--(void)ToMap {
-
-    BJMapViewController *mapVC = [[BJMapViewController alloc] init];
-
-    self.navigationController.tabBarController.tabBar.hidden = YES;
-    [self.navigationController pushViewController:mapVC animated:YES];
-}
--(void)ToMyHometown {
-
-    BJMapViewController *mapVC = [[BJMapViewController alloc] init];
-    [self.navigationController pushViewController:mapVC animated:YES];
-}
 
 #pragma mark - BJSegmentControlTableViewCellDelegate
 - (void)segmentCell:(BJSegmentControlTableViewCell *)cell didScrollToPage:(NSInteger)page {
