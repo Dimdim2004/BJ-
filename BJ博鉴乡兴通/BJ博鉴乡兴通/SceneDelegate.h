@@ -6,8 +6,8 @@
 //
 
 #import <UIKit/UIKit.h>
-
-@interface SceneDelegate : UIResponder <UIWindowSceneDelegate>
+@protocol tabControllDelgate;
+@interface SceneDelegate : UIResponder <UIWindowSceneDelegate, tabControllDelgate>
 
 @property (strong, nonatomic) UIWindow * window;
 

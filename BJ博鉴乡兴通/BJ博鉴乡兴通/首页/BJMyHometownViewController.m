@@ -8,13 +8,19 @@
 #import "BJMyHometownViewController.h"
 
 @interface BJMyHometownViewController ()
+<<<<<<< HEAD
 
+=======
+@property(strong, nonatomic) UITableView *tableView;
+@property(strong, nonatomic) UIScrollView *scrollView;
+>>>>>>> temp-branch
 @end
 
 @implementation BJMyHometownViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+<<<<<<< HEAD
     // Do any additional setup after loading the view.
 }
 
@@ -27,5 +33,11 @@
     // Pass the selected object to the new view controller.
 }
 */
+=======
+    
+}
+
+
+>>>>>>> temp-branch
 
 @end

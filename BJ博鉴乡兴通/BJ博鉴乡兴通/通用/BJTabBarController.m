@@ -20,7 +20,6 @@
     BJTabBar *customTabBar = [[BJTabBar alloc] init];
     [self setValue:customTabBar forKey:@"tabBar"];
     
-    
 
 }
 

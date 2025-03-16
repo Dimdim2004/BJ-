@@ -7,7 +7,7 @@
 
 #import "BJTabBar.h"
 #import "Masonry.h"
-
+#import "BJPostViewController.h"
 @implementation BJTabBar
 
 - (instancetype)initWithFrame:(CGRect)frame {
@@ -15,6 +15,7 @@
     if (self) {
 
         self.tintColor = [UIColor systemGreenColor];
+        self.backgroundColor = [UIColor whiteColor];
         [self setupCenterButton];
     }
     return self;

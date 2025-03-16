@@ -11,7 +11,7 @@
 #import "BJPostViewController.h"
 #import "BJCommunityViewController.h"
 #import "BJMyPageViewController.h"
-
+#import "BJLoginViewController.h"
 #import "BJTabBarController.h"
 
 
@@ -23,6 +23,9 @@
 
 
 - (void)scene:(UIScene *)scene willConnectToSession:(UISceneSession *)session options:(UISceneConnectionOptions *)connectionOptions {
+    [self changeTab];
+}
+- (void)changeTab {
     // 创建 BJHomePageViewController 并设置相关属性
     BJHomePageViewController *homePageVC = [[BJHomePageViewController alloc] init];
     UINavigationController *nav1 = [[UINavigationController alloc] initWithRootViewController:homePageVC];
@@ -36,23 +39,30 @@
     
     // 创建 BJPostViewController 并设置相关属性
     BJCommunityViewController *communityVC = [[BJCommunityViewController alloc] init];
+    UINavigationController* communityNavgationColler = [[UINavigationController alloc] initWithRootViewController:communityVC];
     communityVC.view.backgroundColor = [UIColor whiteColor];
     communityVC.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"社区" image:[UIImage imageNamed:@"community.png"] tag:2];
     
     // 创建 BJMyPageViewController 并设置相关属性
+    
     BJMyPageViewController *myPageVC = [[BJMyPageViewController alloc] init];
+    UINavigationController* postNavgationColler = [[UINavigationController alloc] initWithRootViewController:myPageVC];
     myPageVC.view.backgroundColor = [UIColor whiteColor];
-    myPageVC.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"我的" image:[UIImage imageNamed:@"myPage.png"] tag:3];
+    postNavgationColler.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"我的" image:[UIImage imageNamed:@"myPage.png"] tag:3];
     
     // 创建 UITabBarController 并添加视图控制器
     BJTabBarController *tabBarController = [[BJTabBarController alloc] init];
-    tabBarController.viewControllers = @[nav1, shopVC, communityVC, myPageVC];
+    tabBarController.viewControllers = @[nav1, shopVC, communityNavgationColler, postNavgationColler];
+    tabBarController.tabBar.barTintColor = [UIColor whiteColor];
+    UITabBarAppearance *appearance = [UITabBarAppearance new];
+    appearance.backgroundColor = [UIColor whiteColor];
+    tabBarController.tabBar.standardAppearance = appearance;
+    tabBarController.tabBar.scrollEdgeAppearance = appearance;
     
     // 将 tabBarController 设置为窗口的根视图控制器
     self.window.rootViewController = tabBarController;
     [self.window makeKeyAndVisible];
 }
-
 
 - (void)sceneDidDisconnect:(UIScene *)scene {
     // Called as the scene is being released by the system.
