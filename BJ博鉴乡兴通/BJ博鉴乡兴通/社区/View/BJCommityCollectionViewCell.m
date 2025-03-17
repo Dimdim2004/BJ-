@@ -18,6 +18,7 @@
         self.profileView = [[UIImageView alloc] init];
         self.nameLabel = [[UILabel alloc] init];
         self.label.numberOfLines = 2;
+        self.label.lineBreakMode = YES;
         self.LikeButton = [UIButton buttonWithType:UIButtonTypeCustom];
         self.nameLabel.text = @"123444";
         self.profileView.image = [UIImage imageNamed:@"WechatIMG17.jpg"];
@@ -32,15 +33,10 @@
         [self.contentView addSubview:_LikeButton];
         [self.contentView addSubview:_nameLabel];
         
-        [self.imageView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(self.mas_top);
-            make.left.and.right.equalTo(self.contentView);
-            make.height.equalTo(@(self.bounds.size.height * 3 / 5));
-        }];
+        
         [self.label mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(self.imageView.mas_bottom);
             make.left.and.right.equalTo(self.contentView);
-            make.bottom.equalTo(self.contentView).offset(-30);
+            make.bottom.equalTo(self.contentView).offset(-35);
         }];
         [self.profileView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.equalTo(self.contentView).offset(5);
@@ -60,6 +56,12 @@
             make.height.equalTo(@30);
             make.bottom.equalTo(self.contentView);
         }];
+        [self.imageView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(self.mas_top).priorityHigh();
+            make.left.and.right.equalTo(self.contentView);
+            make.bottom.equalTo(self.label.mas_top);
+        }];
+        self.label.text = @"标题部分标题";
     }
     return self;
 }

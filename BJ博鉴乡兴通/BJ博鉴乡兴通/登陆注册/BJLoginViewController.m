@@ -11,6 +11,10 @@
 #import "BJRegisterViewController.h"
 #import "Masonry/Masonry.h"
 #import "BJCheckEmailViewController.h"
+#import "BJNetworkingManger.h"
+#import "BJLoginSuccessModel.h"
+#import "BJFindPasswordViewController.h"
+#import "BJLoginDataModel.h"
 @interface BJLoginViewController ()
 
 @end
@@ -198,12 +202,34 @@
         make.width.equalTo(@100);
         make.height.equalTo(@20);
     }];
+    
+    self.changePasswordButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    self.changePasswordButton.backgroundColor = UIColor.whiteColor;
+    [self.changePasswordButton setTitle:@"修改密码" forState:UIControlStateNormal];
+    self.changePasswordButton.titleLabel.font = [UIFont systemFontOfSize:13];
+    [self.changePasswordButton addTarget:self action:@selector(presentChange) forControlEvents:UIControlEventTouchUpInside];
+    //self.registerButton.frame = CGRectMake(200, 460, 80, 40);
+    self.changePasswordButton.tintColor = UIColor.lightGrayColor;
+    [_backView addSubview:_changePasswordButton];
+    [_changePasswordButton mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.passwordField.mas_left).offset(-10);
+        make.top.equalTo(self.passwordField.mas_bottom).offset(5);
+        make.width.equalTo(@100);
+        make.height.equalTo(@20);
+    }];
 }
 - (void)presentCheck {
     NSLog(@"111");
     BJCheckEmailViewController* checkEmailViewController = [[BJCheckEmailViewController alloc] init];
     checkEmailViewController.modalPresentationStyle = UIModalPresentationFullScreen;
     [self presentViewController:checkEmailViewController animated:YES completion:nil];
+}
+- (void)presentChange {
+    NSLog(@"111");
+    BJFindPasswordViewController* changePasswordViewController = [[BJFindPasswordViewController alloc] init];
+    changePasswordViewController.modalPresentationStyle = UIModalPresentationFullScreen;
+    BJFindingPasswordViewModel* changeModel = [[BJFindingPasswordViewModel alloc] initWithAuthTyoe:0];
+    [self presentViewController:changePasswordViewController animated:YES completion:nil];
 }
 - (void)quickPush {
     [self.delegate changeTab];
@@ -273,6 +299,7 @@
 - (void)showSuccessAlert {
     UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"成功" message:@"登陆成功" preferredStyle:UIAlertControllerStyleAlert];
     [alert addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        
         [self.delegate changeTab];
     }]];
     [self presentViewController:alert animated:YES completion:nil];
@@ -302,6 +329,7 @@
     
     [self.viewModel submmitWithSuccess:^(BJLoginSuccessModel * _Nonnull userModel) {
         [weakSelf showSuccessAlert];
+        [BJNetworkingManger sharedManger].token = userModel.data.token;
         } failure:^(NSError * _Nonnull error) {
             [weakSelf showFailureAlert];
             NSLog(@"error");

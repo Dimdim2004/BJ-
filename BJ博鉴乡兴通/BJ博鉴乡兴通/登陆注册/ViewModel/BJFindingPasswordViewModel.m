@@ -17,6 +17,14 @@
     }
     return self;
 }
+- (instancetype)initWithAuthTyoe:(NSInteger)authType {
+    self = [super init];
+    if (self) {
+        self.user = [[BJFindPasswordSuccessModel alloc] init];
+        self.authType = authType;
+    }
+    return self;
+}
 - (BOOL)isVailSame {
     return [self.user.password isEqualToString:self.user.rePassword];
 }

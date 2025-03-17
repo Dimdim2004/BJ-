@@ -16,6 +16,8 @@ typedef void(^error)(NSError* error);
 @property (nonatomic, readonly) BOOL isVaildPassword;
 @property (nonatomic, readonly) BOOL isVailSame;
 - (void)submmitWithSuccess:(findSuccess)success failure:(error)error;
+@property (nonatomic, assign) NSInteger authType;
+- (instancetype)initWithAuthTyoe:(NSInteger)authType;
 @end
 
 NS_ASSUME_NONNULL_END

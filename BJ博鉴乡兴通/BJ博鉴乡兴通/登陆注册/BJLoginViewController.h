@@ -20,6 +20,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) UIButton* submmitButton;
 @property (nonatomic, strong) UIButton* registerButton;
 @property (nonatomic, strong) UIButton* checkEmailButton;
+@property (nonatomic, strong) UIButton* changePasswordButton;
 @property (nonatomic, strong) UIView* backView;
 @property (nonatomic, strong) UILabel* userErrorLabel;
 @property (nonatomic, strong) UILabel* passwordErrorLabel;

@@ -77,7 +77,7 @@
             
             BJCheckEmailViewController* viewController = (BJCheckEmailViewController*)rootController.presentedViewController;
             BJFindPasswordViewController* presentViewController = [[BJFindPasswordViewController alloc] init];
-            presentViewController.viewModel = [[BJFindingPasswordViewModel alloc] init];
+            presentViewController.viewModel = [[BJFindingPasswordViewModel alloc] initWithAuthTyoe:1];
             presentViewController.viewModel.user.email = viewController.viewModel.user.email;
             NSLog(@"%@", presentViewController.viewModel.user.email);
             presentViewController.modalPresentationStyle = UIModalPresentationFullScreen;

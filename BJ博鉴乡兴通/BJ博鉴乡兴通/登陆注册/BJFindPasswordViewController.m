@@ -87,7 +87,12 @@
     }];
     
     self.titleLabel = [[UILabel alloc] init];
-    self.titleLabel.text = @"重置密码";
+    if (self.viewModel.authType == 1) {
+        self.titleLabel.text = @"忘记密码";
+    } else {
+        self.titleLabel.text = @"修改密码";
+    }
+    
     self.titleLabel.font = [UIFont systemFontOfSize:30];
     self.titleLabel.tintColor = UIColor.greenColor;
     [_backView addSubview:_titleLabel];
