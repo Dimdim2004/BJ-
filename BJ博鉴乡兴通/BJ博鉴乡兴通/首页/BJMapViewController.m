@@ -4,29 +4,31 @@
 #import <CoreLocation/CoreLocation.h>
 #import "BJAnnotation.h"
 #import "BJAnnotationView.h"
+#import <AFNetworking/AFNetworking.h>
 
 @interface BJMapViewController () <MKMapViewDelegate, CLLocationManagerDelegate>
 @property (nonatomic, strong) MKMapView *mapView;
 @property (nonatomic, strong) NSMutableDictionary *annotations;
+@property (nonatomic, assign) BOOL isLoaded;
 @end
 
 @implementation BJMapViewController
 
 - (void)viewDidLoad {
+    self.isLoaded = NO;
     [super viewDidLoad];
     [self setupMap];
 }
 
 
 - (void)mapView:(MKMapView *)mapView didUpdateUserLocation:(MKUserLocation *)userLocation {
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
+    if(!self.isLoaded){
         [self RequestForSearch:@"民俗村" andType:BJAnnotationTypeScenery andUserLocation:userLocation.coordinate];
         [self RequestForSearch:@"村" andType:BJAnnotationTypeScenery andUserLocation:userLocation.coordinate];
         [self RequestForSearch:@"乡村民宿" andType:BJAnnotationTypeLiving andUserLocation:userLocation.coordinate];
         [self RequestForSearch:@"乡村客栈" andType:BJAnnotationTypeLiving andUserLocation:userLocation.coordinate];
-    });
-   
+        self.isLoaded = YES;
+    }
 }
 
 -(void)RequestForSearch:(NSString *)searchString
@@ -55,7 +57,6 @@
                 NSString *subtitle = [self calculateDistanceFromCurrentLocationTo:coordinate];
                 NSLog(@"符合条件的条目: %@", title);
                 
-                // 主线程更新 UI
                 dispatch_async(dispatch_get_main_queue(), ^{
                     BJAnnotation *annotation = [BJAnnotation AnnotationWithType:annotationType];
                     annotation.coordinate = coordinate;
@@ -71,6 +72,7 @@
 - (void)setupMap {
     self.mapView = [[MKMapView alloc] initWithFrame:self.view.bounds];
     self.mapView.delegate = self;
+    self.mapView.mapType = MKMapTypeMutedStandard;
     self.mapView.showsUserLocation = YES;
     self.mapView.userTrackingMode = MKUserTrackingModeFollow;
     [self.view addSubview:self.mapView];
@@ -85,7 +87,6 @@
     //起点
     CLLocationCoordinate2D startCoordinate = self.mapView.userLocation.location.coordinate;
     
-    NSLog(@"起点坐标:%f %f",startCoordinate.latitude,startCoordinate.longitude);
     MKPlacemark *startPlacemark = [[MKPlacemark alloc] initWithCoordinate:startCoordinate];
     MKPlacemark *endPlacemark = [[MKPlacemark alloc] initWithCoordinate:endCoordinate];
     MKMapItem *startItem = [[MKMapItem alloc] initWithPlacemark:startPlacemark];
@@ -130,13 +131,13 @@
 
 - (MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id<MKAnnotation>)annotation {
     if ([annotation isKindOfClass:[BJAnnotation class]]) {
+        //复用修改图标显示错误
         static NSString *reuseID = @"CustomAnnotation";
         MKAnnotationView *view = [mapView dequeueReusableAnnotationViewWithIdentifier:reuseID];
         if (!view) {
             view = [[MKAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:reuseID];
             view.canShowCallout = YES;
         }
-        // 关键：每次复用都重新设置图片
         BJAnnotation *customAnnotation = (BJAnnotation *)annotation;
         view.image = [UIImage imageNamed:customAnnotation.icon];
         return view;

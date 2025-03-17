@@ -15,6 +15,7 @@
     if (self) {
 
         self.tintColor = [UIColor systemGreenColor];
+        self.backgroundColor = [UIColor whiteColor];
         [self setupCenterButton];
     }
     return self;
