@@ -6,18 +6,29 @@
 //
 
 #import "BJShopViewController.h"
-
-@interface BJShopViewController ()
-
+#import "<#header#>"
+@interface BJShopViewController ()<UITableViewDelegate,UITableViewDataSource>
+@property (strong, nonatomic)UITableView *tableView;
 @end
 
 @implementation BJShopViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
+    [self setupViews];
 }
 
+-(void)setupViews {
+    self.tableView = [[UITableView alloc] initWithFrame:[UIScreen mainScreen].bounds style:UITableViewStylePlain];
+    self.tableView.delegate = self;
+    self.tableView.dataSource = self;
+    self.tableView.bounces = NO;
+    
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+}
 /*
 #pragma mark - Navigation
 

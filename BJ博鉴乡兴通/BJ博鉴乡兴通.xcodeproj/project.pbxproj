@@ -15,6 +15,7 @@
 		214C58822D831373007A5AC6 /* BJSearchBarTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 214C58812D831373007A5AC6 /* BJSearchBarTableViewCell.m */; };
 		214C58852D846669007A5AC6 /* BJDisplayView.m in Sources */ = {isa = PBXBuildFile; fileRef = 214C58842D846669007A5AC6 /* BJDisplayView.m */; };
 		214C58882D84667A007A5AC6 /* BJDisplayModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 214C58872D84667A007A5AC6 /* BJDisplayModel.m */; };
+		214C588B2D87B869007A5AC6 /* BJScaleTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 214C588A2D87B868007A5AC6 /* BJScaleTableViewCell.m */; };
 		2166BAF92D7C875B009C0CB1 /* BJSegmentControlTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2166BAF82D7C875B009C0CB1 /* BJSegmentControlTableViewCell.m */; };
 		2166BB052D7FE779009C0CB1 /* BJDynamicModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 2166BB042D7FE779009C0CB1 /* BJDynamicModel.m */; };
 		2166BB0F2D7FF226009C0CB1 /* BJDynamicTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2166BB0E2D7FF226009C0CB1 /* BJDynamicTableViewCell.m */; };
@@ -122,6 +123,8 @@
 		214C58842D846669007A5AC6 /* BJDisplayView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BJDisplayView.m; sourceTree = "<group>"; };
 		214C58862D84667A007A5AC6 /* BJDisplayModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BJDisplayModel.h; sourceTree = "<group>"; };
 		214C58872D84667A007A5AC6 /* BJDisplayModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BJDisplayModel.m; sourceTree = "<group>"; };
+		214C58892D87B868007A5AC6 /* BJScaleTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BJScaleTableViewCell.h; sourceTree = "<group>"; };
+		214C588A2D87B868007A5AC6 /* BJScaleTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BJScaleTableViewCell.m; sourceTree = "<group>"; };
 		2166BAF72D7C875B009C0CB1 /* BJSegmentControlTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BJSegmentControlTableViewCell.h; sourceTree = "<group>"; };
 		2166BAF82D7C875B009C0CB1 /* BJSegmentControlTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BJSegmentControlTableViewCell.m; sourceTree = "<group>"; };
 		2166BAFA2D7E90DC009C0CB1 /* BJHomePageViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BJHomePageViewController.h; sourceTree = "<group>"; };
@@ -169,8 +172,6 @@
 		219A07072D7BFDA900EA43BA /* BJMyHometownViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BJMyHometownViewController.h; sourceTree = "<group>"; };
 		219A07082D7BFDA900EA43BA /* BJMyHometownViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BJMyHometownViewController.m; sourceTree = "<group>"; };
 		219A070C2D7C055200EA43BA /* 字玩女侠青龙-闪 苍劲(Joyfonts-QinglongGB-Flash-Black).ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "字玩女侠青龙-闪 苍劲(Joyfonts-QinglongGB-Flash-Black).ttf"; sourceTree = "<group>"; };
-
-		219F0E8B2D3E7E2200F69C9B /* BJHomePageViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BJHomePageViewController.h; sourceTree = "<group>"; };
 		219F0E8C2D3E7E2200F69C9B /* BJHomePageViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BJHomePageViewController.m; sourceTree = "<group>"; };
 		219F0E8E2D3E7E5D00F69C9B /* BJShopViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BJShopViewController.h; sourceTree = "<group>"; };
 		219F0E8F2D3E7E5D00F69C9B /* BJShopViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BJShopViewController.m; sourceTree = "<group>"; };
@@ -379,6 +380,8 @@
 			children = (
 				219F0E8E2D3E7E5D00F69C9B /* BJShopViewController.h */,
 				219F0E8F2D3E7E5D00F69C9B /* BJShopViewController.m */,
+				214C58892D87B868007A5AC6 /* BJScaleTableViewCell.h */,
+				214C588A2D87B868007A5AC6 /* BJScaleTableViewCell.m */,
 			);
 			path = "商城";
 			sourceTree = "<group>";
@@ -505,7 +508,6 @@
 				219F0EBA2D41CEDE00F69C9B /* BJScrollViewTableViewCell.m */,
 				219A06ED2D79C34B00EA43BA /* BJButtonTableViewCell.h */,
 				219A06EE2D79C34B00EA43BA /* BJButtonTableViewCell.m */,
-
 				2166BAF72D7C875B009C0CB1 /* BJSegmentControlTableViewCell.h */,
 				2166BAF82D7C875B009C0CB1 /* BJSegmentControlTableViewCell.m */,
 				2166BB0D2D7FF226009C0CB1 /* BJDynamicTableViewCell.h */,
@@ -835,6 +837,7 @@
 				E9F8F0F32D4FB0FD0040ABA6 /* BJInvitationViewController.m in Sources */,
 				E9F8F0E52D40EFBF0040ABA6 /* BJMainCommunityView.m in Sources */,
 				E98B0CCA2D73455600439CCE /* BJSuccessModel.m in Sources */,
+				214C588B2D87B869007A5AC6 /* BJScaleTableViewCell.m in Sources */,
 				219F0E992D3E7ED200F69C9B /* BJMyPageViewController.m in Sources */,
 				219A07092D7BFDA900EA43BA /* BJMyHometownViewController.m in Sources */,
 				216DB6B72D2FDEF3005BF4C2 /* main.m in Sources */,
