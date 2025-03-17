@@ -6,7 +6,7 @@
 //
 
 #import "BJShopViewController.h"
-#import "<#header#>"
+
 @interface BJShopViewController ()<UITableViewDelegate,UITableViewDataSource>
 @property (strong, nonatomic)UITableView *tableView;
 @end
