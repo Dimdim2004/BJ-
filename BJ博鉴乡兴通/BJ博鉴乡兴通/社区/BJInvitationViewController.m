@@ -10,6 +10,9 @@
 #import "BJInvitationHeaderTableViewCell.h"
 #import "BJInvitationSubCommentsTableViewCell.h"
 #import "Masonry.h"
+#import "BJCommentsModel.h"
+#import "BJNetworkingManger.h"
+#import "BJSubCommentsModel.h"
 @interface BJInvitationViewController ()
 
 @end
@@ -18,13 +21,19 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.iView = [[BJInvitationView alloc] initWithFrame:self.view.bounds];
-    [self.iView.mainView registerClass:[BJInvitationTableViewCell class] forCellReuseIdentifier:@"comments"];
-    [self.iView.mainView registerClass:[BJInvitationHeaderTableViewCell class] forCellReuseIdentifier:@"header"];
-    [self.iView.mainView registerClass:[BJInvitationSubCommentsTableViewCell class] forCellReuseIdentifier:@"subComments"];
-    [self.view addSubview:self.iView];
-    self.iView.mainView.delegate = self;
-    self.iView.mainView.dataSource = self;
+    id manger = [BJNetworkingManger sharedManger];
+    [manger loadWithViedoId:1 CommentId:0 WithSuccess:^(BJCommentsModel * _Nonnull commentModel) {
+        self.iView = [[BJInvitationView alloc] initWithFrame:self.view.bounds];
+        [self.iView.mainView registerClass:[BJInvitationTableViewCell class] forCellReuseIdentifier:@"comments"];
+        [self.iView.mainView registerClass:[BJInvitationHeaderTableViewCell class] forCellReuseIdentifier:@"header"];
+        [self.iView.mainView registerClass:[BJInvitationSubCommentsTableViewCell class] forCellReuseIdentifier:@"subComments"];
+        [self.view addSubview:self.iView];
+        self.iView.mainView.delegate = self;
+        self.iView.mainView.dataSource = self;
+        [self setNavgationBar];
+        } failure:^(NSError * _Nonnull error) {
+            NSLog(@"error");
+        }];
     // Do any additional setup after loading the view.
 }
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -34,12 +43,16 @@
     if (section == 0) {
         return 1;
     } else {
-        return 3;
+        return 1;
     }
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     return UITableViewAutomaticDimension;
 }
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+}
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     BJInvitationTableViewCell* commentCell = [self.iView.mainView dequeueReusableCellWithIdentifier:@"comments"];
     BJInvitationHeaderTableViewCell* headerCell = [self.iView.mainView dequeueReusableCellWithIdentifier:@"header"];
@@ -50,23 +63,51 @@
         
         return headerCell;
     } else {
-        if (indexPath.row == 0) {
-            commentCell.textView.text = @"这个是主评论";
-            commentCell.nameLabel.text = @"名字";
-            commentCell.timeLabel.text = @"今天";
-            commentCell.image.image = [UIImage imageNamed:@"WechatIMG17.jpg"];
-            return commentCell;
-        } else {
-            subCommentCell.textView.text = @"这个是二级评论第一层,这个是二级评论第一层,这个是二级评论第一层,这个是二级评论第一层,这个是二级评论第一层,这个是二级评论第一层,这个是二级评论第一层,这个是二级评论第一层,这个是二级评论第一层";
-            subCommentCell.nameLabel.text = @"名字";
-            subCommentCell.timeLabel.text = @"今天";
-            subCommentCell.image.image = [UIImage imageNamed:@"WechatIMG17.jpg"];
-            return subCommentCell;
-        }
+        BJSubCommentsModel* currentModel = self.commentModel.commentList[indexPath.row - 1];
+        commentCell.textView.text = currentModel.content;
+        commentCell.nameLabel.text = currentModel.username;
+        commentCell.timeLabel.text = @"今天";
+        commentCell.image.image = [UIImage imageNamed:@"WechatIMG17.jpg"];
+        return commentCell;
+        
     }
 }
 -(void) expandSubComment {
    
+}
+
+- (void)setNavgationBar {
+    UINavigationBarAppearance* apperance = [[UINavigationBarAppearance alloc] init];
+    apperance.shadowColor = [UIColor clearColor];
+    apperance.shadowImage = [[UIImage alloc] init];
+    self.navigationController.navigationBar.standardAppearance = apperance;
+    self.navigationController.navigationBar.scrollEdgeAppearance = apperance;
+    NSString* string = @"back2.png";
+    UIButton* button = [UIButton buttonWithType:UIButtonTypeCustom];
+    [button addTarget:self action:@selector(popViewController) forControlEvents:UIControlEventTouchUpInside];
+    [button setImage:[UIImage imageNamed:string] forState:UIControlStateNormal];
+    
+    UIButton* iconButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [iconButton setImage:[UIImage imageNamed:@"title.jpg"] forState:UIControlStateNormal];
+    iconButton.layer.masksToBounds = YES;
+    iconButton.layer.cornerRadius = 20;
+    
+    UIBarButtonItem *space = [[UIBarButtonItem alloc]
+        initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace
+        target:nil action:nil];
+    space.width = 8;
+    
+    UIBarButtonItem* leftButton = [[UIBarButtonItem alloc] initWithCustomView:button];
+    UIBarButtonItem* headButton = [[UIBarButtonItem alloc] initWithCustomView:iconButton];
+    UILabel* nameLabel = [[UILabel alloc] init];
+    nameLabel.text = @"名字";
+    UIBarButtonItem* titleButton = [[UIBarButtonItem alloc] initWithCustomView:nameLabel];
+    
+    self.navigationItem.leftBarButtonItems = @[leftButton, space, headButton, space, titleButton];
+    
+}
+- (void)popViewController {
+    [self.navigationController popViewControllerAnimated:YES];
 }
 /*
 #pragma mark - Navigation

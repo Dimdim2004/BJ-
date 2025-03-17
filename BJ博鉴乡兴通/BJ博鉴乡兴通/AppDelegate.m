@@ -6,7 +6,7 @@
 //
 
 #import "AppDelegate.h"
-
+#import "BJFindPasswordViewController.h"
 @interface AppDelegate ()
 
 @end
@@ -19,7 +19,17 @@
     // Override point for customization after application launch.
     return YES;
 }
-
+- (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options {
+    
+    if ([url.scheme isEqualToString:@"countryTravel"]) {
+        NSLog(@"推出我们的一个找回密码的页面");
+        UIViewController *rootController = self.window.rootViewController;
+        [rootController presentViewController:[[BJFindPasswordViewController alloc] init] animated:YES completion:nil];
+        return YES;
+    } else {
+        return NO;
+    }
+}
 
 #pragma mark - UISceneSession lifecycle
 

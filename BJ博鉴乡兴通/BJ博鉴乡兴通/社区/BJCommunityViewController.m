@@ -18,6 +18,7 @@
 @implementation BJCommunityViewController
 
 - (void)viewDidLoad {
+    _isLocked = NO;
     [super viewDidLoad];
     _isLocked = NO;
     self.iView = [[BJMainCommunityView alloc] initWithFrame:self.view.bounds];
@@ -27,7 +28,6 @@
         self.iView.flowViewArray[i].dataSource = self;
         [self.iView.flowViewArray[i] registerClass:[BJCommityCollectionViewCell class] forCellWithReuseIdentifier:@"Cell"];
     }
-
     [self.view addSubview:self.iView];
     [self setNavgationBar];
     [self setSegmentControl];
@@ -40,7 +40,8 @@
     apperance.shadowImage = [[UIImage alloc] init];
     self.navigationController.navigationBar.standardAppearance = apperance;
     self.navigationController.navigationBar.scrollEdgeAppearance = apperance;
-    NSString* string = @"santiao.png";
+    NSString* string = @"santiaogang.png";
+    apperance.backgroundColor = UIColor.whiteColor;
     UIBarButtonItem* leftButton = [[UIBarButtonItem alloc] initWithCustomView:[[UIImageView alloc] initWithImage:[UIImage imageNamed:string]]];
     self.navigationItem.leftBarButtonItem = leftButton;
 }
@@ -69,8 +70,10 @@
     [self selectSegmentAtIndex:index];
     CGFloat offset = self.iView.contentView.contentOffset.y;
     [self.iView.contentView setContentOffset:CGPointMake(index * self.view.bounds.size.width, offset) animated:YES];
+    
 }
 - (void)selectSegmentAtIndex:(NSInteger)index {
+    
     for (UIView* view in self.navigationItem.titleView.subviews) {
         if ([view isKindOfClass:[UIButton class]]) {
             UIButton* button = (UIButton*)view;
@@ -83,7 +86,17 @@
         self->_indicatorLine.frame = frame;
     }];
 }
+-(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
+    _isLocked = NO;
+}
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+<<<<<<< HEAD
+    if (_isLocked) {
+        return;
+    }
+    CGFloat offset = self.iView.contentView.contentOffset.x;
+    NSInteger currentIndex = round(offset / [UIScreen mainScreen].bounds.size.width);
+=======
     if(_isLocked) return;
     CGFloat offsetX = scrollView.contentOffset.x;
     CGFloat pageWidth = [UIScreen mainScreen].bounds.size.width;
@@ -101,6 +114,7 @@
     CGFloat pageWidth = [UIScreen mainScreen].bounds.size.width;
     CGFloat progress = offsetX / (pageWidth);
     NSInteger currentIndex = round(progress);
+>>>>>>> upstream/main
     [self selectSegmentAtIndex:currentIndex];
     _isLocked = NO;
 

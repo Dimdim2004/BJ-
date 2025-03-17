@@ -7,7 +7,7 @@
 
 #import "BJTabBarController.h"
 #import "BJTabBar.h"
-
+#import "BJPostViewController.h"
 @interface BJTabBarController ()
 
 @end
@@ -19,10 +19,18 @@
     
     BJTabBar *customTabBar = [[BJTabBar alloc] init];
     [self setValue:customTabBar forKey:@"tabBar"];
+<<<<<<< HEAD
+    [customTabBar.centerButton addTarget:self action:@selector(presentPost) forControlEvents:UIControlEventTouchUpInside];
+=======
+>>>>>>> upstream/main
     
 
 }
-
+- (void)presentPost {
+    BJPostViewController* mainPostViewController = [[BJPostViewController alloc] init];
+    mainPostViewController.modalPresentationStyle = UIModalPresentationFullScreen;
+    [self presentViewController:mainPostViewController animated:YES completion:nil];
+}
 /*
 #pragma mark - Navigation
 

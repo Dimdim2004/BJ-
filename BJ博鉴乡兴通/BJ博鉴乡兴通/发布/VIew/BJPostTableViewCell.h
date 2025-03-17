@@ -10,9 +10,10 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface BJPostTableViewCell : UITableViewCell
-@property (nonatomic, strong) UITextView* titleLabel;
-@property (nonatomic, strong) UITextView* contentLabel;
+@property (nonatomic, strong) UITextField* titleView;
+@property (nonatomic, strong) UITextField* contentTextView;
 @property (nonatomic, strong) UIButton* btn;
+@property (nonatomic, strong) UIScrollView* buttonScrollView;
 @property (nonatomic, strong) UIImageView* icon;
 @end
 

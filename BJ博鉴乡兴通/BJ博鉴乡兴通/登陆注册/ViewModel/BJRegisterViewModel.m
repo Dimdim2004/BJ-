@@ -7,8 +7,10 @@
 
 #import "BJRegisterViewModel.h"
 #import "BJUserRegisterModel.h"
-#import "BJRegisterSuccessModel.h"
+#import "BJCodeSuccessModel.h"
+#import "BJCodeModel.h"
 #import "AFNetworking/AFNetworking.h"
+#import "BJRegisterSuccessModel.h"
 @implementation BJRegisterViewModel
 - (instancetype)init
 {
@@ -35,24 +37,49 @@
     return self.isValidEmail && self.isValidPassword && [self.comfirmPassword isEqualToString:self.registerUser.password];
 }
 
-- (void)submmitWithSuccess:(success)success failure:(error)error {
-    AFHTTPSessionManager* manger = [AFHTTPSessionManager manager];
-    NSString* string = @"";
-    
-    [manger POST:string parameters:nil headers:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-        NSLog(@"success");
-        //BJRegisterSuccessModel* userModel = [BJRegisterSuccessModel yy_modelWithJSON:responseObject];
-    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-        NSLog(@"error");
-    }];
+- (void)sendCodeWithSuccess:(success)success failure:(error)failure {
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    NSString *url = @"http://3.112.71.79:43223/code";
+    manager.requestSerializer = [AFJSONRequestSerializer serializer];
+    manager.responseSerializer = [AFJSONResponseSerializer serializer];
+    [manager.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+    [manager.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+    NSDictionary *params = @{@"email": self.registerUser.email ?: @""};
+    [manager POST:url
+      parameters:params
+         headers:nil
+        progress:nil
+         success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+            NSLog(@"Success: %@", responseObject);
+            BJCodeSuccessModel *userModel = [BJCodeSuccessModel yy_modelWithJSON:responseObject];
+            if (success) {
+                success(userModel);
+            }
+        }
+         failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+            NSLog(@"Error: %@", error.localizedDescription);
+            
+            // 调用失败回调
+            if (failure) {
+                failure(error);
+            }
+        }];
 }
-- (void)registerWithSuccess:(success)success failure:(error)error {
+- (void)submmitWithSuccess:(registerSuccess)success failure:(error)error {
     AFHTTPSessionManager* manger = [AFHTTPSessionManager manager];
-    NSString* string = @"";
-    
-    [manger POST:string parameters:nil headers:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+    NSString* string = @"http://3.112.71.79:43223/register";
+    manger.requestSerializer = [AFJSONRequestSerializer serializer];
+    manger.responseSerializer = [AFJSONResponseSerializer serializer];
+    [manger.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+    [manger.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+    NSDictionary* dicty = @{@"email":self.registerUser.email, @"password":self.registerUser.password, @"code":self.registerUser.code};
+    [manger POST:string parameters:dicty headers:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         NSLog(@"success");
-        //BJRegisterSuccessModel* userModel = [BJRegisterSuccessModel yy_modelWithJSON:responseObject];
+        BJRegisterSuccessModel* userModel = [BJRegisterSuccessModel yy_modelWithJSON:responseObject];
+        NSLog(@"Success: %@", responseObject);
+        if (success && userModel.status == 1000) {
+            registerSuccess(userModel);
+        }
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         NSLog(@"error");
     }];

@@ -14,16 +14,20 @@
     self.contentView.contentSize = CGSizeMake(self.bounds.size.width * 3, 0);
     self.contentView.backgroundColor = UIColor.whiteColor;
     self.contentView.pagingEnabled = YES;
+    self.contentView.showsVerticalScrollIndicator = NO;
+    self.contentView.showsHorizontalScrollIndicator = NO;
     [self addSubview:_contentView];
     self.flowViewArray = [NSMutableArray array];
     for (int i = 0; i < 3; i++) {
         BJCommunityUIColectionViewFlowLayout* layout = [[BJCommunityUIColectionViewFlowLayout alloc] initWithFlowLayoutWithCount:20 andSection:3];
         layout.sectionInset = UIEdgeInsetsMake(5, 5, 5, 5);
-        UICollectionView* flowView = [[UICollectionView alloc] initWithFrame:CGRectMake(i * self.bounds.size.width, 0, self.bounds.size.width, self.bounds.size.height) collectionViewLayout:layout];
+        UICollectionView* flowView = [[UICollectionView alloc] initWithFrame:CGRectMake(i * self.bounds.size.width, 0, self.bounds.size.width, self.bounds.size.height - 83 - 97.67) collectionViewLayout:layout];
+        flowView.backgroundColor = UIColor.whiteColor;
         flowView.tag = 100 + i;
         [self.contentView addSubview:flowView];
         [self.flowViewArray addObject:flowView];
     }
+    
 }
 - (instancetype)initWithFrame:(CGRect)frame
 {

@@ -10,8 +10,8 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface BJDataModel : NSObject <YYModel>
-@property (nonatomic, copy) NSString* userId;
-@property (nonatomic, copy) NSString* token;
+@property (nonatomic, assign) NSInteger user_id;
+@property (nonatomic, copy) NSString* username;
 @end
 
 NS_ASSUME_NONNULL_END

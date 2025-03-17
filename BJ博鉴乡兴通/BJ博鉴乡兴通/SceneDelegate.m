@@ -13,8 +13,11 @@
 #import "BJMyPageViewController.h"
 #import "BJLoginViewController.h"
 #import "BJTabBarController.h"
-
-
+#import "BJFindPasswordViewController.h"
+#import "BJCheckEmailViewController.h"
+#import "BJCheckEmailModel.h"
+#import "BJFindPasswordSuccessModel.h"
+#import "BJFindingPasswordViewModel.h"
 @interface SceneDelegate ()
 
 @end
@@ -62,6 +65,28 @@
     // 将 tabBarController 设置为窗口的根视图控制器
     self.window.rootViewController = tabBarController;
     [self.window makeKeyAndVisible];
+}
+- (void)scene:(UIScene *)scene openURLContexts:(NSSet<UIOpenURLContext *> *)URLContexts {
+    UIOpenURLContext *urlContext = URLContexts.anyObject;
+    if (urlContext) {
+        NSURL *url = urlContext.URL;
+        NSLog(@"App was opened by URL: %@", url.absoluteString);
+        NSString* scheme = url.scheme;
+        NSLog(@"%@", scheme);
+        if ([scheme isEqualToString:@"countrytravel"]) {
+            UIViewController *rootController = self.window.rootViewController;
+            
+            BJCheckEmailViewController* viewController = (BJCheckEmailViewController*)rootController.presentedViewController;
+            BJFindPasswordViewController* presentViewController = [[BJFindPasswordViewController alloc] init];
+            presentViewController.viewModel = [[BJFindingPasswordViewModel alloc] initWithAuthTyoe:1];
+            presentViewController.viewModel.user.email = viewController.viewModel.user.email;
+            NSLog(@"%@", presentViewController.viewModel.user.email);
+            presentViewController.modalPresentationStyle = UIModalPresentationFullScreen;
+            NSLog(@"%@", [presentViewController class]);
+            NSLog(@"%@", [rootController class]);
+            [viewController presentViewController:presentViewController animated:YES completion:nil];
+        }
+    }
 }
 
 - (void)sceneDidDisconnect:(UIScene *)scene {
