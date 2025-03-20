@@ -18,6 +18,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) UIButton* commentButton;
 @property (nonatomic, strong) UILabel* timeLabel;
 @property (nonatomic, strong) UILabel* headLabel;
+@property (nonatomic, strong) UIButton* replyButton;
 @end
 
 NS_ASSUME_NONNULL_END

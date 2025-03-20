@@ -4,13 +4,22 @@
 //
 //  Created by wjc on 2025/1/20.
 //
-
+#import "BJNetworkingManger.h"
 #import "BJCommunityViewController.h"
 #import "BJCommityCollectionViewCell.h"
 #import "BJInvitationViewController.h"
+#import "BJCommityModel.h"
+#import "SDWebImage/SDWebImage.h"
+#import "BJCommityDataModel.h"
+#import "SubCommentsModel+DealWithComment.h"
+#import "BJImageModel.h"
+#import "NSString+CalculateHeight.h"
 @interface BJCommunityViewController () {
     UIView* _indicatorLine;
     BOOL _isLocked;
+    NSInteger _page;
+    NSInteger _pageSize;
+    NSMutableArray* _heightAry;
 }
 
 @end
@@ -18,22 +27,57 @@
 @implementation BJCommunityViewController
 
 - (void)viewDidLoad {
-    _isLocked = NO;
     [super viewDidLoad];
     _isLocked = NO;
-    self.iView = [[BJMainCommunityView alloc] initWithFrame:self.view.bounds];
-    self.iView.contentView.delegate = self;
-    for (int i = 0; i < 3; i++) {
-        self.iView.flowViewArray[i].delegate = self;
-        self.iView.flowViewArray[i].dataSource = self;
-        [self.iView.flowViewArray[i] registerClass:[BJCommityCollectionViewCell class] forCellWithReuseIdentifier:@"Cell"];
-    }
-    [self.view addSubview:self.iView];
+    _page = 1;
+    _pageSize = 8;
+    id manger = [BJNetworkingManger sharedManger];
+    self.model = [NSMutableArray array];
     [self setNavgationBar];
     [self setSegmentControl];
     [self setupLine];
+    _heightAry = [NSMutableArray array];
+    
+    [manger loadImage:_page PageSize:_pageSize WithSuccess:^(BJCommityModel * _Nonnull commityModel) {
+        self.iView = [[BJMainCommunityView alloc] initWithFrame:self.view.bounds];
+        for (int i = 0; i < commityModel.data.count; i++) {
+            @autoreleasepool {
+                BJCommityDataModel* data = commityModel.data[i];
+                CGFloat height = [data.title textHight:data.title andFont:[UIFont systemFontOfSize:14] Width:190] + 30 + data.height / data.width * 190;
+                [self->_heightAry addObject:[NSNumber numberWithFloat:height]];
+            }
+        }
+        [self.iView setUIWithHeightAry:self->_heightAry];
+        self.iView.contentView.delegate = self;
+        [self.model addObject:commityModel];
+        for (int i = 0; i < 3; i++) {
+            self.iView.flowViewArray[i].delegate = self;
+            self.iView.flowViewArray[i].dataSource = self;
+            [self.iView.flowViewArray[i] registerClass:[BJCommityCollectionViewCell class] forCellWithReuseIdentifier:@"Cell"];
+        }
+        [self.view addSubview:self.iView];
+    } failure:^(NSError * _Nonnull error) {
+        self.iView = [[BJMainCommunityView alloc] initWithFrame:self.view.bounds];
+        self.iView.contentView.delegate = self;
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 20; j++) {
+                [self->_heightAry addObject:[NSNumber numberWithInteger:(random()%20 + 123)]];
+            }
+        }
+        [self.iView setUIWithHeightAry:self->_heightAry];
+        for (int i = 0; i < 3; i++) {
+            self.iView.flowViewArray[i].delegate = self;
+            self.iView.flowViewArray[i].dataSource = self;
+            [self.iView.flowViewArray[i] registerClass:[BJCommityCollectionViewCell class] forCellWithReuseIdentifier:@"Cell"];
+        }
+        
+        [self.view addSubview:self.iView];
+        NSLog(@"error");
+    }];
+    
     // Do any additional setup after loading the view.
 }
+
 - (void)setNavgationBar {
     UINavigationBarAppearance* apperance = [[UINavigationBarAppearance alloc] init];
     apperance.shadowColor = [UIColor clearColor];
@@ -90,13 +134,13 @@
     _isLocked = NO;
 }
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-<<<<<<< HEAD
+
     if (_isLocked) {
         return;
     }
     CGFloat offset = self.iView.contentView.contentOffset.x;
     NSInteger currentIndex = round(offset / [UIScreen mainScreen].bounds.size.width);
-=======
+
     if(_isLocked) return;
     CGFloat offsetX = scrollView.contentOffset.x;
     CGFloat pageWidth = [UIScreen mainScreen].bounds.size.width;
@@ -109,16 +153,7 @@
     
 }
 
--(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
-    CGFloat offsetX = scrollView.contentOffset.x;
-    CGFloat pageWidth = [UIScreen mainScreen].bounds.size.width;
-    CGFloat progress = offsetX / (pageWidth);
-    NSInteger currentIndex = round(progress);
->>>>>>> upstream/main
-    [self selectSegmentAtIndex:currentIndex];
-    _isLocked = NO;
 
-}
 - (void)setupLine {
     _indicatorLine = [[UIView alloc] initWithFrame:CGRectMake(60, 40, 60, 2)];
     _indicatorLine.backgroundColor = [UIColor greenColor];
@@ -126,22 +161,60 @@
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
-    BJCommityCollectionViewCell* cell = [collectionView dequeueReusableCellWithReuseIdentifier: @"Cell" forIndexPath: indexPath];
-    CGFloat red = arc4random_uniform(256) / 255.0;
-    CGFloat green = arc4random_uniform(256) / 255.0;
-    CGFloat blue = arc4random_uniform(256) / 255.0;
     
-    cell.contentView.backgroundColor = [UIColor colorWithRed:red green:green blue:blue alpha:1.0];
+    BJCommityCollectionViewCell* cell = [collectionView dequeueReusableCellWithReuseIdentifier: @"Cell" forIndexPath: indexPath];
+    if (self.model.count == 0) {
+        cell.backgroundColor = UIColor.whiteColor;
+    } else {
+        BJCommityModel* commityModel = self.model[indexPath.section];
+        BJCommityDataModel* dataModel = commityModel.data[indexPath.item];
+        cell.label.text = dataModel.title;
+        cell.nameLabel.text = dataModel.username;
+        [cell.profileView sd_setImageWithURL:[NSURL URLWithString:dataModel.avatar]];
+        NSArray* ary = dataModel.images;
+        if (ary != nil) {
+            BJImageModel* imageModel = ary[0];
+            [cell.imageView sd_setImageWithURL:[NSURL URLWithString:imageModel.url]];
+        } else {
+            cell.imageView.image = nil;
+        }
+        cell.likeButton.selected = dataModel.isFavorite;
+        [cell.likeButton setTitle:[NSString stringWithFormat:@"%ld",dataModel.favoriteCount] forState:UIControlStateNormal];
+        cell.contentView.backgroundColor = UIColor.whiteColor;
+    }
+    
     return cell;
 }
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-    return 20;
+    if (self.model.count != 0) {
+        BJCommityModel* commityModel = self.model[section];
+        return commityModel.data.count;
+    } else {
+        return 20;
+    }
+    
 }
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
-    return 3;
+    if (self.model.count != 0) {
+        return self.model.count;
+    } else {
+        return 3;
+    }
 }
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-    [self.navigationController pushViewController:[[BJInvitationViewController alloc] init] animated:YES];
+    BJInvitationViewController* invitationViewController = [[BJInvitationViewController alloc] init];
+    invitationViewController.hidesBottomBarWhenPushed = YES;
+    if (self.model.count != 0) {
+        BJCommityModel* commityModel = self.model[indexPath.section];
+        BJCommityDataModel* dataModel = commityModel.data[indexPath.item];
+        invitationViewController.commityModel = dataModel;
+        invitationViewController.workId = dataModel.postId;
+    } else {
+        invitationViewController.workId = 0;
+    }
+    [self.navigationController pushViewController:invitationViewController animated:YES];
+    
+    
 }
 /*
 #pragma mark - Navigation

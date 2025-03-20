@@ -14,7 +14,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) UILabel* label;
 @property (nonatomic, strong) UIImageView* profileView;
 @property (nonatomic, strong) UILabel* nameLabel;
-@property (nonatomic, strong) UIButton* LikeButton;
+@property (nonatomic, strong) UIButton* likeButton;
 @end
 
 NS_ASSUME_NONNULL_END

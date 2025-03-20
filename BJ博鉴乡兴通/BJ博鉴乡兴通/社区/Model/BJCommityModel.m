@@ -6,7 +6,9 @@
 //
 
 #import "BJCommityModel.h"
-
+#import "BJCommityDataModel.h"
 @implementation BJCommityModel
-
++ (NSDictionary<NSString *,id> *)modelContainerPropertyGenericClass {
+    return @{@"data":[BJCommityDataModel class]};
+}
 @end

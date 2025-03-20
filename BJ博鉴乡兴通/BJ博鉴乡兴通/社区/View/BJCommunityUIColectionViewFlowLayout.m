@@ -28,11 +28,16 @@
     for (int section = 0; section < self.sectionCount; section++) {
         NSMutableArray *colHeight = [NSMutableArray arrayWithObjects:@(currentMaxL), @(currentMaxR), nil];
         [sectionColHeights addObject:colHeight];
-        int sectionItemCount = [self.collectionView numberOfItemsInSection:section];
-        for (int i = 0; i < sectionItemCount; i++) { //遍历每一个cell
+        NSInteger sectionItemCount = [self.collectionView numberOfItemsInSection:section];
+        for (NSInteger i = 0; i < sectionItemCount; i++) { //遍历每一个cell
             NSIndexPath* indexPath = [NSIndexPath indexPathForItem:i inSection:section];//获取对应的一个indexPath
             UICollectionViewLayoutAttributes* attributes = [UICollectionViewLayoutAttributes layoutAttributesForCellWithIndexPath:indexPath];//设置一个对应的布局
-            CGFloat height = arc4random() % 123 + 140;//设置高度
+            CGFloat height;//设置高度
+            if (!self.itemHeight) {
+                height = [self.itemHeight[i] floatValue] + 30;//设置高度
+            } else {
+                height = random() % 30 + 120;//设置高度
+            }
             int indexCol = 0;  //标记短的列
             if ([colHeight[0] floatValue] < [colHeight[1] floatValue]) {
                 colHeight[0] = @([colHeight[0] floatValue] + height + self.minimumLineSpacing);
@@ -64,10 +69,11 @@
 - (NSArray<__kindof UICollectionViewLayoutAttributes *> *)layoutAttributesForElementsInRect:(CGRect)rect {
     return [NSArray arrayWithArray:self.ary];
 }
-- (id)initWithFlowLayoutWithCount:(NSInteger)itemCount andSection:(NSInteger)sectionCount {
+- (id)initWithFlowLayoutWithCount:(NSInteger)itemCount andSection:(NSInteger)sectionCount andHeightAry:(NSArray<NSNumber*>*)heightAry {
     if (self = [super init]) {
         _itemCount = itemCount;
         _sectionCount = sectionCount;
+        _itemHeight = heightAry;
     }
     return self;
 }
