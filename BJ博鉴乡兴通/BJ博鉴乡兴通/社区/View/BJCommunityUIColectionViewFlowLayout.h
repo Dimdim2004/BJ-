@@ -14,7 +14,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, readonly, assign) NSInteger itemCount;
 @property (nonatomic, assign) NSInteger sectionCount;
-- (id) initWithFlowLayoutWithCount:(NSInteger)itemCount andSection:(NSInteger) sectionCount;
+@property (nonatomic, strong) NSArray<NSNumber*>* itemHeight;
+- (id)initWithFlowLayoutWithCount:(NSInteger)itemCount andSection:(NSInteger)sectionCount andHeightAry:(NSArray<NSNumber*>*)heightAry;
 @end
 
 NS_ASSUME_NONNULL_END

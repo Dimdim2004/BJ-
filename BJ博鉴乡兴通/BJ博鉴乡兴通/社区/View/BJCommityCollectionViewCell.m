@@ -19,18 +19,19 @@
         self.nameLabel = [[UILabel alloc] init];
         self.label.numberOfLines = 2;
         self.label.lineBreakMode = YES;
-        self.LikeButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        self.label.lineBreakMode = NSLineBreakByTruncatingTail;
+        self.likeButton = [UIButton buttonWithType:UIButtonTypeCustom];
         self.nameLabel.text = @"123444";
         self.profileView.image = [UIImage imageNamed:@"WechatIMG17.jpg"];
         
         self.profileView.layer.masksToBounds = YES;
         self.profileView.layer.cornerRadius = 30 / 2;
         
-        [self.LikeButton setImage:[UIImage imageNamed:@"likes.png"] forState:UIControlStateNormal];
+        [self.likeButton setImage:[UIImage imageNamed:@"likeSmall.png"] forState:UIControlStateSelected];
         [self.contentView addSubview:_imageView];
         [self.contentView addSubview:_label];
         [self.contentView addSubview:_profileView];
-        [self.contentView addSubview:_LikeButton];
+        [self.contentView addSubview:_likeButton];
         [self.contentView addSubview:_nameLabel];
         
         
@@ -50,7 +51,7 @@
             make.height.equalTo(@20);
             make.bottom.equalTo(self.contentView).offset(-5);
         }];
-        [self.LikeButton mas_makeConstraints:^(MASConstraintMaker *make) {
+        [self.likeButton mas_makeConstraints:^(MASConstraintMaker *make) {
             make.right.equalTo(self.contentView);
             make.width.equalTo(@30);
             make.height.equalTo(@30);

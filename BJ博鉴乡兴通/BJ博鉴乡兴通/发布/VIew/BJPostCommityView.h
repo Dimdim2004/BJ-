@@ -12,6 +12,9 @@ NS_ASSUME_NONNULL_BEGIN
 @interface BJPostCommityView : UIView
 @property (nonatomic, strong) UITableView* mainView;
 @property (nonatomic, strong) UIButton* backButton;
+@property (nonatomic, strong) UIButton* postButton;
+@property (nonatomic, strong) UIButton* draftButton;
+@property (nonatomic, strong) UIButton* previewButton;
 @end
 
 NS_ASSUME_NONNULL_END

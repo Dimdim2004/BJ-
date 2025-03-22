@@ -62,13 +62,13 @@
         [self.contentView addSubview:_commentText];
         [self.contentView addSubview:_headLabel];
         [_headLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(self.contentView).offset(10);
+            make.top.equalTo(self.contentView).offset(10).priorityHigh();
             make.left.equalTo(self.contentView).offset(10);
             make.width.equalTo(@100);
         }];
         [_image mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.equalTo(self.contentView).offset(50);
-            make.top.equalTo(self.headLabel.mas_bottom).offset(20);
+            make.top.equalTo(self.headLabel.mas_bottom).offset(20).priorityHigh();
             make.height.equalTo(@40);
             make.width.equalTo(@40);
         }];
@@ -79,17 +79,17 @@
             make.height.equalTo(@20);
         }];
         [_textView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(self.image.mas_bottom);
+            make.top.equalTo(self.image.mas_bottom).priorityHigh();
             //make.bottom.equalTo(self.contentView.mas_bottom).offset(-10);
             //make.bottom.equalTo(self.contentView.mas_bottom).offset(-10);
             make.left.equalTo(self.nameLabel);
             //make.top.equalTo(self.contentView.mas_top).offset(5);
             make.right.equalTo(self.contentView).offset(-10);
-            make.bottom.equalTo(_timeLabel.mas_top);
+            make.bottom.equalTo(_timeLabel.mas_top).priorityHigh();
         }];
         [_timeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
             //make.height.equalTo(@40);
-            make.bottom.equalTo(self.contentView.mas_bottom).offset(-20);
+            make.bottom.equalTo(self.contentView.mas_bottom).offset(-20).priorityHigh();
             make.left.equalTo(self.textView).offset(5);
             make.width.equalTo(@120);
         }];

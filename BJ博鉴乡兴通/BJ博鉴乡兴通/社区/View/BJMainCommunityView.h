@@ -12,6 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface BJMainCommunityView : UIView
 @property (nonatomic, strong) NSMutableArray<UICollectionView*> *flowViewArray;
 @property (nonatomic, strong) UIScrollView* contentView;
+- (void)setUIWithHeightAry:(NSArray<NSNumber*>*)heightAry;
 @end
 
 NS_ASSUME_NONNULL_END

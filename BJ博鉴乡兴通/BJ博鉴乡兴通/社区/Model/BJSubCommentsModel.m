@@ -12,7 +12,7 @@
     return @{@"userId":@"id", @"replyId":@"reply_to_id", @"timeString":@"created_at"};
 }
 + (NSArray<NSString *> *)modelPropertyBlacklist {
-    return @[@"isExpand"];
+    return @[@"isExpand", @"isLike"];
 }
 
 @end

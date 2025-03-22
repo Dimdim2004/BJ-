@@ -8,11 +8,17 @@
 #import <UIKit/UIKit.h>
 #import "BJInvitationView.h"
 #import "BJCommentsModel.h"
+#import "BJCommityDataModel.h"
+
 NS_ASSUME_NONNULL_BEGIN
 
-@interface BJInvitationViewController : UIViewController<UITableViewDelegate, UITableViewDataSource>
+@interface BJInvitationViewController : UIViewController<UITableViewDelegate, UITableViewDataSource, UIScrollViewDelegate, UITextViewDelegate>
 @property (nonatomic, strong) BJInvitationView* iView;
 @property (nonatomic, strong) BJCommentsModel* commentModel;
+@property (nonatomic, copy) NSDictionary* dicty;
+@property (nonatomic, strong) BJCommityDataModel* commityModel;
+@property (nonatomic, strong) UIPageControl* page;
+@property (nonatomic, assign) NSInteger workId;
 @end
 
 NS_ASSUME_NONNULL_END

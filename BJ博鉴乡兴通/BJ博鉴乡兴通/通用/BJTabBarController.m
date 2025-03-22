@@ -19,10 +19,7 @@
     
     BJTabBar *customTabBar = [[BJTabBar alloc] init];
     [self setValue:customTabBar forKey:@"tabBar"];
-<<<<<<< HEAD
     [customTabBar.centerButton addTarget:self action:@selector(presentPost) forControlEvents:UIControlEventTouchUpInside];
-=======
->>>>>>> upstream/main
     
 
 }
