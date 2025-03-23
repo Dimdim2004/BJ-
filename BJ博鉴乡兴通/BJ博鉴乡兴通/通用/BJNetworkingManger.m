@@ -44,7 +44,7 @@ const NSString* urlString = @"http://3.112.71.79:43223";
    
     NSString* bearerString = [NSString stringWithFormat:@"Bearer %@", self.token];
     [manger.requestSerializer setValue:bearerString forHTTPHeaderField:@"Authorization"];
-    [manger.requestSerializer setValue:@"mulitpart/form-data" forHTTPHeaderField:@"Content-Type"];
+    [manger.requestSerializer setValue:@"multipart/form-data" forHTTPHeaderField:@"Content-Type"];
     NSMutableArray* dataAry = [NSMutableArray array];
     for (int i = 0; i < imageAry.count; i++) {
         @autoreleasepool {
@@ -58,7 +58,7 @@ const NSString* urlString = @"http://3.112.71.79:43223";
             NSDateFormatter* dateFormatter = [[NSDateFormatter alloc] init];
             dateFormatter.dateStyle = NSDateFormatterMediumStyle;
             dateFormatter.timeStyle = NSDateFormatterMediumStyle;
-            [dateFormatter setDateFormat:@"yyyyMMdd_HHmmssSSS"];
+            [dateFormatter setDateFormat:@"yyyyMMdd_HHmmssSSS.jpeg"];
             NSString* fileName = [dateFormatter stringFromDate:[NSDate date]];
             [formData appendPartWithFileData:dataAry[i] name:@"images" fileName:fileName mimeType:@"image/jpeg"];
         }

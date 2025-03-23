@@ -8,5 +8,7 @@
 #import "BJUserModel.h"
 
 @implementation BJUserModel
-
++ (NSArray<NSString *> *)modelPropertyBlacklist {
+    return @[@"isRember"];
+}
 @end

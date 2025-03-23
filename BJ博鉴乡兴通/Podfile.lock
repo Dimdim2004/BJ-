@@ -26,6 +26,9 @@ PODS:
     - TZImagePickerController/Location (= 3.8.8)
   - TZImagePickerController/Basic (3.8.8)
   - TZImagePickerController/Location (3.8.8)
+  - WCDB.objc (2.1.10):
+    - WCDBOptimizedSQLCipher (= 1.4.7)
+  - WCDBOptimizedSQLCipher (1.4.7)
   - YYModel (1.0.4)
 
 DEPENDENCIES:
@@ -34,6 +37,7 @@ DEPENDENCIES:
   - Masonry
   - SDWebImage (~> 5.0)
   - TZImagePickerController
+  - WCDB.objc
   - YYModel
 
 SPEC REPOS:
@@ -43,6 +47,8 @@ SPEC REPOS:
     - Masonry
     - SDWebImage
     - TZImagePickerController
+    - WCDB.objc
+    - WCDBOptimizedSQLCipher
     - YYModel
 
 SPEC CHECKSUMS:
@@ -51,8 +57,10 @@ SPEC CHECKSUMS:
   Masonry: 678fab65091a9290e40e2832a55e7ab731aad201
   SDWebImage: 8a6b7b160b4d710e2a22b6900e25301075c34cb3
   TZImagePickerController: d084a7b97c82d387e7669dd86dc9a9057500aacf
+  WCDB.objc: e3fb72b0efaa7500020b51de295b8ca4040fbd5c
+  WCDBOptimizedSQLCipher: 9bceac087eff9625b151838d3a30364f53f71ad9
   YYModel: 2a7fdd96aaa4b86a824e26d0c517de8928c04b30
 
-PODFILE CHECKSUM: 607dafb79e791eae9e262182e7ea177d11657742
+PODFILE CHECKSUM: e1a861ce4450a78ae27a6761671555c4526d999d
 
 COCOAPODS: 1.15.2
