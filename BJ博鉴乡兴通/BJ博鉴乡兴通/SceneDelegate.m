@@ -29,7 +29,6 @@
     BJLoginViewController* rootViewController = [[BJLoginViewController alloc] init];
     rootViewController.delegate = self;
     self.window.rootViewController = rootViewController;
-    
 }
 - (void)changeTab {
     // 创建 BJHomePageViewController 并设置相关属性

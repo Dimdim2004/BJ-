@@ -5,13 +5,19 @@
 //  Created by nanxun on 2025/3/9.
 //
 
-#import <UIKit/UIKit.h>
+
+
+
+#import "UIKit/UIKit.h"
+
 @class  BJPostCommityView;
 #import "TZImagePickerController.h"
 @class BJCommityPostModel;
 NS_ASSUME_NONNULL_BEGIN
 
+
 @interface BJPostCommityViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, TZImagePickerControllerDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate, UITextFieldDelegate, UITextViewDelegate>
+
 @property (nonatomic, strong) BJPostCommityView* postView;
 @property (nonatomic, copy) NSArray* uploadPhotos;
 @property (nonatomic, strong) BJCommityPostModel* model;

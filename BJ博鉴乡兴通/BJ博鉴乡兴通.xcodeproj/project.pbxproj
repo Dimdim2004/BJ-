@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		21049CFD2D89172C00B5E8C5 /* BJScaleFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 21049CFC2D89172C00B5E8C5 /* BJScaleFlowLayout.m */; };
+		210CA7EC2D8DB58000567240 /* placeholderForAddress.png in Resources */ = {isa = PBXBuildFile; fileRef = 210CA7EB2D8DB58000567240 /* placeholderForAddress.png */; };
 		213582222D814131001F7459 /* likes_selected.png in Resources */ = {isa = PBXBuildFile; fileRef = 2135821E2D814131001F7459 /* likes_selected.png */; };
 		213582242D814131001F7459 /* share.png in Resources */ = {isa = PBXBuildFile; fileRef = 213582202D814131001F7459 /* share.png */; };
 		213582252D814131001F7459 /* comment.png in Resources */ = {isa = PBXBuildFile; fileRef = 213582212D814131001F7459 /* comment.png */; };
@@ -29,6 +31,8 @@
 		216DB6CB2D2FDEF3005BF4C2 /* BJ_____UITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 216DB6CA2D2FDEF3005BF4C2 /* BJ_____UITests.m */; };
 		216DB6CD2D2FDEF3005BF4C2 /* BJ_____UITestsLaunchTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 216DB6CC2D2FDEF3005BF4C2 /* BJ_____UITestsLaunchTests.m */; };
 		216E87132D73FF360027E674 /* BJMapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 216E87122D73FF360027E674 /* BJMapViewController.m */; };
+		2195DC0A2D8F025400A96D08 /* LoginBackView.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 2195DC092D8F025300A96D08 /* LoginBackView.jpg */; };
+		2195DC0C2D8FCA0C00A96D08 /* LoginBackView1.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 2195DC0B2D8FCA0C00A96D08 /* LoginBackView1.jpg */; };
 		219A069B2D754C6E00EA43BA /* BJAnnotationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 219A069A2D754C6E00EA43BA /* BJAnnotationView.m */; };
 		219A069E2D754EF500EA43BA /* BJAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 219A069D2D754EF500EA43BA /* BJAnnotation.m */; };
 		219A06AC2D75F83000EA43BA /* minsu.png in Resources */ = {isa = PBXBuildFile; fileRef = 219A06AB2D75F83000EA43BA /* minsu.png */; };
@@ -156,6 +160,9 @@
 
 /* Begin PBXFileReference section */
 		1C9BCFB67B8FE7DD9598BE59 /* libPods-BJ博鉴乡兴通.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-BJ博鉴乡兴通.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		21049CFB2D89172C00B5E8C5 /* BJScaleFlowLayout.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BJScaleFlowLayout.h; sourceTree = "<group>"; };
+		21049CFC2D89172C00B5E8C5 /* BJScaleFlowLayout.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BJScaleFlowLayout.m; sourceTree = "<group>"; };
+		210CA7EB2D8DB58000567240 /* placeholderForAddress.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = placeholderForAddress.png; sourceTree = "<group>"; };
 		2135821E2D814131001F7459 /* likes_selected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = likes_selected.png; sourceTree = "<group>"; };
 		213582202D814131001F7459 /* share.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = share.png; sourceTree = "<group>"; };
 		213582212D814131001F7459 /* comment.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = comment.png; sourceTree = "<group>"; };
@@ -194,6 +201,8 @@
 		216DB6CC2D2FDEF3005BF4C2 /* BJ_____UITestsLaunchTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "BJ_____UITestsLaunchTests.m"; sourceTree = "<group>"; };
 		216E87112D73FF360027E674 /* BJMapViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BJMapViewController.h; sourceTree = "<group>"; };
 		216E87122D73FF360027E674 /* BJMapViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BJMapViewController.m; sourceTree = "<group>"; };
+		2195DC092D8F025300A96D08 /* LoginBackView.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = LoginBackView.jpg; sourceTree = "<group>"; };
+		2195DC0B2D8FCA0C00A96D08 /* LoginBackView1.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = LoginBackView1.jpg; sourceTree = "<group>"; };
 		219A06992D754C6E00EA43BA /* BJAnnotationView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BJAnnotationView.h; sourceTree = "<group>"; };
 		219A069A2D754C6E00EA43BA /* BJAnnotationView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BJAnnotationView.m; sourceTree = "<group>"; };
 		219A069C2D754EF500EA43BA /* BJAnnotation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BJAnnotation.h; sourceTree = "<group>"; };
@@ -438,9 +447,9 @@
 		216DB6A32D2FDEF2005BF4C2 /* BJ博鉴乡兴通 */ = {
 			isa = PBXGroup;
 			children = (
-				216DB6DA2D2FDF87005BF4C2 /* 商城 */,
-				219F0E9B2D3E83D600F69C9B /* 图片 */,
 				219F0E9A2D3E83C400F69C9B /* 通用 */,
+				219F0E9B2D3E83D600F69C9B /* 图片 */,
+				216DB6DA2D2FDF87005BF4C2 /* 商城 */,
 				216DB6D92D2FDF7C005BF4C2 /* 首页 */,
 				216DB6DE2D2FDFBD005BF4C2 /* 发布 */,
 				216DB6DD2D2FDFB5005BF4C2 /* 社区 */,
@@ -499,6 +508,8 @@
 				219F0E8F2D3E7E5D00F69C9B /* BJShopViewController.m */,
 				214C58892D87B868007A5AC6 /* BJScaleTableViewCell.h */,
 				214C588A2D87B868007A5AC6 /* BJScaleTableViewCell.m */,
+				21049CFB2D89172C00B5E8C5 /* BJScaleFlowLayout.h */,
+				21049CFC2D89172C00B5E8C5 /* BJScaleFlowLayout.m */,
 			);
 			path = "商城";
 			sourceTree = "<group>";
@@ -595,6 +606,7 @@
 				E91428092D8071C3001ED3F8 /* BJNetworkingManger.m */,
 				219A06F42D79EAC800EA43BA /* BJNavigationBar.h */,
 				219A06F52D79EAC800EA43BA /* BJNavigationBar.m */,
+
 				E91428622D8C6DAE001ED3F8 /* BJLocalDataManger.h */,
 				E91428632D8C6DAE001ED3F8 /* BJLocalDataManger.mm */,
 			);
@@ -604,6 +616,7 @@
 		219F0E9B2D3E83D600F69C9B /* 图片 */ = {
 			isa = PBXGroup;
 			children = (
+
 				E914284C2D8ADB63001ED3F8 /* likeSmall.png */,
 				E91428582D8B02AD001ED3F8 /* likeSelected.png */,
 				E914284A2D89BD4D001ED3F8 /* number.png */,
@@ -617,6 +630,12 @@
 				E91427F22D7F0AD9001ED3F8 /* tianjia.png */,
 				E914282F2D884877001ED3F8 /* tianjia-2.png */,
 				E91428332D884E44001ED3F8 /* yulan.png */,
+
+				2195DC0B2D8FCA0C00A96D08 /* LoginBackView1.jpg */,
+				2195DC092D8F025300A96D08 /* LoginBackView.jpg */,
+				210CA7EB2D8DB58000567240 /* placeholderForAddress.png */,
+				E91427F22D7F0AD9001ED3F8 /* tianjia.png */,
+
 				213582212D814131001F7459 /* comment.png */,
 				2135821E2D814131001F7459 /* likes_selected.png */,
 				213582202D814131001F7459 /* share.png */,
@@ -941,7 +960,9 @@
 				E91427E72D79C87C001ED3F8 /* back.png in Resources */,
 				E90703C42D78987B001DE0EE /* santiaogang.png in Resources */,
 				E91428072D806D93001ED3F8 /* back2.png in Resources */,
+
 				E91428362D88562B001ED3F8 /* jiesuo-2.png in Resources */,
+
 				213582242D814131001F7459 /* share.png in Resources */,
 				219A06BD2D78948E00EA43BA /* annotation.png in Resources */,
 				213582272D8141E8001F7459 /* likes.png in Resources */,
@@ -960,6 +981,7 @@
 				213582252D814131001F7459 /* comment.png in Resources */,
 				219F0EAE2D3E8B5C00F69C9B /* community.png in Resources */,
 				E9F8F0F52D5078AE0040ABA6 /* WechatIMG17.jpg in Resources */,
+				2195DC0A2D8F025400A96D08 /* LoginBackView.jpg in Resources */,
 				219F0EB72D4160DD00F69C9B /* logo.png in Resources */,
 				219F0EBD2D41DA2B00F69C9B /* logo2.png in Resources */,
 				219A070D2D7C055200EA43BA /* 字玩女侠青龙-闪 苍劲(Joyfonts-QinglongGB-Flash-Black).ttf in Resources */,
@@ -970,7 +992,9 @@
 				213582222D814131001F7459 /* likes_selected.png in Resources */,
 				219F0EAB2D3E8B5C00F69C9B /* home.png in Resources */,
 				219A06AC2D75F83000EA43BA /* minsu.png in Resources */,
+
 				E914283B2D8921D4001ED3F8 /* shoucang-5.png in Resources */,
+				2195DC0C2D8FCA0C00A96D08 /* LoginBackView1.jpg in Resources */,
 				E98B0CD52D75E33900439CCE /* jiesuo.png in Resources */,
 				219A07022D7BF6DF00EA43BA /* backView.png in Resources */,
 				E91428322D884D66001ED3F8 /* caogaoxiang.png in Resources */,
@@ -978,6 +1002,7 @@
 				219A07062D7BF70700EA43BA /* toMap.png in Resources */,
 				216DB6B42D2FDEF3005BF4C2 /* Base in Resources */,
 				E91428012D805CF2001ED3F8 /* didian.png in Resources */,
+				210CA7EC2D8DB58000567240 /* placeholderForAddress.png in Resources */,
 				216DB6AF2D2FDEF2005BF4C2 /* Base in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1066,6 +1091,7 @@
 				216DB6A62D2FDEF2005BF4C2 /* AppDelegate.m in Sources */,
 				E9F8F0F32D4FB0FD0040ABA6 /* BJInvitationViewController.m in Sources */,
 				E9F8F0E52D40EFBF0040ABA6 /* BJMainCommunityView.m in Sources */,
+				21049CFD2D89172C00B5E8C5 /* BJScaleFlowLayout.m in Sources */,
 				E98B0CCA2D73455600439CCE /* BJRegisterSuccessModel.m in Sources */,
 				219F0E992D3E7ED200F69C9B /* BJMyPageViewController.m in Sources */,
 				E914281D2D807F34001ED3F8 /* BJFindPasswordSuccessModel.m in Sources */,
@@ -1075,13 +1101,17 @@
 				E9F8F0F32D4FB0FD0040ABA6 /* BJInvitationViewController.m in Sources */,
 				E9F8F0E52D40EFBF0040ABA6 /* BJMainCommunityView.m in Sources */,
 				E98B0CCA2D73455600439CCE /* BJRegisterSuccessModel.m in Sources */,
+
 				E914285E2D8BBD13001ED3F8 /* NSString+CalculateHeight.m in Sources */,
+
 				214C588B2D87B869007A5AC6 /* BJScaleTableViewCell.m in Sources */,
 				219F0E992D3E7ED200F69C9B /* BJMyPageViewController.m in Sources */,
 				219A07092D7BFDA900EA43BA /* BJMyHometownViewController.m in Sources */,
 				216DB6B72D2FDEF3005BF4C2 /* main.m in Sources */,
 				214C58822D831373007A5AC6 /* BJSearchBarTableViewCell.m in Sources */,
+
 				E91428612D8C51BF001ED3F8 /* BJUploadSuccessModel.m in Sources */,
+
 				E98B0C562D6C933000439CCE /* BJInvitationSubCommentsTableViewCell.m in Sources */,
 				E9F693A82D8EF1DD00627E30 /* BJMymagesInDraftModel.mm in Sources */,
 				216DB6B72D2FDEF3005BF4C2 /* main.m in Sources */,
@@ -1125,7 +1155,9 @@
 				219A06F62D79EAC800EA43BA /* BJNavigationBar.m in Sources */,
 				219F0EBB2D41CEDE00F69C9B /* BJScrollViewTableViewCell.m in Sources */,
 				E91427F12D7DE142001ED3F8 /* BJPostCommityView.m in Sources */,
+
 				E91428512D8AE5D3001ED3F8 /* BJMyPgaeModel.m in Sources */,
+
 				E98B0C7A2D72F9B900439CCE /* BJRegisterViewController.m in Sources */,
 				E91428642D8C6DAF001ED3F8 /* BJLocalDataManger.mm in Sources */,
 				219A06F62D79EAC800EA43BA /* BJNavigationBar.m in Sources */,

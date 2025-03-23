@@ -96,7 +96,7 @@
         make.width.equalTo(@160);
         make.height.equalTo(@100);
     }];
-    self.view.backgroundColor = UIColor.greenColor;
+    self.view.backgroundColor = UIColor.clearColor;
     self.registerButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     self.registerButton.layer.borderColor = [UIColor whiteColor].CGColor;
     self.registerButton.layer.borderWidth = 2;

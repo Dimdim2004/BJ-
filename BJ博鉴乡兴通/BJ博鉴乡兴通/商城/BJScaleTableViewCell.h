@@ -9,8 +9,11 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface BJScaleTableViewCell : UITableViewCell
+@interface BJScaleTableViewCell : UITableViewCell<UICollectionViewDataSource, UICollectionViewDelegate>
+@property (strong, nonatomic)UICollectionView *collectionView;
 
+@property (strong, nonatomic)NSTimer *timer;
+@property (strong, nonatomic)NSMutableArray *imageArray;
 @end
 
 NS_ASSUME_NONNULL_END

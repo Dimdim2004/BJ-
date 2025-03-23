@@ -20,7 +20,6 @@ typedef enum BJAnnotationType {
 @property (nonatomic, assign) CLLocationCoordinate2D coordinate;
 @property (nonatomic, copy) NSString *title;
 @property (nonatomic, copy) NSString *subtitle;
-//自定义大头针图片
 @property(nonatomic,copy) NSString *icon;
 
 +(instancetype)AnnotationWithType:(BJAnnotationType)type;

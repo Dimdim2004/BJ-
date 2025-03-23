@@ -16,7 +16,7 @@
 #import "BJFindPasswordViewController.h"
 #import "BJLoginDataModel.h"
 @interface BJLoginViewController ()
-
+@property (strong, nonatomic)UILabel *logoLabel;
 @end
 
 @implementation BJLoginViewController
@@ -34,7 +34,6 @@
     CGRect frame = [notification.userInfo[UIKeyboardFrameEndUserInfoKey] CGRectValue];
     CGFloat height = frame.size.height;
     CGFloat y = height;
-    NSLog(@"111");
     [UIView animateWithDuration:0.2 animations:^{
             self.view.transform = CGAffineTransformMakeTranslation(0, - y + 160);
     }];
@@ -47,11 +46,14 @@
 #pragma mark UI
 - (void) setUI {
     
-    self.view.backgroundColor = UIColor.greenColor;
+    
+    
+    self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"LoginBackView1.jpg"]];
     self.backView = [[UIView alloc] init];
     self.backView.layer.masksToBounds = YES;
     self.backView.layer.cornerRadius = 30;
     self.backView.backgroundColor = UIColor.whiteColor;
+    self.backView.alpha = 0.95;
     [self.view addSubview:_backView];
     [self.backView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.bottom.equalTo(self.view);
@@ -59,12 +61,21 @@
         make.height.equalTo(@500);
     }];
     
+    self.logoLabel = [[UILabel alloc] init];
+    self.logoLabel.text = @"原乡云道";
+    self.logoLabel.font = [UIFont fontWithName:@"Joyfonts-QinglongGB-Flash-Black" size:75];
+    self.logoLabel.textColor = [UIColor colorWithRed:16/255.0 green:89/255.0 blue:45/255.0 alpha:1];
+    [self.view addSubview:self.logoLabel];
+    
+    self.logoLabel.textAlignment = NSTextAlignmentCenter;
+    
     
     
     self.titleLabel = [[UILabel alloc] init];
     self.titleLabel.text = @"邮箱登陆";
     self.titleLabel.font = [UIFont systemFontOfSize:30];
-    self.titleLabel.tintColor = UIColor.greenColor;
+    self.titleLabel.textColor = UIColor.blackColor;
+
     [_backView addSubview:_titleLabel];
     self.titleLabel.textAlignment = NSTextAlignmentCenter;
     [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -110,6 +121,10 @@
         make.top.equalTo(self.usernameField.mas_bottom).offset(20);
         make.width.equalTo(@300);
         make.height.equalTo(@40);
+    }];
+    [self.logoLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.equalTo(@0);
+        make.bottom.equalTo(self.backView.mas_top).offset(-120);
     }];
     self.passwordField.layer.masksToBounds = YES;
     self.passwordField.layer.cornerRadius = 10;
@@ -237,7 +252,7 @@
 -(void)presentRegister {
     NSLog(@"111");
     BJRegisterViewController* registerViewController = [[BJRegisterViewController alloc] init];
-    registerViewController.modalPresentationStyle = UIModalPresentationFullScreen;
+//    registerViewController.modalPresentationStyle = UIModalPresentationFullScreen;
 
     [self presentViewController:registerViewController animated:YES completion:nil];
 }
