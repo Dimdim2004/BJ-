@@ -5,12 +5,12 @@
 //  Created by nanxun on 2025/3/9.
 //
 
-#import "ViewController.h"
+#import "UIKit/UIKit.h"
 @class  BJPostCommityView;
 #import "TZImagePickerController.h"
 NS_ASSUME_NONNULL_BEGIN
 
-@interface BJPostCommityViewController : ViewController <UITableViewDelegate, UITableViewDataSource, TZImagePickerControllerDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate>
+@interface BJPostCommityViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, TZImagePickerControllerDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate>
 @property (nonatomic, strong) BJPostCommityView* postView;
 @end
 

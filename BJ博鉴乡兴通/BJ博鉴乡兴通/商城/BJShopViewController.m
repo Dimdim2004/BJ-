@@ -6,6 +6,7 @@
 //
 
 #import "BJShopViewController.h"
+#import "BJScaleTableViewCell.h"
 
 @interface BJShopViewController ()<UITableViewDelegate,UITableViewDataSource>
 @property (strong, nonatomic)UITableView *tableView;
@@ -24,11 +25,31 @@
     self.tableView.dataSource = self;
     self.tableView.bounces = NO;
     
+    [self.tableView registerClass:[BJScaleTableViewCell class] forCellReuseIdentifier:@"ScaleTableViewCell"];
+    [self.view addSubview:self.tableView];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+    if(indexPath.section == 0) {
+        BJScaleTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ScaleTableViewCell" forIndexPath:indexPath];
+        cell.backgroundColor = [UIColor clearColor];
+        return cell;
+    }
     return nil;
 }
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    return 1;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    if(indexPath.section == 0) {
+        return 250;
+    }
+    return 0;
+}
+
 /*
 #pragma mark - Navigation
 

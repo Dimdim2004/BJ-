@@ -4,22 +4,34 @@
 #import <CoreLocation/CoreLocation.h>
 #import "BJAnnotation.h"
 #import "BJAnnotationView.h"
+#import "BJDisplayView.h"
+#import "BJNetworkingManger.h"
 #import <AFNetworking/AFNetworking.h>
+#import <SDWebImage.h>
+#import "BJDisplayModel.h"
+
+
+const static NSString *mapAPK = @"dhK73tBBx4BWr97HK8JnKocfz53ctjps";
 
 @interface BJMapViewController () <MKMapViewDelegate, CLLocationManagerDelegate>
 @property (nonatomic, strong) MKMapView *mapView;
 @property (nonatomic, strong) NSMutableDictionary *annotations;
+@property (nonatomic, strong) BJDisplayView *displayView;
 @property (nonatomic, assign) BOOL isLoaded;
+@property (nonatomic, strong)NSMutableDictionary *anotationCache;
+@property (nonatomic, strong)CLGeocoder *geocoder;
 @end
 
 @implementation BJMapViewController
 
 - (void)viewDidLoad {
-    self.isLoaded = NO;
     [super viewDidLoad];
+    self.isLoaded = NO;
+    self.anotationCache = [NSMutableDictionary dictionary];
+    self.geocoder = [[CLGeocoder alloc] init];
     [self setupMap];
-}
 
+}
 
 - (void)mapView:(MKMapView *)mapView didUpdateUserLocation:(MKUserLocation *)userLocation {
     if(!self.isLoaded){
@@ -31,10 +43,15 @@
     }
 }
 
+- (NSString *)cacheKeyForCoordinate:(CLLocationCoordinate2D)coordinate {
+    return [NSString stringWithFormat:@"%.6f|%.6f", coordinate.latitude, coordinate.longitude];
+}
+
+
+
 -(void)RequestForSearch:(NSString *)searchString
             andType:(BJAnnotationType)annotationType
        andUserLocation:(CLLocationCoordinate2D)userLocation {
-    NSLog(@"起点坐标:%f %f", userLocation.latitude, userLocation.longitude);
 
     MKLocalSearchRequest *request = [[MKLocalSearchRequest alloc] init];
     request.naturalLanguageQuery = searchString;
@@ -54,14 +71,10 @@
             if ((hasTown && noResidentCommittee) || annotationType == BJAnnotationTypeLiving) {
                 CLLocationCoordinate2D coordinate = mapItem.placemark.coordinate;
                 NSString *title = name;
-                NSString *subtitle = [self calculateDistanceFromCurrentLocationTo:coordinate];
-                NSLog(@"符合条件的条目: %@", title);
-                
                 dispatch_async(dispatch_get_main_queue(), ^{
                     BJAnnotation *annotation = [BJAnnotation AnnotationWithType:annotationType];
                     annotation.coordinate = coordinate;
                     annotation.title = title;
-                    annotation.subtitle = [NSString stringWithFormat:@"距离：%@", subtitle];
                     [self.mapView addAnnotation:annotation];
                 });
             }
@@ -77,14 +90,19 @@
     self.mapView.userTrackingMode = MKUserTrackingModeFollow;
     [self.view addSubview:self.mapView];
 
+    
+    self.displayView = [[BJDisplayView alloc] init];
+    self.displayView.frame = CGRectMake([UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height - 175, [UIScreen mainScreen].bounds.size.width * 0.9, 125);
+    self.displayView.backgroundColor = [UIColor whiteColor];
+    self.displayView.layer.cornerRadius = 15;
+    [self.view addSubview:self.displayView];
 }
 
 #pragma mark - 计算路线
 
-- (void)calculateRoutewithSelectedAnnotation:(CLLocationCoordinate2D)endCoordinate {
+-(void)calculateRoutewithSelectedAnnotation:(CLLocationCoordinate2D)endCoordinate {
     [self.mapView removeOverlays:self.mapView.overlays];
     
-    //起点
     CLLocationCoordinate2D startCoordinate = self.mapView.userLocation.location.coordinate;
     
     MKPlacemark *startPlacemark = [[MKPlacemark alloc] initWithCoordinate:startCoordinate];
@@ -92,7 +110,6 @@
     MKMapItem *startItem = [[MKMapItem alloc] initWithPlacemark:startPlacemark];
     MKMapItem *endItem   = [[MKMapItem alloc] initWithPlacemark:endPlacemark];
     
-    // 创建路线规划请求
     MKDirectionsRequest *request = [[MKDirectionsRequest alloc] init];
     request.source = startItem;
     request.destination = endItem;
@@ -146,9 +163,67 @@
 }
 
 - (void)mapView:(MKMapView *)mapView didSelectAnnotationView:(MKAnnotationView *)view {
-    [self calculateRoutewithSelectedAnnotation:view.annotation.coordinate];
+        BJAnnotation *annotation = (BJAnnotation *)view.annotation;
+        NSString *cacheKey = [self cacheKeyForCoordinate:annotation.coordinate];
+        
+        // 检查缓存
+        if (self.anotationCache[cacheKey]) {
+            [self updateDisplayViewWithCache:self.anotationCache[cacheKey]];
+        } else {
+            [self loadDataForAnnotation:annotation cacheKey:cacheKey];
+        }
+        [self calculateRoutewithSelectedAnnotation:view.annotation.coordinate];
+        
+        CGRect finalFrame = self.displayView.frame;
+        finalFrame.origin.x = [UIScreen mainScreen].bounds.size.width * 0.05;
+
+        [UIView animateWithDuration:0.3
+                              delay:0
+                            options:UIViewAnimationOptionCurveEaseOut
+                         animations:^{
+            self.displayView.frame = finalFrame;
+        } completion:nil];
+
 }
 
+- (void)updateDisplayViewWithCache:(BJDisplayModel *)cache {
+    [self.displayView updateWithModel:cache];
+}
+
+- (void)loadDataForAnnotation:(BJAnnotation *)annotation cacheKey:(NSString *)cacheKey {
+    CLLocationCoordinate2D coordinate = annotation.coordinate;
+    NSString *distance = [NSString stringWithFormat:@"距离：%@", [self calculateDistanceFromCurrentLocationTo:coordinate]];
+    
+    NSString *urlString = [NSString stringWithFormat:@"https://api.map.baidu.com/panorama/v2?width=512&height=256&location=%.6f,%.6f&fov=150&ak=dhK73tBBx4BWr97HK8JnKocfz53ctjps",coordinate.longitude, coordinate.latitude];
+    NSLog(@"%@",annotation.title);
+    NSString *name = annotation.title;
+    
+    BJDisplayModel *model = [[BJDisplayModel alloc] initWithName:[name copy] distance:[distance copy] imageUrl:[urlString copy]];
+    self.anotationCache[cacheKey] = model;
+    
+    dispatch_group_t group = dispatch_group_create();
+    dispatch_group_enter(group);
+    [model loadImageWithCompletion:^(UIImage * _Nullable image) {
+        dispatch_group_leave(group);
+    }];
+    
+    dispatch_group_enter(group);
+    
+    [[BJNetworkingManger sharedManger] loadWithLatitude:coordinate.latitude andLongitude:coordinate.longitude WithSuccess:^(NSString * _Nonnull addressString) {
+        model.address = addressString;
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.displayView updateWithModel:model];
+        });
+        dispatch_group_leave(group);
+    } failure:^(NSError * _Nonnull error) {
+        NSLog(@"获取地址失败: %@", error.localizedDescription);
+        dispatch_group_leave(group);
+    }];
+    
+    dispatch_notify(group, dispatch_get_main_queue(), ^{
+        [self.displayView updateWithModel:model];
+    });
+}
 // 距离计算
 -(NSString *) calculateDistanceFromCurrentLocationTo:(CLLocationCoordinate2D)coordinate {
     if (!CLLocationCoordinate2DIsValid(coordinate)) {

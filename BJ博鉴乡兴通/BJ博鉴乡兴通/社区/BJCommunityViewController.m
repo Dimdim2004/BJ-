@@ -90,14 +90,9 @@
     _isLocked = NO;
 }
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-<<<<<<< HEAD
     if (_isLocked) {
         return;
     }
-    CGFloat offset = self.iView.contentView.contentOffset.x;
-    NSInteger currentIndex = round(offset / [UIScreen mainScreen].bounds.size.width);
-=======
-    if(_isLocked) return;
     CGFloat offsetX = scrollView.contentOffset.x;
     CGFloat pageWidth = [UIScreen mainScreen].bounds.size.width;
     CGFloat progress = offsetX / (pageWidth);
@@ -109,16 +104,6 @@
     
 }
 
--(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
-    CGFloat offsetX = scrollView.contentOffset.x;
-    CGFloat pageWidth = [UIScreen mainScreen].bounds.size.width;
-    CGFloat progress = offsetX / (pageWidth);
-    NSInteger currentIndex = round(progress);
->>>>>>> upstream/main
-    [self selectSegmentAtIndex:currentIndex];
-    _isLocked = NO;
-
-}
 - (void)setupLine {
     _indicatorLine = [[UIView alloc] initWithFrame:CGRectMake(60, 40, 60, 2)];
     _indicatorLine.backgroundColor = [UIColor greenColor];

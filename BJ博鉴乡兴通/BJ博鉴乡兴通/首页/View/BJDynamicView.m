@@ -28,7 +28,7 @@
 
 
 -(void)setupView {
-    self.tableView = [[UITableView alloc] init];
+    self.tableView = [[UITableView alloc] initWithFrame:self.bounds style:UITableViewStylePlain];
     self.tableView.backgroundColor = [UIColor whiteColor];
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.tableView.bounces = NO;
@@ -36,9 +36,6 @@
 
     [self addSubview:self.tableView];
     
-    UIPanGestureRecognizer *panGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePan:)];
-    panGesture.delegate = self; // 这里的self是实现了代理方法的对象
-    [self.tableView addGestureRecognizer:panGesture];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     [self.tableView registerClass:[BJDynamicTableViewCell class] forCellReuseIdentifier:@" DynamicTableViewCell"];
@@ -96,7 +93,7 @@
     
 
     [backgroundView addSubview:fullImageView];
-    [window addSubview:backgroundView]; // 直接添加到window
+    [window addSubview:backgroundView];
     
     [UIView animateWithDuration:0.3 delay:0 usingSpringWithDamping:0.8 initialSpringVelocity:0.5 options:UIViewAnimationOptionCurveEaseInOut animations:^{
         backgroundView.alpha = 1;
@@ -121,7 +118,6 @@
     return nil;
 }
 
-// 关闭方法
 - (void)dismissImageView:(UITapGestureRecognizer *)gesture {
     [UIView animateWithDuration:0.3 animations:^{
         gesture.view.alpha = 0;
@@ -131,22 +127,10 @@
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+
     if (self.tableView.contentOffset.y <= 0) {
+        NSLog(@"!");
         [[NSNotificationCenter defaultCenter] postNotificationName:@"ShouldEnableOuterScroll" object:nil];
     }
 }
-
-
-
-
-- (void)handlePan:(UIPanGestureRecognizer *)gesture {
-    // 即使不需要处理手势状态，也需要保留空实现
-}
-
-- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer {
-    // 允许与系统滚动手势共存
-        return YES;
-
-}
-
 @end

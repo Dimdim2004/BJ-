@@ -6,9 +6,11 @@
 //
 
 #import "BJNetworkingManger.h"
+#import <MapKit/MapKit.h>
 #import "AFNetworking/AFNetworking.h"
 static id sharedManger = nil;
 const NSString* urlString = @"http://3.112.71.79:43223";
+const NSString* mapAPK = @"dhK73tBBx4BWr97HK8JnKocfz53ctjps";
 @implementation BJNetworkingManger
 +(instancetype) sharedManger{
     static dispatch_once_t onceToken;
@@ -42,12 +44,7 @@ const NSString* urlString = @"http://3.112.71.79:43223";
     [manger.requestSerializer setValue:@"mulitpart/form-data" forHTTPHeaderField:@"Content-Type"];
     NSDictionary* dicty = @{@"title":titleString, @"content":contentString, @"image_count":@(imageAry.count)};
     NSMutableArray* dataAry = [NSMutableArray array];
-    for (int i = 0; i < imageAry.count; i++) {
-        [dataAry addObject: ]
-    }
-    [manger POST:stirng parameters:dicty headers:nil constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
-        
-    } progress:<#^(NSProgress * _Nonnull uploadProgress)uploadProgress#> success:<#^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject)success#> failure:<#^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error)failure#>]
+    
 }
 +(NSString *)contentTypeForImageData:(NSData *)data{
     uint8_t c;
@@ -73,5 +70,21 @@ const NSString* urlString = @"http://3.112.71.79:43223";
             return nil;
     }
     return nil;
+}
+- (void)loadWithLatitude:(CGFloat)latitude andLongitude:(CGFloat)longitude WithSuccess:(addressSuccess)success failure:(error)error {
+    NSString *urlString = [NSString stringWithFormat:@"https://api.map.baidu.com/reverse_geocoding/v3/?ak=dhK73tBBx4BWr97HK8JnKocfz53ctjps&extensions_poi=1&entire_poi=1&sort_strategy=distance&output=json&coordtype=bd09ll&location=%.6f,%.6f",latitude,longitude];
+    AFHTTPSessionManager* manger = [AFHTTPSessionManager manager];
+    manger.requestSerializer = [AFJSONRequestSerializer serializer];
+    [manger.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+    
+    [manger GET:urlString parameters:nil headers:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        NSLog(@"申请地理编码成功");
+        NSLog(@"%@", responseObject);
+        NSString* addressString = [NSString stringWithFormat:@"%@", responseObject[@"result"][@"formatted_address"]];
+        NSLog(@"%@",addressString);
+        success(addressString);
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        NSLog(@"error");
+    }];
 }
 @end

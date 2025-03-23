@@ -37,18 +37,21 @@
     
     [super viewDidLoad];
     self.isLocked = NO;
+    _stickyViewBaseY = [UIApplication sharedApplication].statusBarFrame.size.height + self.navigationController.navigationBar.frame.size.height - 4;
     [self setupViews];
-    
+    [self setupStickyView];
+    [self setupLineView];
+    [self selectButtonAtIndex:0 animated:NO];
     [[NSNotificationCenter defaultCenter] addObserver:self
                                                selector:@selector(handleEnableOuterScroll:)
                                                    name:@"ShouldEnableOuterScroll"
                                                  object:nil];
-    _stickyViewBaseY = [UIApplication sharedApplication].statusBarFrame.size.height + self.navigationController.navigationBar.frame.size.height + 30;
+    
 }
 
 - (void)handleEnableOuterScroll:(NSNotification *)notification {
-    
     self.tableView.scrollEnabled = YES;
+
 }
 
 
@@ -56,12 +59,34 @@
     [super viewWillAppear:animated];
     self.navigationController.tabBarController.tabBar.hidden = NO;
 }
+
+-(void)setupStickyView {
+    
+    self.stickyView = [[UIView alloc] initWithFrame:CGRectMake(0, _stickyViewBaseY - 5, [UIScreen mainScreen].bounds.size.width, 40)];
+    self.stickyView.backgroundColor = [UIColor whiteColor];
+    [self.view addSubview:self.stickyView];
+    self.array = @[@"关注", @"周边", @"精选",@"陕西省"];
+    for(int i = 0; i < self.array.count; i++) {
+        NSString *name = self.array[i];
+        CGFloat width = [UIScreen mainScreen].bounds.size.width / self.array.count;
+        UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(i * width, 0, width, 40)];
+        [button setTitle:name forState:UIControlStateNormal];
+        [button setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
+        [button setTitleColor:[UIColor colorWithRed:16/255.0 green:89/255.0 blue:45/255.0 alpha:1] forState:UIControlStateSelected];
+        button.tag = 100 + i;
+        button.titleLabel.font = [UIFont systemFontOfSize:16 weight:UIFontWeightMedium];
+        [button addTarget:self action:@selector(buttonClicked:) forControlEvents:UIControlEventTouchUpInside];
+        [self.stickyView addSubview:button];
+    }
+}
+
 -(void)setupViews {
     
-    self.tableView = [[UITableView alloc] initWithFrame:[UIScreen mainScreen].bounds style:UITableViewStylePlain];
+    self.tableView = [[UITableView alloc] initWithFrame:[UIScreen mainScreen].bounds style:UITableViewStyleGrouped];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     self.tableView.bounces = NO;
+    self.tableView.scrollEnabled = YES;
     self.tableView.panGestureRecognizer.delegate = self.tableView;
     self.tableView.showsVerticalScrollIndicator = NO;
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
@@ -126,36 +151,12 @@
         case 2:
             return 120;
         case 3:
-            return [UIScreen mainScreen].bounds.size.height - _stickyViewBaseY - 35;
+            return [UIScreen mainScreen].bounds.size.height - _stickyViewBaseY;
         default:
             return 0;
     }
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
-    return 0;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    if (section == 3) {
-        return 40;
-    }
-    return 0;
-}
-
-- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
-    return nil;
-}
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-    if (section == 3) {
-        
-        [self setupStickyView];
-        [self setupLineView];
-        [self selectButtonAtIndex:0 animated:NO];
-        return self.stickyView;
-    }
-    return nil;
-}
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     switch (indexPath.section) {
@@ -197,6 +198,12 @@
     
 }
 
+- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
+    return nil;
+}
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
+    return 0;
+}
 #pragma mark - 按钮方法
 
 -(void)ToMap {
@@ -212,6 +219,7 @@
     [self.navigationController pushViewController:mapVC animated:YES];
 }
 
+#pragma mark - 手势冲突处理
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
     if (scrollView == self.tableView) {
@@ -232,15 +240,26 @@
     CGFloat offsetY = self.tableView.contentOffset.y;
     NSIndexPath *section3IndexPath = [NSIndexPath indexPathForRow:0 inSection:3];
     CGRect section3Rect = [self.tableView rectForSection:section3IndexPath.section];
-    CGFloat criticalY = section3Rect.origin.y - 45;
+    CGFloat criticalY = section3Rect.origin.y - _stickyViewBaseY + 30;
+    
     if (offsetY >= criticalY) {
+        [self.tableView setContentOffset:CGPointMake(0, section3Rect.origin.y - _stickyViewBaseY + 40) animated:NO];
+        self.stickyView.hidden = NO;
+        _segmentCell.stickyView.hidden = YES;
+        NSInteger page = [_segmentCell getCurrentPage];
+        [self selectButtonAtIndex:page animated:NO];
+        self.tableView.decelerationRate = UIScrollViewDecelerationRateFast;
+        BJDynamicView *currentView = [_segmentCell currentPageRollwithSet];
+        currentView.tableView.decelerationRate = UIScrollViewDecelerationRateNormal;
         for (BJDynamicView *view in _segmentCell.dynamicViews) {
             view.tableView.scrollEnabled = YES;
         }
+        
     } else {
-        for (BJDynamicView *view in _segmentCell.dynamicViews) {
-            view.tableView.scrollEnabled = NO;
-        }
+        self.tableView.decelerationRate = UIScrollViewDecelerationRateNormal;
+        self.stickyView.hidden = YES;
+        
+        _segmentCell.stickyView.hidden = NO;
     }
 }
 
@@ -248,7 +267,7 @@
     UIPanGestureRecognizer *pan = (UIPanGestureRecognizer *)gestureRecognizer;
     CGPoint translation = [pan translationInView:self.tableView];
     BJDynamicView *view = [_segmentCell currentPageRollwithSet];
-    if(self.tableView.scrollEnabled && translation.y > 0) {
+    if(self.tableView.scrollEnabled && translation.y > 0 && view.tableView.scrollEnabled) {
         for (BJDynamicView *view in _segmentCell.dynamicViews) {
             view.tableView.scrollEnabled = NO;
         }
@@ -258,37 +277,14 @@
     return YES;
 }
 
-#pragma mark - 手势冲突处理
+
 
 -(void)handlePan:(UIGestureRecognizer *)gestureRecognizer {
     
 }
 
 
--(void)setupStickyView {
-    
-    self.stickyView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, 40)];
-    self.stickyView.backgroundColor = [UIColor whiteColor];
-    self.array = @[@"关注", @"周边", @"精选",@"陕西省"];
-    for(int i = 0; i < self.array.count; i++) {
-        NSString *name = self.array[i];
-        CGFloat width = [UIScreen mainScreen].bounds.size.width / self.array.count;
-        UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(i * width, 0, width, 40)];
-        [button setTitle:name forState:UIControlStateNormal];
-        [button setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
-        [button setTitleColor:[UIColor colorWithRed:16/255.0 green:89/255.0 blue:45/255.0 alpha:1] forState:UIControlStateSelected];
-        button.tag = 100 + i;
-        button.titleLabel.font = [UIFont systemFontOfSize:16 weight:UIFontWeightMedium];
-        [button addTarget:self action:@selector(buttonClicked:) forControlEvents:UIControlEventTouchUpInside];
-        [self.stickyView addSubview:button];
-    }
-    
-    UIBezierPath *path = [UIBezierPath bezierPathWithRoundedRect:self.stickyView.bounds byRoundingCorners:UIRectCornerTopLeft | UIRectCornerTopRight cornerRadii:CGSizeMake(30, 20)];
-    CAShapeLayer *layer = [[CAShapeLayer alloc] init];
-    layer.frame = self.stickyView.bounds;
-    layer.path = path.CGPath;
-    self.stickyView.layer.mask = layer;
-}
+
 
 -(void)buttonClicked:(UIButton*)sender {
     self.isLocked = YES;

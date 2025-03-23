@@ -56,7 +56,6 @@
                                          centerButtonSize);
     self.centerButton.layer.cornerRadius = (centerButtonSize) / 2;
     self.centerButton.clipsToBounds = YES;
-    [self.centerButton addTarget:self action:@selector(centerButtonAction:) forControlEvents:UIControlEventTouchUpInside];
 
     CGFloat tabBarItemWidth = width / 5;
     NSInteger index = 0;
@@ -75,11 +74,6 @@
     }
 }
 
-//中心按钮点击的方法
-- (void)centerButtonAction:(UIButton *)sender {
-    NSLog(@"button is clicked");
-
-}
 
 //使得中心按钮超过tabBar的部分被点击也能进行相应
 - (BOOL)pointInside:(CGPoint)point withEvent:(UIEvent *)event

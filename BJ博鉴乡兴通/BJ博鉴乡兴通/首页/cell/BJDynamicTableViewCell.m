@@ -22,6 +22,7 @@
 @property (strong, nonatomic) UIButton *shareButton;
 @property (strong, nonatomic) UIView *interactionView;
 @property (strong, nonatomic) UIView *lineView;
+@property (assign, nonatomic) BOOL isLoad;
 @end
 
 @implementation BJDynamicTableViewCell
@@ -32,6 +33,7 @@
     if (self) {
         self.selectionStyle = UITableViewCellSelectionStyleNone;
         [self setupUI];
+        self.isLoad = NO;
         self.backgroundColor = [UIColor whiteColor];
         [self setupConstraints];
     }
@@ -167,9 +169,12 @@
     
     [_commentButton setTitle:model.numofComment forState:UIControlStateNormal];
     [_shareButton setTitle:model.numofShare forState:UIControlStateNormal];
+    if(!self.isLoad) {
+        [self setupImages:model.images];
+        self.isLoad = YES;
 
-    [self setupImages:model.images];
-
+    }
+    
 
 }
 
@@ -192,7 +197,6 @@
         [_imageContainer addSubview:imageView];
         
         imageView.image = [UIImage imageNamed:images[i]];
-        // 使用SDWebImage加载图片
 //        [imageView sd_setImageWithURL:[NSURL URLWithString:images[i]]
 //                     placeholderImage:[UIImage imageNamed:@"image_placeholder"]];
         
