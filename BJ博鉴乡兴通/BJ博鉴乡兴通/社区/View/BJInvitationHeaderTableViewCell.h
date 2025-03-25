@@ -16,6 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) UIPageControl* mypage;
 @property (nonatomic, strong) UIView* backView;
 @property (nonatomic, strong) UILabel* label;
+
 - (void)addImageToScrollerView:(NSArray<UIImage*>*)imageAry;
 - (void)addUrlImageToScrollerView:(NSArray<NSString*>*)imageAry;
 @end

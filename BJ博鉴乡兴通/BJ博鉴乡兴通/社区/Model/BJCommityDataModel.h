@@ -21,8 +21,6 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, assign) NSInteger commentCount;
 @property (nonatomic, assign) BOOL isFavorite;
 @property (nonatomic, copy) NSString* timeString;
-@property (nonatomic, assign) NSInteger height;
-@property (nonatomic, assign) NSInteger width;
 @end
 
 NS_ASSUME_NONNULL_END

@@ -6,10 +6,11 @@
 //
 
 #import <Foundation/Foundation.h>
-
+#import "DatabaseProtocol.h"
+@protocol WCTTableCoding;
 NS_ASSUME_NONNULL_BEGIN
 
-@interface BJMyDraftModel : NSObject
+@interface BJMyDraftModel : NSObject <DatabaseProtocol, WCTTableCoding>
 @property (nonatomic, copy) NSString* titleString;
 @property (nonatomic, copy) NSString* contentString;
 @property (nonatomic, copy) NSString* email;

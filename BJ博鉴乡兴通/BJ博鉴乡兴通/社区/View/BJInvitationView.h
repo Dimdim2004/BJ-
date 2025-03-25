@@ -13,6 +13,9 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) UITableView* mainView;
 @property (nonatomic, strong) UITextView* commentTextView;
 @property (nonatomic, strong) UIView* toolBar;
+@property (nonatomic, strong) UIButton* likeButton;
+@property (nonatomic, strong) UIButton* starButton;
+@property (nonatomic, strong) UIButton* commentButton;
 @property (nonatomic, strong) UIButton* postButton;
 @property (nonatomic, strong) UIView* backView;
 - (void)setToolBar;

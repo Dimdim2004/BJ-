@@ -11,6 +11,7 @@
 #import "BJPostCommityView.h"
 #import "Masonry.h"
 #import "BJPreviewModel.h"
+
 @interface BJPreviewlViewController ()
 
 @end

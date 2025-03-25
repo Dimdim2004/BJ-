@@ -13,6 +13,10 @@
 #import "BJCommityPostModel.h"
 #import "BJPreviewModel.h"
 #import "BJNetworkingManger.h"
+#import "BJMyDraftModel.h"
+#import "BJLocalDataManger.h"
+#import "BJMymagesInDraftModel.h"
+#import "BJNetworkingManger.h"
 @interface BJPostCommityViewController () {
     UITapGestureRecognizer* _resTap;
 }
@@ -84,7 +88,7 @@
     if (self.textField.text.length > 0 && self.textView.text.length > 0 && ![self.textView.text isEqualToString:@"请输入内容"] ) {
         id manger = [BJNetworkingManger sharedManger];
         [manger uploadWithImage:self.uploadPhotos andTitle:self.textField.text Content:self.textView.text uploadSuccess:^(BJUploadSuccessModel * _Nonnull uploadModel) {
-                NSLog(@"上传成功");
+                [self showPostSuccessAlert];
             } error:^(NSError * _Nonnull error) {
                 NSLog(@"上传失败");
             }];
@@ -94,7 +98,80 @@
     
 }
 - (void)draft {
-    [self dismissViewControllerAnimated:YES completion:nil];
+    BJMyDraftModel* model = [[BJMyDraftModel alloc] init];
+    BJMymagesInDraftModel* imagesModel = [[BJMymagesInDraftModel alloc] init];
+    [[BJLocalDataManger sharedManger] loadDataManger:model];
+    NSInteger noteId = 0;
+    if (self.textField.text.length > 0 && self.textView.text.length > 0 && ![self.textView.text isEqualToString:@"请输入内容"]) {
+        model.contentString = self.textView.text;
+        model.titleString = self.textField.text;
+        if ([BJNetworkingManger sharedManger].email != nil) {
+            model.email = [BJNetworkingManger sharedManger].email;
+        } else {
+            model.email = @"3073623804@qq.com";
+        }
+        [[BJLocalDataManger sharedManger] insert:model];
+        NSArray* ary = [[BJLocalDataManger sharedManger] search:model];
+        model = ary[0];
+        noteId = model.noteId;
+        [[BJLocalDataManger sharedManger] closeCurrentDatabase];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            NSArray* ary = [self saveImages];
+            BJMymagesInDraftModel* imagesModel = [[BJMymagesInDraftModel alloc] init];
+            [[BJLocalDataManger sharedManger] loadDataManger:imagesModel];
+            for (int i = 0; i < ary.count; i++) {
+                BJMymagesInDraftModel* imagesModel = [[BJMymagesInDraftModel alloc] init];
+                imagesModel.noteId = noteId;
+                imagesModel.imageFilePath = ary[i];
+                [[BJLocalDataManger sharedManger] insert:imagesModel];
+            }
+            [[BJLocalDataManger sharedManger] closeCurrentDatabase];
+            [self showDraftSuccessAlert];
+        });
+    }
+}
+
+- (void)showDraftSuccessAlert {
+    UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"保存到草稿箱成功" message:@"退出编辑发表页面" preferredStyle:UIAlertControllerStyleAlert];
+    [alert addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        [self dismissViewControllerAnimated:YES completion:nil];
+    }]];
+    [self presentViewController:alert animated:YES completion:nil];
+}
+- (void)showPostSuccessAlert {
+    UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"发布成功" message:@"退出编辑发表页面" preferredStyle:UIAlertControllerStyleAlert];
+    [alert addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        [self dismissViewControllerAnimated:YES completion:nil];
+    }]];
+    [self presentViewController:alert animated:YES completion:nil];
+}
+- (NSArray*)saveImages {
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    NSURL *documentsURL = [[fileManager URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] firstObject];
+    NSMutableArray* ary = [NSMutableArray array];
+    [self.uploadPhotos enumerateObjectsUsingBlock:^(UIImage *image, NSUInteger index, BOOL *stop) {
+        NSData *data = UIImageJPEGRepresentation(image, 1.0);
+        if (!data) {
+            NSLog(@"第%lu张图片转换失败", (unsigned long)(index + 1));
+            return;
+        }
+        NSDateFormatter* dateFormatter = [[NSDateFormatter alloc] init];
+        dateFormatter.timeStyle = NSDateFormatterMediumStyle;
+        [dateFormatter setDateFormat:@"yyyyMMdd_HHmmssSSS.jpg"];
+        NSString *timestamp = [dateFormatter stringFromDate:[NSDate date]];
+        NSString *randomSuffix = [NSString stringWithFormat:@"%04u", arc4random_uniform(10000)];
+        NSString *fileName = [NSString stringWithFormat:@"image_%@_%@.jpg", timestamp, randomSuffix];
+        NSURL *fileURL = [documentsURL URLByAppendingPathComponent:fileName];
+        NSError *error = nil;
+        BOOL success = [data writeToURL:fileURL options:NSDataWritingAtomic error:&error];
+        [ary addObject:fileURL.absoluteString];
+        if (success) {
+            NSLog(@"第%lu张图片保存成功", (unsigned long)(index + 1));
+        } else {
+            NSLog(@"第%lu张图片保存失败: %@", (unsigned long)(index + 1), error.localizedDescription);
+        }
+    }];
+    return [NSArray arrayWithArray:ary];
 }
 - (void)preview  {
     BJPreviewlViewController* preViewController = [[BJPreviewlViewController alloc] init];
@@ -189,7 +266,6 @@
         [imagePickerVc setUiImagePickerControllerSettingBlock:^(UIImagePickerController *imagePickerController) {
             imagePickerController.videoQuality = UIImagePickerControllerQualityTypeHigh;
         }];
-        // 修改 字体颜色为黑色
         [imagePickerVc.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor blackColor]}];
         
         imagePickerVc.allowPickingVideo = NO;
@@ -197,9 +273,7 @@
         imagePickerVc.allowPickingOriginalPhoto = NO;
         imagePickerVc.allowPickingGif = NO;
         imagePickerVc.allowPickingMultipleVideo = NO;// 是否可以多选视频
-        // 设置是否显示图片序号
         imagePickerVc.showSelectedIndex = YES;
-        //  照片排列按修改时间升序
         imagePickerVc.sortAscendingByModificationDate = YES;
         imagePickerVc.modalPresentationStyle = UIModalPresentationFullScreen;
         if (@available(iOS 13.0, *)) {

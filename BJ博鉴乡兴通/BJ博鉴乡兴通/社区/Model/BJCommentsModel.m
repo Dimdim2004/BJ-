@@ -14,4 +14,7 @@
 + (NSDictionary<NSString *,id> *)modelContainerPropertyGenericClass {
     return @{@"commentList":[BJSubCommentsModel class]};
 }
++ (NSArray<NSString *> *)modelPropertyBlacklist {
+    return @[@"pageId"];
+}
 @end

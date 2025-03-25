@@ -8,6 +8,7 @@
 #import "BJCheckEmailViewModel.h"
 #import "AFNetworking/AFNetworking.h"
 #import "BJCheckEmailModel.h"
+#import "BJNetworkingManger.h"
 @implementation BJCheckEmailViewModel
 - (instancetype)init
 {
@@ -25,15 +26,15 @@
 }
 
 - (void)submmitWithSuccess:(checkSuccess)success failure:(error)error {
-    AFHTTPSessionManager* manger = [AFHTTPSessionManager manager];
-    NSString* string = @"http://3.112.71.79:43223/validemail";
-    manger.requestSerializer = [AFJSONRequestSerializer serializer];
-    manger.responseSerializer = [AFJSONResponseSerializer serializer];
-    [manger.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
-    [manger.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+    AFHTTPSessionManager *manager = [BJNetworkingManger BJcreateAFHTTPSessionManagerWithBaseURLString:@"https://121.43.226.108:8080"];
+    NSString* string = @"https://121.43.226.108:8080/validemail";
+    manager.requestSerializer = [AFJSONRequestSerializer serializer];
+    manager.responseSerializer = [AFJSONResponseSerializer serializer];
+    [manager.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+    [manager.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Accept"];
     NSLog(@"%@", self.user.email);
     NSDictionary* dicty = @{@"email":self.user.email};
-    [manger POST:string parameters:dicty headers:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+    [manager POST:string parameters:dicty headers:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         NSLog(@"success");
         BJCheckEmailModel* userModel = [BJCheckEmailModel yy_modelWithJSON:responseObject];
         NSLog(@"Success: %@", responseObject);

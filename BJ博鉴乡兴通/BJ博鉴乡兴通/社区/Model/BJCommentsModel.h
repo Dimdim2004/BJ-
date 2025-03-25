@@ -16,6 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy) NSString* msg;
 @property (nonatomic, copy) NSArray* commentList;
 @property (nonatomic, assign) NSInteger total;
+@property (nonatomic, assign) NSInteger pageId;
 @end
 
 

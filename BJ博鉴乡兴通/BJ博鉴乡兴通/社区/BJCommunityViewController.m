@@ -37,16 +37,48 @@
     [self setSegmentControl];
     [self setupLine];
     _heightAry = [NSMutableArray array];
-    
+//    self.iView = [[BJMainCommunityView alloc] initWithFrame:self.view.bounds];
+//    self.iView.contentView.delegate = self;
+//    for (int i = 0; i < 3; i++) {
+//        for (int j = 0; j < 20; j++) {
+//            [self->_heightAry addObject:[NSNumber numberWithInteger:(random()%20 + 123)]];
+//        }
+//    }
+//    [self.iView setUIWithHeightAry:self->_heightAry];
+//    for (int i = 0; i < 3; i++) {
+//        self.iView.flowViewArray[i].delegate = self;
+//        self.iView.flowViewArray[i].dataSource = self;
+//        [self.iView.flowViewArray[i] registerClass:[BJCommityCollectionViewCell class] forCellWithReuseIdentifier:@"Cell"];
+//    }
+//    
+//    [self.view addSubview:self.iView];
     [manger loadImage:_page PageSize:_pageSize WithSuccess:^(BJCommityModel * _Nonnull commityModel) {
         self.iView = [[BJMainCommunityView alloc] initWithFrame:self.view.bounds];
         for (int i = 0; i < commityModel.data.count; i++) {
             @autoreleasepool {
                 BJCommityDataModel* data = commityModel.data[i];
-                CGFloat height = [data.title textHight:data.title andFont:[UIFont systemFontOfSize:14] Width:190] + 30 + data.height / data.width * 190;
-                [self->_heightAry addObject:[NSNumber numberWithFloat:height]];
+                CGFloat height = [data.title textHight:data.title andFont:[UIFont systemFontOfSize:14] Width:186.5] + 40;
+                BJImageModel* imageModel = data.images[0];
+                if (i < 3) {
+                    NSLog(@"第几个imageModel%ld", imageModel.height);
+                }
+               // NSLog(@"%lf", height);
+                if (imageModel.height != 0) {
+                    //NSLog(@"%ld, %ld", imageModel.height, imageModel.width);
+                    CGFloat imageHeight = ((CGFloat)imageModel.height / (CGFloat)imageModel.width) * 186.5;
+                    //NSLog(@"image的%lf", imageHeight);
+                    //NSLog(@"计算出的总高度%lf", (height + imageHeight));
+                    [self->_heightAry addObject:[NSNumber numberWithFloat:(height + imageHeight)]];
+                } else {
+                    //NSLog(@"当前位置没有传来图片");
+                    [self->_heightAry addObject:[NSNumber numberWithFloat:(height + 166.72)]];
+                }
+                
             }
         }
+//        for (int i = 0; i < self->_heightAry.count; i++) {
+//            NSLog(@"打印对应的计算出%lf", [self->_heightAry[i] floatValue]);
+//        }
         [self.iView setUIWithHeightAry:self->_heightAry];
         self.iView.contentView.delegate = self;
         [self.model addObject:commityModel];
@@ -173,13 +205,17 @@
         BJCommityDataModel* dataModel = commityModel.data[indexPath.item];
         cell.label.text = dataModel.title;
         cell.nameLabel.text = dataModel.username;
-        [cell.profileView sd_setImageWithURL:[NSURL URLWithString:dataModel.avatar]];
+        if (dataModel.avatar.length != 0) {
+            [cell.profileView sd_setImageWithURL:[NSURL URLWithString:dataModel.avatar]];
+        } else {
+            cell.profileView.image = [UIImage imageNamed:@"title.jpg"];
+        }
         NSArray* ary = dataModel.images;
-        if (ary != nil) {
+        if (ary.count != 0) {
             BJImageModel* imageModel = ary[0];
             [cell.imageView sd_setImageWithURL:[NSURL URLWithString:imageModel.url]];
         } else {
-            cell.imageView.image = nil;
+            cell.imageView.image = [UIImage imageNamed:@"1.png"];
         }
         cell.likeButton.selected = dataModel.isFavorite;
         [cell.likeButton setTitle:[NSString stringWithFormat:@"%ld",dataModel.favoriteCount] forState:UIControlStateNormal];
@@ -212,6 +248,9 @@
         BJCommityDataModel* dataModel = commityModel.data[indexPath.item];
         invitationViewController.commityModel = dataModel;
         invitationViewController.workId = dataModel.postId;
+        NSLog(@"%ld", dataModel.images.count);
+        BJImageModel* firstImage = dataModel.images[0];
+        NSLog(@"%ld", firstImage.height);
     } else {
         invitationViewController.workId = 0;
     }
