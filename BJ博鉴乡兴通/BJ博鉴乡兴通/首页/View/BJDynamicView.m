@@ -129,7 +129,6 @@
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
 
     if (self.tableView.contentOffset.y <= 0) {
-        NSLog(@"!");
         [[NSNotificationCenter defaultCenter] postNotificationName:@"ShouldEnableOuterScroll" object:nil];
     }
 }

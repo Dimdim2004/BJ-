@@ -45,7 +45,7 @@
 
 -(void)setupStickyView {
     
-    self.stickyView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, 40)];
+    self.stickyView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, 45)];
     self.stickyView.backgroundColor = [UIColor whiteColor];
     [self.contentView addSubview:self.stickyView];
     
@@ -53,7 +53,7 @@
     for(int i = 0; i < self.array.count; i++) {
         NSString *name = self.array[i];
         CGFloat width = [UIScreen mainScreen].bounds.size.width / self.array.count;
-        UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(i * width, 0, width, 40)];
+        UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(i * width, 0, width, 45)];
         [button setTitle:name forState:UIControlStateNormal];
         [button setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
         [button setTitleColor:[UIColor colorWithRed:16/255.0 green:89/255.0 blue:45/255.0 alpha:1] forState:UIControlStateSelected];
@@ -104,7 +104,7 @@
 
 
 -(void)setupLineView {
-    self.lineView = [[UIView alloc] initWithFrame:CGRectMake(17, 38, [UIScreen mainScreen].bounds.size.width / self.array.count - 15, 2)];
+    self.lineView = [[UIView alloc] initWithFrame:CGRectMake(17, 43, [UIScreen mainScreen].bounds.size.width / self.array.count - 15, 2)];
     self.lineView.clipsToBounds = YES;
     self.lineView.layer.cornerRadius = 1;
     self.lineView.backgroundColor = [UIColor colorWithRed:16/255.0 green:89/255.0 blue:45/255.0 alpha:1];

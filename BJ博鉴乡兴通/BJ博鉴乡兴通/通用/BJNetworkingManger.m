@@ -11,6 +11,9 @@
 #import "BJCommityModel.h"
 #import "UIKit/UIImage.h"
 #import "BJUploadSuccessModel.h"
+#import "BJCountryModel.h"
+
+
 static id sharedManger = nil;
 const NSString* urlString = @"https://121.43.226.108:8080";
 const NSString* mapAPK = @"dhK73tBBx4BWr97HK8JnKocfz53ctjps";
@@ -177,36 +180,55 @@ const NSString* mapAPK = @"dhK73tBBx4BWr97HK8JnKocfz53ctjps";
 
 }
 - (void)loadWithLatitude:(CGFloat)latitude andLongitude:(CGFloat)longitude WithSuccess:(addressSuccess)success failure:(error)error {
-    NSString *urlString = [NSString stringWithFormat:@"https://api.map.baidu.com/reverse_geocoding/v3/?ak=dhK73tBBx4BWr97HK8JnKocfz53ctjps&extensions_poi=1&entire_poi=1&sort_strategy=distance&output=json&coordtype=bd09ll&location=%.6f,%.6f",latitude,longitude];
+    NSString *locationUrlString = [NSString stringWithFormat:@"https://api.map.baidu.com/reverse_geocoding/v3/?ak=dhK73tBBx4BWr97HK8JnKocfz53ctjps&extensions_poi=1&entire_poi=1&sort_strategy=distance&output=json&coordtype=bd09ll&location=%.6f,%.6f",latitude,longitude];
     AFHTTPSessionManager* manger = [AFHTTPSessionManager manager];
     manger.requestSerializer = [AFJSONRequestSerializer serializer];
     [manger.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Accept"];
     
-    [manger GET:urlString parameters:nil headers:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-        NSLog(@"申请地理编码成功");
-        NSLog(@"%@", responseObject);
+    [manger GET:locationUrlString parameters:nil headers:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         NSString* addressString = [NSString stringWithFormat:@"%@", responseObject[@"result"][@"formatted_address"]];
-        NSLog(@"%@",addressString);
         success(addressString);
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         NSLog(@"error");
     }];
 }
-- (void)uploadWithComment:(NSString*)commentString andPraentId:(NSInteger)parentId replyId:(NSInteger)replyId  workId:(NSInteger)workId type:(NSInteger)type uploadSuccess:(uploadSuccess)uploadSuccess error:(error)error {
-    AFHTTPSessionManager *manager = [BJNetworkingManger BJcreateAFHTTPSessionManagerWithBaseURLString:@"https://121.43.226.108:8080"];
+
+
+-(void)loadWithCountryID:(NSString *)countryID WithSuccess:(commitySuccess)success failure:(error)error {
+    NSString *commityUrlString = [NSString stringWithFormat:@"%@/posts/:%@",urlString,countryID];
+    AFHTTPSessionManager* manger = [AFHTTPSessionManager manager];
+    manger.requestSerializer = [AFJSONRequestSerializer serializer];
+    [manger.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+    
+    [manger GET:commityUrlString parameters:nil headers:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+            BJCommityModel* commityModel = [BJCommityModel yy_modelWithJSON:responseObject];
+            if (commityModel.status == 1000) {
+                NSLog(@"%@", responseObject);
+                NSLog(@"%@", commityModel);
+                commitySuccess(commityModel);
+            }
+        } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+            NSLog(@"error");
+        }];
+}
+
+- (void)findTargetCountryWithLatitude:(CGFloat)latitude andLongitude:(CGFloat)longitude WithSuccess:(countrySuccess)success failure:(error)error {
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     manager.requestSerializer = [AFHTTPRequestSerializer serializer];
-    manager.responseSerializer = [AFJSONResponseSerializer serializer];
-    NSString* bearerString = [NSString stringWithFormat:@"Bearer %@", self.token];
-    [manager.requestSerializer setValue:bearerString forHTTPHeaderField:@"Authorization"];
-    [manager.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
-    [manager.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Accept"];
-    NSString* string = [NSString stringWithFormat:@"%@/users/comment", urlString];
-    NSDictionary* dicty = @{@"content":commentString, @"parent_id":[NSNumber numberWithInteger:parentId], @"reply_to_id":[NSNumber numberWithInteger:replyId] ,@"work_id":[NSNumber numberWithInteger:workId], @"type":[NSNumber numberWithInteger:type]};
-    [manager POST:string parameters:dicty headers:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-        NSLog(@"success");
-        
-        NSLog(@"Success: %@", responseObject);
-        
+
+    [manager.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"accept"];
+    [manager.requestSerializer setValue:@"zh" forHTTPHeaderField:@"Accept-Language"];
+    [manager.requestSerializer setValue:@"multipart/form-data" forHTTPHeaderField:@"Content-Type"];
+
+//    NSDictionary *params = @{
+//        @"lon": latitude,
+//        @"lat": longitude
+//    };
+    NSString *countryUrlString = [NSString stringWithFormat:@"%@%@",urlString,@"/village"];
+    [manager GET:countryUrlString parameters:nil headers:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        NSLog(@"%@",responseObject);
+        BJCountryModel* countryModel = [BJCountryModel yy_modelWithJSON:responseObject[@"data"]];
+        success(countryModel);
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         NSLog(@"error");
     }];

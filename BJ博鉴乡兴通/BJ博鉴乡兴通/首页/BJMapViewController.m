@@ -9,6 +9,7 @@
 #import <AFNetworking/AFNetworking.h>
 #import <SDWebImage.h>
 #import "BJDisplayModel.h"
+#import "BJMyHometownViewController.h"
 
 
 const static NSString *mapAPK = @"dhK73tBBx4BWr97HK8JnKocfz53ctjps";
@@ -20,6 +21,7 @@ const static NSString *mapAPK = @"dhK73tBBx4BWr97HK8JnKocfz53ctjps";
 @property (nonatomic, assign) BOOL isLoaded;
 @property (nonatomic, strong)NSMutableDictionary *anotationCache;
 @property (nonatomic, strong)CLGeocoder *geocoder;
+@property (nonatomic, strong)BJDisplayModel *currentDisplayModel;
 @end
 
 @implementation BJMapViewController
@@ -96,6 +98,17 @@ const static NSString *mapAPK = @"dhK73tBBx4BWr97HK8JnKocfz53ctjps";
     self.displayView.backgroundColor = [UIColor whiteColor];
     self.displayView.layer.cornerRadius = 15;
     [self.view addSubview:self.displayView];
+    
+    UIGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(enterDisplayView)];
+    [self.displayView addGestureRecognizer:tapGesture];
+}
+
+-(void)enterDisplayView {
+    BJMyHometownViewController *hometownVC = [[BJMyHometownViewController alloc] init];
+    
+    hometownVC.countryModel = self.currentDisplayModel;
+    self.navigationController.tabBarController.tabBar.hidden = YES;
+    [self.navigationController pushViewController:hometownVC animated:YES];
 }
 
 #pragma mark - 计算路线
@@ -199,6 +212,7 @@ const static NSString *mapAPK = @"dhK73tBBx4BWr97HK8JnKocfz53ctjps";
     NSString *name = annotation.title;
     
     BJDisplayModel *model = [[BJDisplayModel alloc] initWithName:[name copy] distance:[distance copy] imageUrl:[urlString copy]];
+    self.currentDisplayModel = model;
     self.anotationCache[cacheKey] = model;
     
     dispatch_group_t group = dispatch_group_create();
@@ -213,6 +227,7 @@ const static NSString *mapAPK = @"dhK73tBBx4BWr97HK8JnKocfz53ctjps";
         model.address = addressString;
         dispatch_async(dispatch_get_main_queue(), ^{
             [self.displayView updateWithModel:model];
+            NSLog(@"获取地址成功: %@", addressString);
         });
         dispatch_group_leave(group);
     } failure:^(NSError * _Nonnull error) {

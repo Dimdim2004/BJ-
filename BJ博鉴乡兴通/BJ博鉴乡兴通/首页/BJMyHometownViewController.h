@@ -6,10 +6,12 @@
 //
 
 #import <UIKit/UIKit.h>
-
+@class BJCountryModel,BJCommityModel;
 NS_ASSUME_NONNULL_BEGIN
 
 @interface BJMyHometownViewController : UIViewController
+@property (strong, nonatomic)BJCountryModel *countryModel;
+@property (strong, nonatomic)NSMutableArray <BJCommityModel *>* commityArray;
 
 @end
 

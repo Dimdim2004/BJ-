@@ -12,6 +12,8 @@
 #import "BJSegmentControlTableViewCell.h"
 #import "BJMyHometownViewController.h"
 #import "BJSearchBarTableViewCell.h"
+#import "BJCountryModel.h"
+#import "BJNotFoundViewController.h"
 
 
 #import "BJDynamicView.h"
@@ -62,7 +64,7 @@
 
 -(void)setupStickyView {
     
-    self.stickyView = [[UIView alloc] initWithFrame:CGRectMake(0, _stickyViewBaseY - 5, [UIScreen mainScreen].bounds.size.width, 40)];
+    self.stickyView = [[UIView alloc] initWithFrame:CGRectMake(0, _stickyViewBaseY, [UIScreen mainScreen].bounds.size.width, 40)];
     self.stickyView.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:self.stickyView];
     self.array = @[@"关注", @"周边", @"精选",@"陕西省"];
@@ -214,9 +216,23 @@
     [self.navigationController pushViewController:mapVC animated:YES];
 }
 -(void)ToMyHometown {
-    
-    BJMyHometownViewController *mapVC = [[BJMyHometownViewController alloc] init];
-    [self.navigationController pushViewController:mapVC animated:YES];
+    BOOL flag = YES;
+    self.navigationController.tabBarController.tabBar.hidden = YES;
+    if (flag) {
+        BJNotFoundViewController *notFoundVC = [[BJNotFoundViewController alloc] init];
+        [self.navigationController pushViewController:notFoundVC animated:YES];
+    } else {
+        BJCountryModel *model = [[BJCountryModel alloc] init];
+            model.name = @"浙江省杭州市";
+            model.image = @"https://images.unsplash.com/photo-1570655650497-54e0d84ff219";
+            model.countryID = @"CN-330100";
+            model.location = @"O'Farrell Street, San Francisco, California, United States";
+            model.countryDescription = @"杭州，浙江省省会，长三角南翼中心城市，以“人间天堂”美誉闻名于世。集自然山水、历史底蕴与现代创新于一体，是联合国认证的“全球最佳旅游城市”之一。杭州，浙江省省会，长三角南翼中心城市，以“人间天堂”美誉闻名于世。集自然山水、历史底蕴与现代创新于一体，是联合国认证的“全球最佳旅游城市”之一。杭州，浙江省省会，长三角南翼中心城市，以“人间天堂”美誉闻名于世。集自然山水、历史底蕴与现代创新于一体，是联合国认证的“全球最佳旅游城市”之一。杭州，浙江省省会，长三角南翼中心城市，以“人间天堂”美誉闻名于世。集自然山水、历史底蕴与现代创新于一体，是联合国认证的“全球最佳旅游城市”之一。杭州，浙江省省会，长三角南翼中心城市，以“人间天堂”美誉闻名于世。集自然山水、历史底蕴与现代创新于一体，是联合国认证的“全球最佳旅游城市”之一。";
+        BJMyHometownViewController *hometownVC = [[BJMyHometownViewController alloc] init];
+        hometownVC.countryModel = model;
+        [self.navigationController pushViewController:hometownVC animated:YES];
+    }
+   
 }
 
 #pragma mark - 手势冲突处理
@@ -240,17 +256,16 @@
     CGFloat offsetY = self.tableView.contentOffset.y;
     NSIndexPath *section3IndexPath = [NSIndexPath indexPathForRow:0 inSection:3];
     CGRect section3Rect = [self.tableView rectForSection:section3IndexPath.section];
-    CGFloat criticalY = section3Rect.origin.y - _stickyViewBaseY + 30;
+    CGFloat criticalY = section3Rect.origin.y - _stickyViewBaseY + 40;
+    
     
     if (offsetY >= criticalY) {
-        [self.tableView setContentOffset:CGPointMake(0, section3Rect.origin.y - _stickyViewBaseY + 40) animated:NO];
+        [self.tableView setContentOffset:CGPointMake(0, criticalY) animated:NO];
         self.stickyView.hidden = NO;
         _segmentCell.stickyView.hidden = YES;
         NSInteger page = [_segmentCell getCurrentPage];
         [self selectButtonAtIndex:page animated:NO];
         self.tableView.decelerationRate = UIScrollViewDecelerationRateFast;
-        BJDynamicView *currentView = [_segmentCell currentPageRollwithSet];
-        currentView.tableView.decelerationRate = UIScrollViewDecelerationRateNormal;
         for (BJDynamicView *view in _segmentCell.dynamicViews) {
             view.tableView.scrollEnabled = YES;
         }

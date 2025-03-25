@@ -9,7 +9,7 @@
 #import "BJCommentsModel.h"
 @class AFHTTPSessionManager;
 @class BJCommityModel;
-@class BJUploadSuccessModel;
+@class BJUploadSuccessModel,BJCountryModel;
 @class UIImage;
 NS_ASSUME_NONNULL_BEGIN
 
@@ -19,6 +19,8 @@ typedef void(^addressSuccess)(NSString* addressString);
 typedef void(^error)(NSError* error);
 typedef void(^uploadSuccess)(BJUploadSuccessModel* uploadModel);
 typedef void(^commitySuccess)(BJCommityModel* commityModel);
+typedef void(^countrySuccess)(BJCountryModel* countryModel);
+
 typedef void(^error)(NSError* error);
 @property (nonatomic, strong) NSString* token;
 @property (nonatomic, strong) NSString* email;
@@ -29,6 +31,10 @@ typedef void(^error)(NSError* error);
 - (void)loadWithLatitude:(CGFloat)viedoId andLongitude:(CGFloat)commentId WithSuccess:(addressSuccess)success failure:(error)error;
 + (AFHTTPSessionManager *)BJcreateAFHTTPSessionManagerWithBaseURLString:(NSString *)urlString;
 - (void)uploadWithComment:(NSString*)commentString andPraentId:(NSInteger)parentId replyId:(NSInteger)replyId  workId:(NSInteger)workId type:(NSInteger)type uploadSuccess:(uploadSuccess)uploadSuccess error:(error)error;
+
+- (void)loadWithCountryID:(NSString *)countryID WithSuccess:(commitySuccess)success failure:(error)error;
+- (void)findTargetCountryWithLatitude:(CGFloat)latitude andLongitude:(CGFloat)longitude WithSuccess:(countrySuccess)success failure:(error)error;
+
 +(instancetype) sharedManger;
 @end
 
