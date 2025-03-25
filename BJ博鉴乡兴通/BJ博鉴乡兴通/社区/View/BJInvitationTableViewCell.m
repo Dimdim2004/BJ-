@@ -113,7 +113,7 @@
             make.height.equalTo(@30);
             make.bottom.equalTo(self.timeLabel.mas_bottom);
             make.right.equalTo(self.contentView.mas_right).offset(-30);
-            make.width.equalTo(@60);
+            make.width.equalTo(@80);
         }];
         //_likeButton.imageView.frame = CGRectMake(0, 0, 20, 20);
         //CGFloat spacing = 5.0;

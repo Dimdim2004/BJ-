@@ -11,6 +11,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface BJImageModel : NSObject <YYModel>
 @property (nonatomic, copy) NSString* url;
+@property (nonatomic, assign) NSInteger height;
+@property (nonatomic, assign) NSInteger width;
 @end
 
 NS_ASSUME_NONNULL_END

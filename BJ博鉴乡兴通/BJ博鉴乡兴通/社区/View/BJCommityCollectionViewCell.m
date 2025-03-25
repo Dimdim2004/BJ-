@@ -23,11 +23,13 @@
         self.likeButton = [UIButton buttonWithType:UIButtonTypeCustom];
         self.nameLabel.text = @"123444";
         self.profileView.image = [UIImage imageNamed:@"WechatIMG17.jpg"];
-        
+        self.nameLabel.font = [UIFont systemFontOfSize:10];
+        self.nameLabel.textColor = UIColor.lightGrayColor;
         self.profileView.layer.masksToBounds = YES;
         self.profileView.layer.cornerRadius = 30 / 2;
         
-        [self.likeButton setImage:[UIImage imageNamed:@"likeSmall.png"] forState:UIControlStateSelected];
+        [self.likeButton setImage:[UIImage imageNamed:@"likeSmall.png"] forState:UIControlStateNormal];
+        [self.likeButton setImage:[UIImage imageNamed:@"likeSelected.png"] forState:UIControlStateSelected];
         [self.contentView addSubview:_imageView];
         [self.contentView addSubview:_label];
         [self.contentView addSubview:_profileView];
@@ -37,7 +39,7 @@
         
         [self.label mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.and.right.equalTo(self.contentView);
-            make.bottom.equalTo(self.contentView).offset(-35);
+            make.bottom.equalTo(self.contentView).offset(-33);
         }];
         [self.profileView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.equalTo(self.contentView).offset(5);
@@ -60,7 +62,7 @@
         [self.imageView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.top.equalTo(self.mas_top).priorityHigh();
             make.left.and.right.equalTo(self.contentView);
-            make.bottom.equalTo(self.label.mas_top);
+            make.bottom.equalTo(self.label.mas_top).offset(-10);
         }];
         self.label.text = @"标题部分标题";
     }

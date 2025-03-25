@@ -16,6 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) UITextView* commentText;
 @property (nonatomic, strong) UIButton* likeButton;
 @property (nonatomic, strong) UIButton* commentButton;
+@property (nonatomic, strong) UIButton* replyButton;
 @property (nonatomic, strong) UILabel* timeLabel;
 @property (nonatomic, strong) UILabel* headLabel;
 @end

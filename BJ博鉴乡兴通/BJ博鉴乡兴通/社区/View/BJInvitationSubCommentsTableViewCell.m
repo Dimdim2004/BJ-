@@ -37,6 +37,10 @@
         [self.commentButton setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
         self.likeButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [self.likeButton setImage:[UIImage imageNamed:@"dianzan-2.png"] forState:UIControlStateNormal];
+        self.replyButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [self.replyButton setTitle:@"回复" forState:UIControlStateNormal];
+        [self.replyButton setTitleColor:UIColor.lightGrayColor forState:UIControlStateNormal];
+        self.replyButton.titleLabel.font = [UIFont systemFontOfSize:14];
         //[self.likeButton setTitle: forState:]
         self.textView.editable = NO; // 确保 TextView 只读
         self.textView.scrollEnabled = NO;
@@ -53,6 +57,7 @@
         
         self.timeLabel.font = [UIFont systemFontOfSize:14];
         self.timeLabel.textColor = UIColor.lightGrayColor;
+        [self.contentView addSubview:self.replyButton];
         [self.contentView addSubview:_timeLabel];
         [self.contentView addSubview:_textView];
         [self.contentView addSubview:_nameLabel];
@@ -86,6 +91,12 @@
             //make.top.equalTo(self.contentView.mas_top).offset(5);
             make.right.equalTo(self.contentView).offset(-10);
             make.bottom.equalTo(_timeLabel.mas_top).priorityHigh();
+        }];
+        [_replyButton mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo(self.timeLabel.mas_right).offset(5).priorityHigh();
+            make.bottom.equalTo(self.commentButton.mas_top).offset(-5);
+            make.width.equalTo(@40);
+            make.top.equalTo(_timeLabel);
         }];
         [_timeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
             //make.height.equalTo(@40);
@@ -129,6 +140,19 @@
         self.image.layer.cornerRadius = 20;
         
         //[self.textView sizeToFit];
+    } else if ([self.reuseIdentifier isEqualToString:@"noComment"]) {
+        
+        self.headLabel = [[UILabel alloc] init];
+        self.headLabel.text = @"暂时没有评论";
+        self.headLabel.textColor = UIColor.lightGrayColor;
+        self.headLabel.textAlignment = NSTextAlignmentCenter;
+        self.headLabel.font = [UIFont systemFontOfSize:23];
+        [self.contentView addSubview:self.headLabel];
+        [self.headLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.center.equalTo(self.contentView);
+            make.width.equalTo(@280);
+            make.height.equalTo(@100);
+        }];
     }
     return self;
 }

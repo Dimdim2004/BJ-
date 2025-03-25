@@ -12,7 +12,7 @@
 #import "UIKit/UIImage.h"
 #import "BJUploadSuccessModel.h"
 static id sharedManger = nil;
-const NSString* urlString = @"http://3.112.71.79:43223";
+const NSString* urlString = @"https://121.43.226.108:8080";
 const NSString* mapAPK = @"dhK73tBBx4BWr97HK8JnKocfz53ctjps";
 @implementation BJNetworkingManger
 +(instancetype) sharedManger{
@@ -23,12 +23,13 @@ const NSString* mapAPK = @"dhK73tBBx4BWr97HK8JnKocfz53ctjps";
     return sharedManger;
 }
 - (void)loadWithCommentWithWorkId:(NSInteger)workId CommentId:(NSInteger)commentId withType:(NSInteger)type withPage:(NSInteger)pageId withPageSize:(NSInteger)pageSize WithSuccess:(commentSuccess)success failure:(error)returnError {
-    AFHTTPSessionManager* manger = [AFHTTPSessionManager manager];
+    AFHTTPSessionManager *manager = [BJNetworkingManger BJcreateAFHTTPSessionManagerWithBaseURLString:@"https://121.43.226.108:8080"];
     NSString* string = [NSString stringWithFormat:@"%@/comment?work_id=%ld&comment_id=%ld&type=%ld&page_id=%ld&page_size=%ld",urlString , workId, commentId, type, pageId, pageSize];
     NSLog(@"%@", string);
-    manger.requestSerializer = [AFJSONRequestSerializer serializer];
-    [manger.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Accept"];
-    [manger GET:string parameters:nil headers:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+    manager.requestSerializer = [AFJSONRequestSerializer serializer];
+    [manager.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+    manager.responseSerializer = [AFJSONResponseSerializer serializer];
+    [manager GET:string parameters:nil headers:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         NSLog(@"申请评论成功");
         BJCommentsModel* commentModel = [BJCommentsModel yy_modelWithJSON:responseObject];
         NSLog(@"%@", responseObject);
@@ -40,13 +41,14 @@ const NSString* mapAPK = @"dhK73tBBx4BWr97HK8JnKocfz53ctjps";
     }];
 }
 - (void)uploadWithImage:(NSArray<UIImage*>*)imageAry andTitle:(NSString*)titleString Content:(NSString*) contentString uploadSuccess:(uploadSuccess)uploadSuccess error:(error)error {
-    AFHTTPSessionManager* manger = [AFHTTPSessionManager manager];
+    AFHTTPSessionManager *manger = [BJNetworkingManger BJcreateAFHTTPSessionManagerWithBaseURLString:@"https://121.43.226.108:8080"];
     NSString* stirng = [NSString stringWithFormat:@"%@/users/publishPost", urlString];
     manger.requestSerializer = [AFHTTPRequestSerializer serializer];
    
     NSString* bearerString = [NSString stringWithFormat:@"Bearer %@", self.token];
     [manger.requestSerializer setValue:bearerString forHTTPHeaderField:@"Authorization"];
-    [manger.requestSerializer setValue:@"multipart/form-data" forHTTPHeaderField:@"Content-Type"];
+    //[manger.requestSerializer setValue:@"multipart/form-data" forHTTPHeaderField:@"Content-Type"];
+    manger.responseSerializer = [AFJSONResponseSerializer serializer];
     NSMutableArray* dataAry = [NSMutableArray array];
     for (int i = 0; i < imageAry.count; i++) {
         @autoreleasepool {
@@ -60,8 +62,8 @@ const NSString* mapAPK = @"dhK73tBBx4BWr97HK8JnKocfz53ctjps";
             NSDateFormatter* dateFormatter = [[NSDateFormatter alloc] init];
             dateFormatter.dateStyle = NSDateFormatterMediumStyle;
             dateFormatter.timeStyle = NSDateFormatterMediumStyle;
-            [dateFormatter setDateFormat:@"yyyyMMdd_HHmmssSSS.jpeg"];
-            NSString* fileName = [dateFormatter stringFromDate:[NSDate date]];
+            [dateFormatter setDateFormat:@"yyyyMMdd_HHmmssSSS"];
+            NSString* fileName = [NSString stringWithFormat:@"%@.jpeg", [dateFormatter stringFromDate:[NSDate date]]];
             [formData appendPartWithFileData:dataAry[i] name:@"images" fileName:fileName mimeType:@"image/jpeg"];
         }
         
@@ -69,6 +71,7 @@ const NSString* mapAPK = @"dhK73tBBx4BWr97HK8JnKocfz53ctjps";
         NSLog(@"success");
         NSLog(@"%@", responseObject);
         BJUploadSuccessModel* model = [BJUploadSuccessModel yy_modelWithJSON:responseObject];
+        NSLog(@"%@", model.data);
         uploadSuccess(model);
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         NSLog(@"error");
@@ -76,12 +79,13 @@ const NSString* mapAPK = @"dhK73tBBx4BWr97HK8JnKocfz53ctjps";
 }
 
 - (void)loadImage:(NSInteger)pageId PageSize:(NSInteger)pageSize WithSuccess:(commitySuccess)commitySuccess failure:(error)returnError {
-    AFHTTPSessionManager* manger = [AFHTTPSessionManager manager];
+    AFHTTPSessionManager *manager = [BJNetworkingManger BJcreateAFHTTPSessionManagerWithBaseURLString:@"https://121.43.226.108:8080"];
     NSString* string = [NSString stringWithFormat:@"%@/posts?page_id=%ld&page_size=%ld",urlString, pageId, pageSize];
-    manger.requestSerializer = [AFJSONRequestSerializer serializer];
-    [manger.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Accept"];
-
-    [manger GET:string parameters:nil headers:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+    manager.requestSerializer = [AFJSONRequestSerializer serializer];
+    [manager.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+    manager.responseSerializer = [AFJSONResponseSerializer serializer];
+    
+    [manager GET:string parameters:nil headers:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         NSLog(@"申请图文成功");
         
         BJCommityModel* commityModel = [BJCommityModel yy_modelWithJSON:responseObject];
@@ -96,6 +100,55 @@ const NSString* mapAPK = @"dhK73tBBx4BWr97HK8JnKocfz53ctjps";
     }];
 
     
+}
++ (AFHTTPSessionManager *)BJcreateAFHTTPSessionManagerWithBaseURLString:(NSString *)urlString{
+
+#warning 注意：当导入工程时请在这里修改证书名字。并在工程中导入证书。如果证书类型不是cer则自行修改
+
+    NSString * cerPath = [[NSBundle mainBundle] pathForResource:@"server" ofType:@"cer"];
+    NSLog(@"%@", cerPath);
+    NSData * certData =[NSData dataWithContentsOfFile:cerPath];
+
+    NSSet * certSet = [[NSSet alloc]initWithObjects:certData, nil];
+
+    /** 这里创建安全策略 */
+
+    AFSecurityPolicy *securityPolicy = [AFSecurityPolicy policyWithPinningMode:AFSSLPinningModeCertificate];
+
+    // 是否允许, YES为允许自签证书
+
+    securityPolicy.allowInvalidCertificates = YES;
+
+    // 是否验证域名
+
+    securityPolicy.validatesDomainName = NO;
+
+    // 设置证书
+
+    securityPolicy.pinnedCertificates = certSet;
+
+    //创建控制器 并做部分配置
+
+    //创建manager时请指定一个BaseURL。
+
+    AFHTTPSessionManager *manager = [[AFHTTPSessionManager manager] initWithBaseURL:[NSURL URLWithString:urlString]];
+
+    //导入安全策略
+
+    manager.securityPolicy = securityPolicy;
+
+   //设置默认解析类型，get用responseSerializer，post用requestSerializer ，如果不设置对应的serializer调用时将会报错
+
+    manager.responseSerializer = [AFJSONResponseSerializer serializer];
+
+    manager.requestSerializer = [AFJSONRequestSerializer serializer];
+
+    // 超时响应时间设置
+
+    manager.requestSerializer.timeoutInterval = 10;
+
+    return manager;
+
 }
 +(NSString *)contentTypeForImageData:(NSData *)data{
     uint8_t c;
@@ -135,6 +188,25 @@ const NSString* mapAPK = @"dhK73tBBx4BWr97HK8JnKocfz53ctjps";
         NSString* addressString = [NSString stringWithFormat:@"%@", responseObject[@"result"][@"formatted_address"]];
         NSLog(@"%@",addressString);
         success(addressString);
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        NSLog(@"error");
+    }];
+}
+- (void)uploadWithComment:(NSString*)commentString andPraentId:(NSInteger)parentId replyId:(NSInteger)replyId  workId:(NSInteger)workId type:(NSInteger)type uploadSuccess:(uploadSuccess)uploadSuccess error:(error)error {
+    AFHTTPSessionManager *manager = [BJNetworkingManger BJcreateAFHTTPSessionManagerWithBaseURLString:@"https://121.43.226.108:8080"];
+    manager.requestSerializer = [AFHTTPRequestSerializer serializer];
+    manager.responseSerializer = [AFJSONResponseSerializer serializer];
+    NSString* bearerString = [NSString stringWithFormat:@"Bearer %@", self.token];
+    [manager.requestSerializer setValue:bearerString forHTTPHeaderField:@"Authorization"];
+    [manager.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+    [manager.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+    NSString* string = [NSString stringWithFormat:@"%@/users/comment", urlString];
+    NSDictionary* dicty = @{@"content":commentString, @"parent_id":[NSNumber numberWithInteger:parentId], @"reply_to_id":[NSNumber numberWithInteger:replyId] ,@"work_id":[NSNumber numberWithInteger:workId], @"type":[NSNumber numberWithInteger:type]};
+    [manager POST:string parameters:dicty headers:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        NSLog(@"success");
+        
+        NSLog(@"Success: %@", responseObject);
+        
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         NSLog(@"error");
     }];

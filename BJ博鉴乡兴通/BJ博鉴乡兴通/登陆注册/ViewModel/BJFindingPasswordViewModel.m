@@ -8,6 +8,7 @@
 #import "BJFindingPasswordViewModel.h"
 #import "AFNetworking.h"
 #import "BJFindPasswordSuccessModel.h"
+#import "BJNetworkingManger.h"
 @implementation BJFindingPasswordViewModel
 - (instancetype)init
 {
@@ -36,15 +37,15 @@
     return isMatch && self.user.password.length >= 6;
 }
 - (void)submmitWithSuccess:(findSuccess)success failure:(error)error {
-    AFHTTPSessionManager* manger = [AFHTTPSessionManager manager];
-    NSString* string = @"http://3.112.71.79:43223/reset";
-    manger.requestSerializer = [AFJSONRequestSerializer serializer];
-    manger.responseSerializer = [AFJSONResponseSerializer serializer];
-    [manger.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
-    [manger.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+    AFHTTPSessionManager *manager = [BJNetworkingManger BJcreateAFHTTPSessionManagerWithBaseURLString:@"https://121.43.226.108:8080"];
+    NSString* string = @"https://121.43.226.108:8080/reset";
+    manager.requestSerializer = [AFJSONRequestSerializer serializer];
+    manager.responseSerializer = [AFJSONResponseSerializer serializer];
+    [manager.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+    [manager.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Accept"];
     NSDictionary* dicty = @{@"new_password":self.user.password,@"re_password":self.user.rePassword, @"email":self.user.email};
     NSLog(@"%@,%@,%@", self.user.password, self.user.rePassword, self.user.email);
-    [manger POST:string parameters:dicty headers:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+    [manager POST:string parameters:dicty headers:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         NSLog(@"success");
         BJFindPasswordSuccessModel* userModel = [BJFindPasswordSuccessModel yy_modelWithJSON:responseObject];
         NSLog(@"Success: %@", responseObject);

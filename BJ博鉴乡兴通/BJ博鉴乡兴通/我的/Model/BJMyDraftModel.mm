@@ -7,7 +7,8 @@
 
 #import "BJMyDraftModel.h"
 #import "WCDB/WCDBObjc.h"
-@interface BJMyDraftModel(WCDB)<WCTTableCoding>
+
+@interface BJMyDraftModel (WCTTableCoding) 
 WCDB_PROPERTY(titleString)
 WCDB_PROPERTY(contentString)
 WCDB_PROPERTY(noteId)
@@ -22,6 +23,12 @@ WCDB_SYNTHESIZE(titleString)
 WCDB_SYNTHESIZE(contentString)
 WCDB_SYNTHESIZE(noteId)
 WCDB_SYNTHESIZE(email)
+- (NSString *)tableName {
+    return @"BJMyDraftModel";
+}
+- (NSString *)primaryKey {
+    return @"noteId";
+}
 @end
 
 

@@ -12,7 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface BJUploadSuccessModel : NSObject
 @property (nonatomic, assign) NSInteger status;
 @property (nonatomic, copy) NSString* msg;
-
+@property (nonatomic, copy) NSString* data;
 @end
 
 NS_ASSUME_NONNULL_END

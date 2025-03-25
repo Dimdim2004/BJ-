@@ -10,6 +10,7 @@
 #import "BJRegisterSuccessModel.h"
 #import "AFNetworking/AFNetworking.h"
 #import "BJLoginSuccessModel.h"
+#import "BJNetworkingManger.h"
 @implementation BJLoginViewModel
 - (instancetype)init
 {
@@ -36,14 +37,14 @@
     return self.isValidEmail && self.isValidPassword;
 }
 - (void)submmitWithSuccess:(loginSuccess)success failure:(error)error {
-    AFHTTPSessionManager* manger = [AFHTTPSessionManager manager];
-    manger.requestSerializer = [AFJSONRequestSerializer serializer];
-    manger.responseSerializer = [AFJSONResponseSerializer serializer];
-    [manger.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
-    [manger.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Accept"];
-    NSString* string = @"http://3.112.71.79:43223/login";
+    AFHTTPSessionManager *manager = [BJNetworkingManger BJcreateAFHTTPSessionManagerWithBaseURLString:@"https://121.43.226.108:8080"];
+    manager.requestSerializer = [AFJSONRequestSerializer serializer];
+    manager.responseSerializer = [AFJSONResponseSerializer serializer];
+    [manager.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+    [manager.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+    NSString* string = @"https://121.43.226.108:8080/login";
     NSDictionary* dicty = @{@"email":self.user.email, @"password":self.user.password};
-    [manger POST:string parameters:dicty headers:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+    [manager POST:string parameters:dicty headers:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         NSLog(@"success");
         BJLoginSuccessModel* userModel = [BJLoginSuccessModel yy_modelWithJSON:responseObject];
         NSLog(@"Success: %@", responseObject);

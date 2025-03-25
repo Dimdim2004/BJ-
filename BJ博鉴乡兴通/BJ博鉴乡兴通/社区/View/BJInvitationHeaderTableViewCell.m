@@ -69,13 +69,15 @@
             make.top.equalTo(self.titleLabel.mas_bottom);
             make.left.equalTo(self.contentView).offset(10);
             make.right.equalTo(self.contentView).offset(-10);
-            make.bottom.equalTo(self.contentView);
+            make.bottom.equalTo(self.contentView).offset(-10);
         }];
     }
     return self;
 }
 - (void)addImageToScrollerView:(NSArray<UIImage*>*)imageAry {
+
     if ([imageAry isEqualToArray:@[]]) {
+        
         return;
     }
     self.mypage.currentPage = 0;
@@ -94,12 +96,14 @@
         iView.layer.cornerRadius = 10;
         iView.image = imageAry[i];
         [self.headScrollerView addSubview:iView];
+        
     }
 }
 - (void)addUrlImageToScrollerView:(NSArray<NSString*>*)imageAry {
     if ([imageAry isEqualToArray:@[]]) {
         return;
     }
+    
     self.mypage.currentPage = 0;
     self.mypage.numberOfPages = imageAry.count;
     
@@ -109,9 +113,10 @@
             [subView removeFromSuperview];
         }
     }
-    self.headScrollerView.contentSize = CGSizeMake(393 * imageAry.count, 393);
+    self.headScrollerView.contentSize = CGSizeMake(393 * imageAry.count, 0);
     for (int i = 0; i < imageAry.count; i++) {
-        UIImageView* iView = [[UIImageView alloc] initWithFrame:CGRectMake(i * 393, 0, 393, 0)];
+        
+        UIImageView* iView = [[UIImageView alloc] initWithFrame:CGRectMake(i * 393, 0, 393, 393 )];
         iView.layer.masksToBounds = YES;
         iView.layer.cornerRadius = 10;
         [iView sd_setImageWithURL:[NSURL URLWithString:imageAry[i]]];

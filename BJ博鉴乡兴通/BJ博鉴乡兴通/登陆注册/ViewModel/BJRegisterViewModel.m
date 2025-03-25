@@ -11,6 +11,7 @@
 #import "BJCodeModel.h"
 #import "AFNetworking/AFNetworking.h"
 #import "BJRegisterSuccessModel.h"
+#import "BJNetworkingManger.h"
 @implementation BJRegisterViewModel
 - (instancetype)init
 {
@@ -38,13 +39,15 @@
 }
 
 - (void)sendCodeWithSuccess:(success)success failure:(error)failure {
-    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
-    NSString *url = @"http://3.112.71.79:43223/code";
+    NSString *url = @"https://121.43.226.108:8080/code";
+    AFHTTPSessionManager *manager = [BJNetworkingManger BJcreateAFHTTPSessionManagerWithBaseURLString:@"https://121.43.226.108:8080"];
     manager.requestSerializer = [AFJSONRequestSerializer serializer];
     manager.responseSerializer = [AFJSONResponseSerializer serializer];
     [manager.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
     [manager.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Accept"];
-    NSDictionary *params = @{@"email": self.registerUser.email ?: @""};
+    
+    
+    NSDictionary *params = @{@"email": self.registerUser.email};
     [manager POST:url
       parameters:params
          headers:nil
@@ -66,14 +69,14 @@
         }];
 }
 - (void)submmitWithSuccess:(registerSuccess)success failure:(error)error {
-    AFHTTPSessionManager* manger = [AFHTTPSessionManager manager];
-    NSString* string = @"http://3.112.71.79:43223/register";
-    manger.requestSerializer = [AFJSONRequestSerializer serializer];
-    manger.responseSerializer = [AFJSONResponseSerializer serializer];
-    [manger.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
-    [manger.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Accept"];
-    NSDictionary* dicty = @{@"email":self.registerUser.email, @"password":self.registerUser.password, @"code":self.registerUser.code};
-    [manger POST:string parameters:dicty headers:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+    AFHTTPSessionManager *manager = [BJNetworkingManger BJcreateAFHTTPSessionManagerWithBaseURLString:@"https://121.43.226.108:8080"];
+    NSString* string = @"https://121.43.226.108:8080/register";
+    manager.requestSerializer = [AFJSONRequestSerializer serializer];
+    manager.responseSerializer = [AFJSONResponseSerializer serializer];
+    [manager.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+    [manager.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+    NSDictionary* dicty = @{@"email":self.registerUser.email, @"password":self.registerUser.password, @"code":self.registerUser.code, @"username":self.registerUser.name};
+    [manager POST:string parameters:dicty headers:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         NSLog(@"success");
         BJRegisterSuccessModel* userModel = [BJRegisterSuccessModel yy_modelWithJSON:responseObject];
         NSLog(@"Success: %@", responseObject);

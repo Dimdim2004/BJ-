@@ -17,6 +17,7 @@
     [self addSubview:_mainView];
     self.mainView.estimatedRowHeight = 100;
     self.mainView.rowHeight = UITableViewAutomaticDimension;
+    
 }
 - (void)setToolBar {
     
@@ -24,23 +25,38 @@
     UIView* lineView = [[UIView alloc] init];
     lineView.backgroundColor = UIColor.lightGrayColor;
     toolView.backgroundColor = UIColor.whiteColor;
-    UIButton* likeButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [likeButton setImage:[UIImage imageNamed:@"likeInvat.png"] forState:UIControlStateNormal];
-    [likeButton setTitle:@"123" forState:UIControlStateNormal];
-    [likeButton setTitleColor:UIColor.blackColor forState:UIControlStateNormal];
-    UIButton* starButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [starButton setImage:[UIImage imageNamed:@"starInvat.png"] forState:UIControlStateNormal];
-    [starButton setTitle:@"123" forState:UIControlStateNormal];
-    [starButton setTitleColor:UIColor.blackColor forState:UIControlStateNormal];
-    UIButton* commentCountButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [commentCountButton setImage:[UIImage imageNamed:@"number.png"] forState:UIControlStateNormal];
-    [commentCountButton setTitle:@"123" forState:UIControlStateNormal];
-    [commentCountButton setTitleColor:UIColor.blackColor forState:UIControlStateNormal];
+    self.likeButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [self.likeButton setImage:[UIImage imageNamed:@"likeInvat.png"] forState:UIControlStateNormal];
+    [self.likeButton setImage:[UIImage imageNamed:@"likeBig.png"] forState:UIControlStateSelected];
+    [self.likeButton setTitle:@"123" forState:UIControlStateNormal];
+    [self.likeButton setTitleColor:UIColor.blackColor forState:UIControlStateNormal];
+    self.starButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [self.starButton setImage:[UIImage imageNamed:@"starInvat.png"] forState:UIControlStateNormal];
+    [self.starButton setImage:[UIImage imageNamed:@"starBig.png"] forState:UIControlStateSelected];
+    [self.starButton setTitle:@"123" forState:UIControlStateNormal];
+    [self.starButton setTitleColor:UIColor.blackColor forState:UIControlStateNormal];
+    self.commentButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [self.commentButton setImage:[UIImage imageNamed:@"number.png"] forState:UIControlStateNormal];
+    [self.commentButton setTitle:@"123" forState:UIControlStateNormal];
+    [self.commentButton setTitleColor:UIColor.blackColor forState:UIControlStateNormal];
     self.postButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [self.postButton setTitle:@"发表" forState:UIControlStateNormal];
+    self.postButton.layer.masksToBounds = YES;
+    self.postButton.layer.cornerRadius = 10;
+    self.postButton.frame = CGRectMake(0, 0, 80, 30);
+    self.postButton.layer.borderWidth = 1;
+    
+    self.postButton.layer.masksToBounds = YES;
+    self.postButton.layer.cornerRadius = 13;
+    UIColor* postColor = [UIColor colorWithRed:98.0 / 255.0 green:184.0 / 255.0 blue:120 / 255.0 alpha:1];\
+    self.postButton.layer.borderColor = postColor.CGColor;
+    self.postButton.backgroundColor = postColor;
+    [self.postButton setTitleColor:UIColor.whiteColor forState:UIControlStateNormal];
     
     UIColor* myColor = [UIColor colorWithRed:242.0 / 255.0 green:242.0 / 255.0 blue:242 / 255.0 alpha:1];
     
     self.commentTextView = [[UITextView alloc] init];
+    self.commentTextView.tag = 200;
     self.commentTextView.text = @"说点什么";
     self.commentTextView.backgroundColor = myColor;
     self.commentTextView.layer.masksToBounds = YES;
@@ -50,10 +66,11 @@
     self.commentTextView.font = [UIFont systemFontOfSize:13];
     [self addSubview:toolView];
     [toolView addSubview:lineView];
-    [toolView addSubview:likeButton];
+    [toolView addSubview:self.postButton];
+    [toolView addSubview:self.likeButton];
     [toolView addSubview:self.commentTextView];
-    [toolView addSubview:starButton];
-    [toolView addSubview:commentCountButton];
+    [toolView addSubview:self.starButton];
+    [toolView addSubview:self.commentButton];
     self.toolBar = toolView;
     [toolView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.bottom.equalTo(self);
@@ -71,24 +88,31 @@
         make.top.equalTo(toolView).offset(15);
         make.height.equalTo(@40);
     }];
-    [likeButton mas_makeConstraints:^(MASConstraintMaker *make) {
+    [self.likeButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.commentTextView.mas_right).offset(12);
         make.width.equalTo(@60);
         make.centerY.equalTo(self.commentTextView);
         make.height.equalTo(@30);
     }];
-    [starButton mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(likeButton.mas_right).offset(12);
+    [self.starButton mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.likeButton.mas_right).offset(12);
         make.width.equalTo(@60);
         make.centerY.equalTo(self.commentTextView);
         make.height.equalTo(@30);
     }];
-    [commentCountButton mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(starButton.mas_right).offset(12);
+    [self.commentButton mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.starButton.mas_right).offset(12);
         make.width.equalTo(@60);
         make.centerY.equalTo(self.commentTextView);
         make.height.equalTo(@30);
     }];
+    [_postButton mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.right.equalTo(self).offset(-20);
+        make.width.equalTo(@60);
+        make.top.equalTo(self.commentTextView.mas_bottom).offset(3);
+        make.height.equalTo(@30);
+    }];
+    self.postButton.hidden = YES;
 }
 - (instancetype)initWithFrame:(CGRect)frame
 {
@@ -98,7 +122,9 @@
     }
     return self;
 }
-
+- (void)selectLike:(UIButton*)btn {
+    btn.selected = !btn.selected;
+}
 /*
 // Only override drawRect: if you perform custom drawing.
 // An empty implementation adversely affects performance during animation.
