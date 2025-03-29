@@ -7,15 +7,22 @@
 
 #import <Foundation/Foundation.h>
 #import "YYModel/YYModel.h"
+@class BJMyPageDealModel;
 NS_ASSUME_NONNULL_BEGIN
 
 @interface BJMyPagePostModel : NSObject <YYModel>
-@property (nonatomic, copy) NSString* coverUrl;
-@property (nonatomic, copy) NSString* viedoUrl;
-@property (nonatomic, copy) NSString* title;
+@property (nonatomic, assign) NSInteger postId;
+@property (nonatomic, copy) NSString* avatar;
 @property (nonatomic, copy) NSString* username;
-@property (nonatomic, copy) NSString* favoriteCount;
-@property (nonatomic, assign) NSInteger workId;
+@property (nonatomic, copy) NSString* title;
+@property (nonatomic, copy) NSString* content;
+@property (nonatomic, assign) NSInteger imageCount;
+@property (nonatomic, copy) NSArray* images;
+@property (nonatomic, assign) NSInteger likeCount;
+@property (nonatomic, assign) NSInteger commentCount;
+@property (nonatomic, assign) BOOL isFavorite;
+@property (nonatomic, copy) NSString* timeString;
+- (BJMyPageDealModel*)changeToShowModel;
 @end
 
 NS_ASSUME_NONNULL_END

@@ -21,6 +21,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) UIActivityIndicatorView* activity;
 @property (nonatomic, strong) UIView* footerView;
 - (void)loadActivity:(BOOL)loading;
+-(void)endLoadActivity;
 - (void)setToolBar;
 @end
 

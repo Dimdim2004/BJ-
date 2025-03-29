@@ -117,6 +117,7 @@
 		E98A54FD2D9596CD00CDBE13 /* BJMyPagePostModel.m in Sources */ = {isa = PBXBuildFile; fileRef = E98A54FC2D9596CD00CDBE13 /* BJMyPagePostModel.m */; };
 		E98A55002D96912600CDBE13 /* BJMyPageFootReusableView.m in Sources */ = {isa = PBXBuildFile; fileRef = E98A54FF2D96912500CDBE13 /* BJMyPageFootReusableView.m */; };
 		E98A55032D96961D00CDBE13 /* BJCommityFootReusableView.m in Sources */ = {isa = PBXBuildFile; fileRef = E98A55022D96961D00CDBE13 /* BJCommityFootReusableView.m */; };
+		E98A55062D97FF8D00CDBE13 /* BJMyPageDealModel.m in Sources */ = {isa = PBXBuildFile; fileRef = E98A55052D97FF8C00CDBE13 /* BJMyPageDealModel.m */; };
 		E98B0C562D6C933000439CCE /* BJInvitationSubCommentsTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E98B0C552D6C933000439CCE /* BJInvitationSubCommentsTableViewCell.m */; };
 		E98B0C5A2D6CA40D00439CCE /* BJCommentsModel.m in Sources */ = {isa = PBXBuildFile; fileRef = E98B0C592D6CA40D00439CCE /* BJCommentsModel.m */; };
 		E98B0C5D2D6CA41A00439CCE /* BJSubCommentsModel.m in Sources */ = {isa = PBXBuildFile; fileRef = E98B0C5C2D6CA41A00439CCE /* BJSubCommentsModel.m */; };
@@ -345,6 +346,8 @@
 		E98A54FF2D96912500CDBE13 /* BJMyPageFootReusableView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BJMyPageFootReusableView.m; sourceTree = "<group>"; };
 		E98A55012D96961D00CDBE13 /* BJCommityFootReusableView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BJCommityFootReusableView.h; sourceTree = "<group>"; };
 		E98A55022D96961D00CDBE13 /* BJCommityFootReusableView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BJCommityFootReusableView.m; sourceTree = "<group>"; };
+		E98A55042D97FF8C00CDBE13 /* BJMyPageDealModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BJMyPageDealModel.h; sourceTree = "<group>"; };
+		E98A55052D97FF8C00CDBE13 /* BJMyPageDealModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BJMyPageDealModel.m; sourceTree = "<group>"; };
 		E98B0C542D6C933000439CCE /* BJInvitationSubCommentsTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BJInvitationSubCommentsTableViewCell.h; sourceTree = "<group>"; };
 		E98B0C552D6C933000439CCE /* BJInvitationSubCommentsTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BJInvitationSubCommentsTableViewCell.m; sourceTree = "<group>"; };
 		E98B0C582D6CA40D00439CCE /* BJCommentsModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BJCommentsModel.h; sourceTree = "<group>"; };
@@ -749,6 +752,8 @@
 				E91428502D8AE5D3001ED3F8 /* BJMyPageModel.m */,
 				E98A54F52D9594C800CDBE13 /* BJMyPageLikeModel.h */,
 				E98A54F62D9594C800CDBE13 /* BJMyPageLikeModel.m */,
+				E98A55042D97FF8C00CDBE13 /* BJMyPageDealModel.h */,
+				E98A55052D97FF8C00CDBE13 /* BJMyPageDealModel.m */,
 				E98A54F82D9595A200CDBE13 /* BJMyPageViedoModel.h */,
 				E98A54F92D9595A200CDBE13 /* BJMyPageViedoModel.m */,
 				E98A54FB2D9596CD00CDBE13 /* BJMyPagePostModel.h */,
@@ -1225,6 +1230,7 @@
 				219A06F62D79EAC800EA43BA /* BJNavigationBar.m in Sources */,
 				219F0EBB2D41CEDE00F69C9B /* BJScrollViewTableViewCell.m in Sources */,
 				E91427F12D7DE142001ED3F8 /* BJPostCommityView.m in Sources */,
+				E98A55062D97FF8D00CDBE13 /* BJMyPageDealModel.m in Sources */,
 				E91428512D8AE5D3001ED3F8 /* BJMyPageModel.m in Sources */,
 				E98B0C7A2D72F9B900439CCE /* BJRegisterViewController.m in Sources */,
 				E91428642D8C6DAF001ED3F8 /* BJLocalDataManger.mm in Sources */,

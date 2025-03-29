@@ -104,6 +104,7 @@
         __strong BJCommunityViewController* strongSelf = weakSelf;
         for (int i = 0; i < commityModel.data.count; i++) {
             @autoreleasepool {
+                
                 BJCommityDataModel* data = commityModel.data[i];
                 [self.model addObject:commityModel];
                 CGFloat height = [data.title textHight:data.title andFont:[UIFont systemFontOfSize:14] Width:186.5] + 55;
@@ -134,26 +135,31 @@
         
         [[SDWebImageManager sharedManager] loadImageWithURL:[NSURL URLWithString:urlString] options:SDWebImageRetryFailed progress:nil completed:^(UIImage * _Nullable image, NSData * _Nullable data, NSError * _Nullable error, SDImageCacheType cacheType, BOOL finished, NSURL * _Nullable imageURL) {
             if (finished && image) {
-                __strong BJCommunityViewController* strongSelf = weakSelf;
-                [strongSelf->_imageAry addObject:image];
-                CGFloat imageHieght = image.size.height * 1.0 / image.size.width * 186.5;
-                NSLog(@"imageHeight%lf", imageHieght);
-                strongSelf->_heightAry[i] = @([strongSelf->_heightAry[i] floatValue] + imageHieght);
-                NSLog(@"%lf", [strongSelf->_heightAry[i] floatValue]);
-                strongSelf->_calcutaeAry[i] = [NSNumber numberWithBool:YES];
-                dispatch_group_leave(group);
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    __strong BJCommunityViewController* strongSelf = weakSelf;
+                    [strongSelf->_imageAry addObject:image];
+                    CGFloat imageHieght = image.size.height * 1.0 / image.size.width * 186.5;
+                    NSLog(@"imageHeight%lf", imageHieght);
+                    strongSelf->_heightAry[i] = @([strongSelf->_heightAry[i] floatValue] + imageHieght);
+                    NSLog(@"%lf", [strongSelf->_heightAry[i] floatValue]);
+                    strongSelf->_calcutaeAry[i] = [NSNumber numberWithBool:YES];
+                });
+                
+                
             }
+            dispatch_group_leave(group);
         }];
         
     }
     
     dispatch_group_notify(group, dispatch_get_main_queue(), ^{
-        NSLog(@"回调函数刷新瀑布流");
+        NSLog(@"社区回调函数刷新瀑布流");
         
         __strong BJCommunityViewController* strongSelf = self;
         UICollectionView* collectionView = strongSelf.iView.mainView;
         
         [collectionView reloadData];
+
         strongSelf->_isLoading = NO;
     });
 }

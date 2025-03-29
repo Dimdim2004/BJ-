@@ -11,29 +11,26 @@
 - (NSString *)dealWithTime {
     NSDateFormatter* formatter = [[NSDateFormatter alloc] init];
     [formatter setLocale:[NSLocale localeWithLocaleIdentifier:@"en_US_POSIX"]];
-    
+    [formatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss.SSSZZZZZ"];
     NSDate* date = [formatter dateFromString:self.timeString];
-    NSDate* today = [[NSDate alloc] init];
-    if ([self isSameYearBetweenDate1:date date2:today]) {
+    if (!date) return @""; // 处理解析失败
+    NSDate* today = [NSDate date];
+    NSCalendar *calendar = [NSCalendar currentCalendar];
+    if ([calendar isDateInYesterday:date]) {
+        return @"昨天";
+    } else if ([self isSameYearBetweenDate1:date date2:today]) {
         [formatter setDateFormat:@"MM-dd"];
-    } else if (![self isSameYearBetweenDate1:date date2:today]) {
-        [formatter setDateFormat:@"yyyy-MM-dd"];
-    } else if ([self isOneDayBeforeDate1:today date2:date]) {
-        [formatter setDateFormat:@"昨天"];
     } else {
-        [formatter setDateFormat:@"MM-dd"];
+        [formatter setDateFormat:@"yyyy-MM-dd"];
     }
-    NSString* string = [formatter stringFromDate:date];
-    return string;
+    return [formatter stringFromDate:date];
 }
+
+// 优化后的年份判断
 - (BOOL)isSameYearBetweenDate1:(NSDate *)date1 date2:(NSDate *)date2 {
     if (!date1 || !date2) return NO;
-    
     NSCalendar *calendar = [NSCalendar currentCalendar];
-    NSInteger year1 = [calendar component:NSCalendarUnitYear fromDate:date1];
-    NSInteger year2 = [calendar component:NSCalendarUnitYear fromDate:date2];
-    
-    return year1 == year2;
+    return [calendar component:NSCalendarUnitYear fromDate:date1] == [calendar component:NSCalendarUnitYear fromDate:date2];
 }
 - (BOOL)isOneDayBeforeDate1:(NSDate *)date1 date2:(NSDate *)date2 {
     if (!date1 || !date2) return NO;

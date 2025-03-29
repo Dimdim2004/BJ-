@@ -33,10 +33,12 @@
         self.commentText = [[UITextView alloc] init];
         self.image = [[UIImageView alloc] init];
         self.commentButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        [self.commentButton setTitle:@"---展开下方评论" forState:UIControlStateNormal];
-        [self.commentButton setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
+        [self.commentButton setTitle:@"——展开下方评论" forState:UIControlStateNormal];
+        [self.commentButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
+        self.commentButton.titleLabel.font = [UIFont systemFontOfSize:15];
         self.likeButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        [self.likeButton setImage:[UIImage imageNamed:@"dianzan-2.png"] forState:UIControlStateNormal];
+        [self.likeButton setImage:[UIImage imageNamed:@"likeSmall.png"] forState:UIControlStateNormal];
+        [self.likeButton setImage:[UIImage imageNamed:@"likeSelected.png"] forState:UIControlStateSelected];
         self.replyButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [self.replyButton setTitle:@"回复" forState:UIControlStateNormal];
         [self.replyButton setTitleColor:UIColor.lightGrayColor forState:UIControlStateNormal];
@@ -85,53 +87,35 @@
         }];
         [_textView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.top.equalTo(self.image.mas_bottom).priorityHigh();
-            //make.bottom.equalTo(self.contentView.mas_bottom).offset(-10);
-            //make.bottom.equalTo(self.contentView.mas_bottom).offset(-10);
             make.left.equalTo(self.nameLabel);
-            //make.top.equalTo(self.contentView.mas_top).offset(5);
             make.right.equalTo(self.contentView).offset(-10);
             make.bottom.equalTo(_timeLabel.mas_top).priorityHigh();
         }];
         [_replyButton mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.equalTo(self.timeLabel.mas_right).offset(5).priorityHigh();
-            make.bottom.equalTo(self.commentButton.mas_top).offset(-5);
+            make.bottom.equalTo(self.timeLabel);
             make.width.equalTo(@40);
             make.top.equalTo(_timeLabel);
         }];
         [_timeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-            //make.height.equalTo(@40);
-            make.bottom.equalTo(self.contentView.mas_bottom).offset(-20).priorityHigh();
+            make.bottom.equalTo(self.commentButton.mas_top).offset(-5).priorityHigh();
             make.left.equalTo(self.textView).offset(5);
-            make.width.equalTo(@120);
+            make.width.equalTo(@50);
         }];
-        
         [_commentButton mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.bottom.equalTo(self.contentView).offset(-10);
             make.height.equalTo(@20);
-            make.top.equalTo(self.timeLabel.mas_bottom);
-            make.left.equalTo(self.contentView).offset(100);
-            make.width.equalTo(@160);
+            make.centerX.equalTo(self.contentView);
+            make.width.equalTo(@130);
         }];
         [_likeButton mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.height.equalTo(@20);
+            make.height.equalTo(@30);
             make.bottom.equalTo(self.timeLabel.mas_bottom);
-            make.right.equalTo(_commentButton.mas_left).offset(-30);
-            make.width.equalTo(@30);
+            make.right.equalTo(self.contentView.mas_right).offset(-30);
+            make.width.equalTo(@80);
         }];
-        //_likeButton.imageView.frame = CGRectMake(0, 0, 20, 20);
-        //CGFloat spacing = 5.0;
-        CGFloat spacing = 10.0; // 图片和文字之间的间距
-
-        // 获取图片和文字的尺寸
-        CGSize imageSize = _likeButton.imageView.frame.size;
-        CGSize titleSize = _likeButton.titleLabel.frame.size;
-
-        // 设置文本和图片的偏移
-        _likeButton.titleEdgeInsets = UIEdgeInsetsMake(0, -imageSize.width - spacing, 0, imageSize.width);
-        _likeButton.imageEdgeInsets = UIEdgeInsetsMake(0, titleSize.width + spacing, 0, -titleSize.width);
-
         
-//        _likeButton.imageEdgeInsets = UIEdgeInsetsMake(0, 0, 10, -10); // 图片稍微向左下角偏移
-//        _likeButton.titleEdgeInsets = UIEdgeInsetsMake(-30, 20, 0, 0);
+        
         [_likeButton setTitle:@"  " forState:UIControlStateNormal];
         [_likeButton setTitleColor:UIColor.lightGrayColor forState:UIControlStateNormal];
         //_likeButton.contentVerticalAlignment = UIControlContentHorizontalAlignmentCenter;

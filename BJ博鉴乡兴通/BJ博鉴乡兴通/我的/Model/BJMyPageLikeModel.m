@@ -8,11 +8,13 @@
 #import "BJMyPageLikeModel.h"
 #import "BJMyPageViedoModel.h"
 #import "BJMyPagePostModel.h"
+#import "BJMyPageDealModel.h"
 @implementation BJMyPageLikeModel
 + (NSDictionary<NSString *,id> *)modelContainerPropertyGenericClass {
     return @{@"videos":[BJMyPageViedoModel class], @"posts":[BJMyPagePostModel class]};
 }
 + (NSDictionary<NSString *,id> *)modelCustomPropertyMapper {
-    return @{@"videos":@"data.vidoes", @"posts":@"data.posts"};
+    return @{@"videos":@"data.Videos", @"posts":@"data.Posts"};
 }
+
 @end

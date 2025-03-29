@@ -60,6 +60,9 @@
     
     self.footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 393, 30)];
     [self.footerView addSubview:self.activity];
+    [self.activity mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.equalTo(self.footerView);
+    }];
     
     self.commentTextView = [[UITextView alloc] init];
     self.commentTextView.tag = 200;
@@ -139,6 +142,17 @@
         self.mainView.tableFooterView = nil;
         [self.activity stopAnimating];
     }
+}
+-(void)endLoadActivity {
+    [self.activity removeFromSuperview];
+    self.mainView.tableFooterView = self.footerView;
+    UILabel* label = [[UILabel alloc] init];
+    label.text = @"暂时没有更多评论了";
+    [self.footerView addSubview:label];
+    [label mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.center.equalTo(self.footerView);
+    }];
+    
 }
 /*
 // Only override drawRect: if you perform custom drawing.

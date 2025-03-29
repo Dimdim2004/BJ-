@@ -21,7 +21,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, assign) NSInteger total;
 @property (nonatomic, assign) BOOL isExpand;
 @property (nonatomic, assign) BOOL isLike;
-
+@property (nonatomic, assign) NSInteger pageId;
 @end
 
 NS_ASSUME_NONNULL_END
