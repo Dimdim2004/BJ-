@@ -26,8 +26,8 @@
 }
 
 - (void)submmitWithSuccess:(checkSuccess)success failure:(error)error {
-    AFHTTPSessionManager *manager = [BJNetworkingManger BJcreateAFHTTPSessionManagerWithBaseURLString:@"https://121.43.226.108:8080"];
-    NSString* string = @"https://121.43.226.108:8080/validemail";
+    AFHTTPSessionManager *manager = [BJNetworkingManger BJcreateAFHTTPSessionManagerWithBaseURLString:@"https://39.105.136.3:9797"];
+    NSString* string = @"https://39.105.136.3:9797/validemail";
     manager.requestSerializer = [AFJSONRequestSerializer serializer];
     manager.responseSerializer = [AFJSONResponseSerializer serializer];
     [manager.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];

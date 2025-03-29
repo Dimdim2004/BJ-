@@ -15,6 +15,7 @@ typedef void(^error)(NSError* error);
 @property (nonatomic, strong) BJFindPasswordSuccessModel* user;
 @property (nonatomic, readonly) BOOL isVaildPassword;
 @property (nonatomic, readonly) BOOL isVailSame;
+@property (nonatomic, readonly) BOOL isVaildEmail;
 - (void)submmitWithSuccess:(findSuccess)success failure:(error)error;
 @property (nonatomic, assign) NSInteger authType;
 - (instancetype)initWithAuthTyoe:(NSInteger)authType;

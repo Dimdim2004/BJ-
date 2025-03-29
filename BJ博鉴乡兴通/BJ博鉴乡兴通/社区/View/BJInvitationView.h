@@ -18,6 +18,9 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) UIButton* commentButton;
 @property (nonatomic, strong) UIButton* postButton;
 @property (nonatomic, strong) UIView* backView;
+@property (nonatomic, strong) UIActivityIndicatorView* activity;
+@property (nonatomic, strong) UIView* footerView;
+- (void)loadActivity:(BOOL)loading;
 - (void)setToolBar;
 @end
 

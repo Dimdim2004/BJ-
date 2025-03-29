@@ -9,7 +9,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface BJMyPageCollectionViewCell : UICollectionViewCell
+@interface BJMyPageHeaderCollectionViewCell : UICollectionViewCell
 @property (nonatomic, strong) UIImageView* iconView;
 @property (nonatomic, strong) UILabel* nameLabel;
 @property (nonatomic, strong) UIButton* attentionButton;
@@ -18,6 +18,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) UIButton* shopButton;
 @property (nonatomic, strong) UIButton* hometownButton;
 @property (nonatomic, strong) UIButton* shoppingCraftButtton;
+@property (nonatomic, strong) UIButton* darftButton;
+@property (nonatomic, strong) UIScrollView* scrollView;
 @end
 
 NS_ASSUME_NONNULL_END

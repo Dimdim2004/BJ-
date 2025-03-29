@@ -9,7 +9,7 @@
 #import "BJSubCommentsModel.h"
 @implementation BJCommentsModel
 + (NSDictionary<NSString *,id> *)modelCustomPropertyMapper {
-    return @{@"commentList":@"data.comment_list",@"total":@"data.total"};
+    return @{@"commentList":@"data.comment_list"};
 }
 + (NSDictionary<NSString *,id> *)modelContainerPropertyGenericClass {
     return @{@"commentList":[BJSubCommentsModel class]};

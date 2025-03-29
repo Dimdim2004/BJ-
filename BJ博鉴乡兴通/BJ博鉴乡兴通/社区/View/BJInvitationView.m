@@ -55,6 +55,12 @@
     
     UIColor* myColor = [UIColor colorWithRed:242.0 / 255.0 green:242.0 / 255.0 blue:242 / 255.0 alpha:1];
     
+    self.activity = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleLarge];
+    
+    
+    self.footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 393, 30)];
+    [self.footerView addSubview:self.activity];
+    
     self.commentTextView = [[UITextView alloc] init];
     self.commentTextView.tag = 200;
     self.commentTextView.text = @"说点什么";
@@ -124,6 +130,15 @@
 }
 - (void)selectLike:(UIButton*)btn {
     btn.selected = !btn.selected;
+}
+- (void)loadActivity:(BOOL)loading {
+    if (loading) {
+        self.mainView.tableFooterView = self.footerView;
+        [self.activity startAnimating];
+    } else {
+        self.mainView.tableFooterView = nil;
+        [self.activity stopAnimating];
+    }
 }
 /*
 // Only override drawRect: if you perform custom drawing.

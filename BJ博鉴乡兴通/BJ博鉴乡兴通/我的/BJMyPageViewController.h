@@ -6,11 +6,13 @@
 //
 
 #import <UIKit/UIKit.h>
-
+@class BJMyPageLikeModel;
+@class BJMyPageModel;
 NS_ASSUME_NONNULL_BEGIN
 
-@interface BJMyPageViewController : UIViewController
-
+@interface BJMyPageViewController : UIViewController <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout>
+@property (nonatomic, strong) BJMyPageLikeModel* iModel;
+@property (nonatomic, strong) BJMyPageModel* headModel;
 @end
 
 NS_ASSUME_NONNULL_END

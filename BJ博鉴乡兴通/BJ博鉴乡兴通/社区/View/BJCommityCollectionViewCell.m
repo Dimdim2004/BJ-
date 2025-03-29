@@ -18,6 +18,7 @@
         self.profileView = [[UIImageView alloc] init];
         self.nameLabel = [[UILabel alloc] init];
         self.label.numberOfLines = 2;
+        self.label.font = [UIFont systemFontOfSize:17];
         self.label.lineBreakMode = YES;
         self.label.lineBreakMode = NSLineBreakByTruncatingTail;
         self.likeButton = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -36,10 +37,11 @@
         [self.contentView addSubview:_likeButton];
         [self.contentView addSubview:_nameLabel];
         
-        
+       
         [self.label mas_makeConstraints:^(MASConstraintMaker *make) {
+            
             make.left.and.right.equalTo(self.contentView);
-            make.bottom.equalTo(self.contentView).offset(-33);
+            make.bottom.equalTo(self.contentView).offset(-30);
         }];
         [self.profileView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.equalTo(self.contentView).offset(5);
