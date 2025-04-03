@@ -9,7 +9,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface BJMyPageFootReusableView : UICollectionReusableView
+@interface BJMyPageHeaderReusableView : UICollectionReusableView
 @property (nonatomic, strong) UILabel* titleLabel;
 @end
 

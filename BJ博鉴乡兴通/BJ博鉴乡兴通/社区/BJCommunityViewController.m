@@ -14,6 +14,9 @@
 #import "SubCommentsModel+DealWithComment.h"
 #import "BJImageModel.h"
 #import "NSString+CalculateHeight.h"
+#import "BJCommityFootReusableView.h"
+#import "BJCommityFootReusableView.h"
+#import "BJCommunityUIColectionViewFlowLayout.h"
 @interface BJCommunityViewController () {
     UIView* _indicatorLine;
     BOOL _isLocked;
@@ -24,6 +27,7 @@
     NSMutableArray* _imageURLAry;
     BOOL _isLoading;
     NSMutableArray* _calcutaeAry;
+    BOOL _loadMore;
 }
 
 @end
@@ -35,7 +39,9 @@
     self->_imageAry = [NSMutableArray array];
     _isLocked = NO;
     _page = 1;
-    _pageSize = 6;
+    _loadMore = YES;
+    _isLoading = NO;
+    _pageSize = 4;
     [self setNavgationBar];
     id manger = [BJNetworkingManger sharedManger];
     self.model = [NSMutableArray array];
@@ -62,16 +68,14 @@
                 [strongSelf->_heightAry addObject:[NSNumber numberWithFloat:(height)]];
             }
         }
-        [strongSelf loadImageWithAry:strongSelf->_imageURLAry];
-    
-        [strongSelf.iView setUIWithHeightAry:strongSelf->_heightAry andSectionCount:strongSelf->_page itemCount:strongSelf->_heightAry.count];
-        strongSelf.iView.contentView.delegate = self;
         [strongSelf.model addObject:commityModel];
+        [strongSelf loadImageWithAry:strongSelf->_imageURLAry];
+        [strongSelf.iView setUIWithHeightAry:strongSelf->_heightAry andSectionCount:strongSelf->_page itemCount:strongSelf->_heightAry.count];
         strongSelf.iView.mainView.delegate = self;
         strongSelf.iView.mainView.prefetchDataSource = self;
         strongSelf.iView.mainView.dataSource = self;
         [strongSelf.iView.mainView registerClass:[BJCommityCollectionViewCell class] forCellWithReuseIdentifier:@"Cell"];
-        [strongSelf.iView.mainView registerClass:[UICollectionReusableView class] forSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:@"BJCollectionFooterView"];
+        [strongSelf.iView.mainView registerClass:[BJCommityFootReusableView class] forSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:@"reuseFooter"];
         
         [self.view addSubview:self.iView];
     } failure:^(NSError * _Nonnull error) {
@@ -95,18 +99,25 @@
 }
 
 - (void)loadMore {
+    if (_loadMore == NO) {
+        return;
+    }
     if (self->_isLoading) {
         return;
     }
     self->_isLoading = YES;
     __weak id weakSelf = self;
-    [[BJNetworkingManger sharedManger] loadImage:(_page + 1) PageSize:_pageSize WithSuccess:^(BJCommityModel * _Nonnull commityModel) {
+    [[BJNetworkingManger sharedManger] loadImage:(_page) PageSize:_pageSize WithSuccess:^(BJCommityModel * _Nonnull commityModel) {
         __strong BJCommunityViewController* strongSelf = weakSelf;
+        NSLog(@"当前拉去数组的一个值%ld", commityModel.data.count);
+        [self.model addObject:commityModel];
+        if (commityModel.data.count == 0) {
+            strongSelf->_loadMore = NO;
+        }
         for (int i = 0; i < commityModel.data.count; i++) {
+            
             @autoreleasepool {
-                
                 BJCommityDataModel* data = commityModel.data[i];
-                [self.model addObject:commityModel];
                 CGFloat height = [data.title textHight:data.title andFont:[UIFont systemFontOfSize:14] Width:186.5] + 55;
                 BJImageModel* imageModel = data.images[0];
                 [strongSelf->_imageURLAry addObject:imageModel.url];
@@ -115,7 +126,7 @@
             }
         }
         [strongSelf loadImageWithAry:strongSelf->_imageURLAry];
-        strongSelf->_page++;
+        
     } failure:^(NSError * _Nonnull error) {
         NSLog(@"load error");
     }];
@@ -143,24 +154,44 @@
                     strongSelf->_heightAry[i] = @([strongSelf->_heightAry[i] floatValue] + imageHieght);
                     NSLog(@"%lf", [strongSelf->_heightAry[i] floatValue]);
                     strongSelf->_calcutaeAry[i] = [NSNumber numberWithBool:YES];
+                   
+                    
+                    dispatch_group_leave(group);
                 });
-                
-                
             }
-            dispatch_group_leave(group);
+            
         }];
         
     }
     
     dispatch_group_notify(group, dispatch_get_main_queue(), ^{
-        NSLog(@"社区回调函数刷新瀑布流");
+        
         
         __strong BJCommunityViewController* strongSelf = self;
         UICollectionView* collectionView = strongSelf.iView.mainView;
-        
-        [collectionView reloadData];
-
+        BJCommunityUIColectionViewFlowLayout* flowLayout = (BJCommunityUIColectionViewFlowLayout*)collectionView.collectionViewLayout;
+        [UIView setAnimationsEnabled:NO];
+        flowLayout.itemHeight = [strongSelf->_heightAry copy];
+        [strongSelf.iView.mainView performBatchUpdates:^{
+            NSLog(@"社区回调函数刷新瀑布流");
+            NSLog(@"%ld", strongSelf->_page - 1);
+            if (strongSelf->_page == 1) {
+                [collectionView reloadSections:[NSIndexSet indexSetWithIndex:(strongSelf->_page - 1)]];
+                strongSelf->_page++;
+                
+            } else {
+                [collectionView insertSections:[NSIndexSet indexSetWithIndex:(strongSelf.model.count - 1)]];
+                strongSelf->_page++;
+            }
+        } completion:^(BOOL finished) {
+            [UIView setAnimationsEnabled:YES];
+        }];
         strongSelf->_isLoading = NO;
+        BJCommityFootReusableView* footView = [self visibleFooter];
+        [footView startLoading:self->_isLoading];
+        if (strongSelf->_loadMore == NO) {
+            [footView endLoading];
+        }
     });
 }
 - (void)setNavgationBar {
@@ -224,7 +255,9 @@
         CGFloat y = scrollView.contentOffset.y;
         CGFloat contentHeight = scrollView.contentSize.height;
         CGFloat height = scrollView.bounds.size.height;
-        if (y + height >= contentHeight + 10) {
+        if (y + height >= contentHeight - 10) {
+            BJCommityFootReusableView* footView = [self visibleFooter];
+            [footView startLoading:self->_isLoading];
             [self loadMore];
         }
     }
@@ -242,6 +275,10 @@
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     
     BJCommityCollectionViewCell* cell = [collectionView dequeueReusableCellWithReuseIdentifier: @"Cell" forIndexPath: indexPath];
+    cell.layer.masksToBounds = YES;
+    cell.layer.cornerRadius = 3;
+    cell.layer.borderWidth = 0.3;
+    cell.layer.borderColor = [[UIColor lightGrayColor] CGColor];
     if (self.model.count == 0) {
         cell.backgroundColor = UIColor.whiteColor;
     } else {
@@ -257,7 +294,7 @@
         NSArray* ary = dataModel.images;
         if (self->_imageAry.count == self->_heightAry.count) {
             BJImageModel* imageModel = ary[0];
-            cell.imageView.image = self->_imageAry[indexPath.item];
+            cell.imageView.image = self->_imageAry[indexPath.item + indexPath.section * _pageSize];
         } else {
             cell.imageView.image = [UIImage imageNamed:@"1.png"];
         }
@@ -271,6 +308,7 @@
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
     if (self.model.count != 0) {
         BJCommityModel* commityModel = self.model[section];
+        NSLog(@"%当前section的个数%ld", commityModel.data.count);
         return commityModel.data.count;
     } else {
         return 20;
@@ -325,7 +363,29 @@
         }];
     }
 }
-
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForFooterInSection:(NSInteger)section {
+    if (section != self.model.count - 1) {
+        return CGSizeZero;
+    }
+    return CGSizeMake(393, 40);
+}
+- (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView
+           viewForSupplementaryElementOfKind:(NSString *)kind
+                                 atIndexPath:(NSIndexPath *)indexPath {
+    if ([kind isEqualToString:UICollectionElementKindSectionFooter]) {
+        NSLog(@"✅ 进入 Footer 分支");
+        BJCommityFootReusableView *footer = [collectionView dequeueReusableSupplementaryViewOfKind:kind
+                                                                           withReuseIdentifier:@"reuseFooter"
+                                                                                  forIndexPath:indexPath];
+        
+        return footer;
+    }
+    return nil;
+}
+- (BJCommityFootReusableView *)visibleFooter {
+    NSArray<UICollectionReusableView*> *footers = [self.iView.mainView visibleSupplementaryViewsOfKind:UICollectionElementKindSectionFooter];
+    return footers.count > 0 ? (BJCommityFootReusableView *)footers.firstObject : nil;
+}
 /*
 #pragma mark - Navigation
 

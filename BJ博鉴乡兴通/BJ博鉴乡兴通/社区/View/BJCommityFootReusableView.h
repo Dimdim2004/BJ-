@@ -12,6 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface BJCommityFootReusableView : UICollectionReusableView
 @property (nonatomic, strong) UIActivityIndicatorView* activity;
 - (void)startLoading:(BOOL)isLoading;
+- (void)endLoading;
 @end
 
 NS_ASSUME_NONNULL_END

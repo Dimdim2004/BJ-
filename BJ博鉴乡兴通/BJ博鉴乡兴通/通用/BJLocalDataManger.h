@@ -8,10 +8,11 @@
 #import <Foundation/Foundation.h>
 @protocol DatabaseProtocol;
 @protocol WCTTableCoding;
-
+@class BJMyPageDraftModel;
 NS_ASSUME_NONNULL_BEGIN
 
 @interface BJLocalDataManger : NSObject
+- (NSArray*)search:(BJMyPageDraftModel*)object WithEmail:(NSString*)email;
 - (void)quickTest;
 + (instancetype)sharedManger;
 - (void)loadDataManger:(id<DatabaseProtocol, WCTTableCoding>)object;

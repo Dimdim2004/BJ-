@@ -40,26 +40,28 @@
        
         [self.label mas_makeConstraints:^(MASConstraintMaker *make) {
             
-            make.left.and.right.equalTo(self.contentView);
-            make.bottom.equalTo(self.contentView).offset(-30);
+            make.left.equalTo(self.contentView).offset(6);
+            make.right.equalTo(self.contentView).offset(-6);
+            make.bottom.equalTo(self.contentView).offset(-40);
+            make.height.greaterThanOrEqualTo(@20); 
         }];
         [self.profileView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.equalTo(self.contentView).offset(5);
             make.width.equalTo(@30);
             make.height.equalTo(@30);
-            make.bottom.equalTo(self.contentView);
+            make.bottom.equalTo(self.contentView).offset(-10);
         }];
         [self.nameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.equalTo(self.profileView.mas_right).offset(5);
             make.width.equalTo(@120);
             make.height.equalTo(@20);
-            make.bottom.equalTo(self.contentView).offset(-5);
+            make.bottom.equalTo(self.contentView).offset(-10);
         }];
         [self.likeButton mas_makeConstraints:^(MASConstraintMaker *make) {
             make.right.equalTo(self.contentView);
             make.width.equalTo(@30);
             make.height.equalTo(@30);
-            make.bottom.equalTo(self.contentView);
+            make.bottom.equalTo(self.contentView).offset(-10);
         }];
         [self.imageView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.top.equalTo(self.mas_top).priorityHigh();

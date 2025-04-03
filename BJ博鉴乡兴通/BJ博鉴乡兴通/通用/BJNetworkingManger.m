@@ -58,6 +58,7 @@ const NSString* mapAPK = @"dhK73tBBx4BWr97HK8JnKocfz53ctjps";
     NSMutableArray* dataAry = [NSMutableArray array];
     for (int i = 0; i < imageAry.count; i++) {
         @autoreleasepool {
+            NSLog(@"这张图片的地址%p", imageAry[i]);
             NSData* data = UIImageJPEGRepresentation(imageAry[i], 0.8);
             if (data == nil) {
                 NSLog(@"解析失败了");
@@ -69,7 +70,9 @@ const NSString* mapAPK = @"dhK73tBBx4BWr97HK8JnKocfz53ctjps";
     [manger POST:stirng parameters:dicty headers:nil constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
         for (int i = 0; i < dataAry.count; i++) {
             NSString *fileName = [NSString stringWithFormat:@"%@.jpg", [[NSUUID UUID] UUIDString]];
-            [formData appendPartWithFileData:dataAry[i] name:@"images" fileName:fileName mimeType:@"image/jpeg"];
+            NSString* pemName = [NSString stringWithFormat:@"images_%d", i];
+            [formData appendPartWithFileData:dataAry[i] name:pemName fileName:fileName mimeType:@"image/jpeg"];
+            NSLog(@"%@", fileName);
         }
         
     } progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
