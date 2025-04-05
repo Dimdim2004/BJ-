@@ -20,6 +20,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) UIButton* shoppingCraftButtton;
 @property (nonatomic, strong) UIButton* darftButton;
 @property (nonatomic, strong) UIScrollView* scrollView;
+- (void)dealWithLabel:(UILabel*)label withText:(NSString*)text withCount:(NSInteger)count;
 @end
 
 NS_ASSUME_NONNULL_END

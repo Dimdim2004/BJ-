@@ -7,8 +7,11 @@
 
 #import "BJMyPageViewController.h"
 #import "BJCommityCollectionViewCell.h"
+#import "BJCommityModel.h"
+#import "BJCommityDataModel.h"
 #import "BJMyPageDraftViewController.h"
 #import "BJMyPageHeaderCollectionViewCell.h"
+#import "BJInvitationViewController.h"
 #import "BJMyPageView.h"
 #import "BJMyPageLikeModel.h"
 #import "BJMyPageViedoModel.h"
@@ -51,7 +54,7 @@
     [self regiserCollectionView];
     [self setNavgationBar];
     self.pageId = 1;
-    self.pageSize = 3;
+    self.pageSize = 4;
     [self loadAllData];
     
 //    [[BJNetworkingManger sharedManger] searchUserWorksWithUserId:[BJNetworkingManger sharedManger].userId WithPage:_pageId WithPageSize:self.pageSize loadHomeSuccess:^(BJMyPageLikeModel * _Nonnull dataModel) {
@@ -139,6 +142,7 @@
             
             [BJNetworkingManger sharedManger].username = userModel.username;
             [BJNetworkingManger sharedManger].avatar = userModel.avatar;
+            self.headModel = userModel;
             NSLog(@"loadSuccess");
             
         } error:^(NSError * _Nonnull error) {
@@ -228,6 +232,25 @@
     [self.mainView.collectionView registerClass:[BJCommityFootReusableView class] forSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:@"reuseFooter"];
    
 }
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
+    BJInvitationViewController* invitationViewController = [[BJInvitationViewController alloc] init];
+    invitationViewController.hidesBottomBarWhenPushed = YES;
+    if (self.iModel.count != 0) {
+        BJCommityModel* commityModel = [[BJCommityModel alloc] init];
+        BJMyPageDealModel* dataModel = self.iModel[indexPath.item];
+       
+        
+        invitationViewController.commityModel = [dataModel changeToShowModel];
+        invitationViewController.workId = dataModel.workId;
+        
+        
+        
+    } else {
+        invitationViewController.workId = 0;
+    }
+    invitationViewController.delegate = self;
+    [self.navigationController pushViewController:invitationViewController animated:YES];
+}
 - (void)presentDraft {
     BJMyPageDraftViewController* viewController = [[BJMyPageDraftViewController alloc] init];
     viewController.modalPresentationStyle = UIModalPresentationFullScreen;
@@ -247,12 +270,16 @@
         } else {
             cell.nameLabel.text = [BJNetworkingManger sharedManger].username;
         }
-        
+        NSLog(@"%ld, %ld, %ld", self.headModel.followers, self.headModel.following, self.headModel.workCount);
+        [cell dealWithLabel:cell.fansLabel withText:@"粉丝个数" withCount:self.headModel.followers];
+        [cell dealWithLabel:cell.attentaionLabel withText:@"关注" withCount:self.headModel.following];
+        [cell dealWithLabel:cell.likeLabel withText:@"获赞数量" withCount:self.headModel.workCount];
         if ([BJNetworkingManger sharedManger].avatar.length == 0) {
             cell.iconView.image = [UIImage imageNamed:@"WechatIMG17.jpg"];
         } else {
             [cell.iconView sd_setImageWithURL:[NSURL URLWithString:[BJNetworkingManger sharedManger].avatar]];
         }
+        
         [cell.darftButton addTarget:self action:@selector(presentDraft) forControlEvents:UIControlEventTouchUpInside];
         return cell;
     } else {
@@ -271,6 +298,7 @@
                 cell.imageView.image = [UIImage imageNamed:@"1.png"];
             }
             cell.label.text = dealModel.title;
+            cell.nameLabel.text = dealModel.userName;
             [cell.profileView sd_setImageWithURL:[NSURL URLWithString:[BJNetworkingManger sharedManger].avatar]];
         } else {
             
@@ -396,6 +424,13 @@
             [self loadMore];
         }
     }
+}
+-(void)updateFavourite:(NSInteger)isFavourite andCommentCount:(NSInteger)commentCount withWorkId:(NSInteger)workId {
+    BJCommityModel* iModel;
+    BJCommityDataModel* dataModel;
+//    for (int i = 0; i < self.iModel.count; i++) {
+//        self.
+//    }
 }
 /*
  #pragma mark - Navigation

@@ -25,6 +25,7 @@
         
         self.timeLabel = [[UILabel alloc] init];
         self.textView = [[UITextView alloc] init];
+        self.textView.selectable = NO;
         self.nameLabel = [[UILabel alloc] init];
         self.nameLabel.font = [UIFont boldSystemFontOfSize:16];
         self.headLabel = [[UILabel alloc] init];

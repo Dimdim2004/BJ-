@@ -11,7 +11,7 @@
 @implementation BJMyPagePostModel
 
 + (NSDictionary<NSString *,id> *)modelCustomPropertyMapper {
-    return @{@"likeCount":@"like_count", @"postId":@"id", @"imageCount":@"image_count", @"timeString":@"created_at"};
+    return @{@"likeCount":@"like_count", @"postId":@"id", @"imageCount":@"image_count", @"timeString":@"created_at", @"avatar":@"user.avatar", @"userName":@"user.username"};
 }
 + (NSDictionary<NSString *,id> *)modelContainerPropertyGenericClass {
     return @{@"images":[BJImageModel class]};
@@ -26,6 +26,7 @@
     newModel.type = MyPagePosts;
     newModel.imagesURLAry = self.images;
     newModel.isFavourte = self.isFavorite;
+    newModel.avatar = self.avatar;
     newModel.commentCount = self.commentCount;
     return newModel;
 }

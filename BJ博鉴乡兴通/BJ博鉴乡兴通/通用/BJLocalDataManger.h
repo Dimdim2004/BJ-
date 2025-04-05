@@ -18,9 +18,12 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)loadDataManger:(id<DatabaseProtocol, WCTTableCoding>)object;
 - (BOOL)insert:(NSObject<DatabaseProtocol, WCTTableCoding>*)object;
 - (BOOL)deleteData:(NSObject<DatabaseProtocol, WCTTableCoding>*)object;
+- (BOOL)deleteData:(NSObject<DatabaseProtocol, WCTTableCoding>*)object withPrimaryKey:(NSInteger)keyValue;
 //- (BOOL)update:(NSObject<DatabaseProtocol, WCTTableCoding>*)object onProperties:(const WCTProperties&)properties;
 - (NSArray*)search:(NSObject<DatabaseProtocol, WCTTableCoding>*)object;
+- (BOOL)deleteDarftData:(BJMyPageDraftModel*)draftModel withKeyValue:(NSInteger)keyValue;
 - (void)closeCurrentDatabase;
+- (BOOL)updateDraft:(BJMyPageDraftModel*)draftModel withKeyValue:(NSInteger)keyValue;
 @end
 
 NS_ASSUME_NONNULL_END

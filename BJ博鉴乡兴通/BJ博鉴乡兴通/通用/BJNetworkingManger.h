@@ -46,6 +46,7 @@ typedef void(^error)(NSError* error);
 - (void)attentionSomeone:(NSInteger)userId follow:(BOOL)follow attenationSuccess:(attentionSuccess)success error:(error)error;
 - (void)likeWork:(NSInteger)workId andType:(NSInteger)type attenationSuccess:(attentionSuccess)success error:(error)error;
 - (void)searchUserWorksWithUserId:(NSInteger)userId WithPage:(NSInteger)pageId WithPageSize:(NSInteger)pageSize loadHomeSuccess:(homeLikeSuccess)success error:(error)error;
+- (void)deleteCommentId:(NSInteger)commentId WithWorkId:(NSInteger)workId WithType:(NSInteger)type loadSuccess:(attentionSuccess)deleteSuccess failure:(error)error;
 +(instancetype) sharedManger;
 @end
 

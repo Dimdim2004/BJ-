@@ -317,7 +317,7 @@
 - (void)showSuccessAlert {
     UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"成功" message:@"登陆成功" preferredStyle:UIAlertControllerStyleAlert];
     [alert addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        
+        [BJNetworkingManger sharedManger].email = self.viewModel.user.email;
         [self.delegate changeTab];
     }]];
     [self presentViewController:alert animated:YES completion:nil];

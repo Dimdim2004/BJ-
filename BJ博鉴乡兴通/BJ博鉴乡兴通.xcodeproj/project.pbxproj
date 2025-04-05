@@ -112,6 +112,7 @@
 		E91428612D8C51BF001ED3F8 /* BJUploadSuccessModel.m in Sources */ = {isa = PBXBuildFile; fileRef = E91428602D8C51BF001ED3F8 /* BJUploadSuccessModel.m */; };
 		E91428642D8C6DAF001ED3F8 /* BJLocalDataManger.mm in Sources */ = {isa = PBXBuildFile; fileRef = E91428632D8C6DAE001ED3F8 /* BJLocalDataManger.mm */; };
 		E97523612D9E8FCD00EB8DAD /* BJMyPageDraftModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = E97523602D9E8FCD00EB8DAD /* BJMyPageDraftModel.mm */; };
+		E97523632DA12BB300EB8DAD /* lajitong.png in Resources */ = {isa = PBXBuildFile; fileRef = E97523622DA12BB300EB8DAD /* lajitong.png */; };
 		E98A54F12D943B3100CDBE13 /* BJAttentionDataModel.m in Sources */ = {isa = PBXBuildFile; fileRef = E98A54F02D943B3100CDBE13 /* BJAttentionDataModel.m */; };
 		E98A54F42D94EE1A00CDBE13 /* BJMyPageView.m in Sources */ = {isa = PBXBuildFile; fileRef = E98A54F32D94EE1A00CDBE13 /* BJMyPageView.m */; };
 		E98A54F72D9594C800CDBE13 /* BJMyPageLikeModel.m in Sources */ = {isa = PBXBuildFile; fileRef = E98A54F62D9594C800CDBE13 /* BJMyPageLikeModel.m */; };
@@ -343,6 +344,7 @@
 		E975235E2D9E8FCD00EB8DAD /* BJMyPageDraftModel+WCTTableCoding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "BJMyPageDraftModel+WCTTableCoding.h"; sourceTree = "<group>"; };
 		E975235F2D9E8FCD00EB8DAD /* BJMyPageDraftModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BJMyPageDraftModel.h; sourceTree = "<group>"; };
 		E97523602D9E8FCD00EB8DAD /* BJMyPageDraftModel.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BJMyPageDraftModel.mm; sourceTree = "<group>"; };
+		E97523622DA12BB300EB8DAD /* lajitong.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = lajitong.png; sourceTree = "<group>"; };
 		E98A54EF2D943B3100CDBE13 /* BJAttentionDataModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BJAttentionDataModel.h; sourceTree = "<group>"; };
 		E98A54F02D943B3100CDBE13 /* BJAttentionDataModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BJAttentionDataModel.m; sourceTree = "<group>"; };
 		E98A54F22D94EE1A00CDBE13 /* BJMyPageView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BJMyPageView.h; sourceTree = "<group>"; };
@@ -675,6 +677,7 @@
 		219F0E9B2D3E83D600F69C9B /* 图片 */ = {
 			isa = PBXGroup;
 			children = (
+				E97523622DA12BB300EB8DAD /* lajitong.png */,
 				E98A55092D996CF000CDBE13 /* edit.png */,
 				E98A55082D996CEF00CDBE13 /* hometown.png */,
 				E98A550A2D996CF000CDBE13 /* shopcraft.png */,
@@ -1081,6 +1084,7 @@
 				219F0EBD2D41DA2B00F69C9B /* logo2.png in Resources */,
 				219A070D2D7C055200EA43BA /* 字玩女侠青龙-闪 苍劲(Joyfonts-QinglongGB-Flash-Black).ttf in Resources */,
 				E91428492D89BC9B001ED3F8 /* starInvat.png in Resources */,
+				E97523632DA12BB300EB8DAD /* lajitong.png in Resources */,
 				219F0EAB2D3E8B5C00F69C9B /* home.png in Resources */,
 				219A06AC2D75F83000EA43BA /* minsu.png in Resources */,
 				E91428302D884877001ED3F8 /* tianjia-2.png in Resources */,

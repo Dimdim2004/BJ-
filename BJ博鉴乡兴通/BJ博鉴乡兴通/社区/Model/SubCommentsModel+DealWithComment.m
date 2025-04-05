@@ -9,11 +9,16 @@
 
 @implementation BJSubCommentsModel (DealWithComment)
 - (NSString *)dealWithTime {
+    if ([self.timeString isEqualToString:@"今天"]) {
+        return self.timeString;
+    }
     NSDateFormatter* formatter = [[NSDateFormatter alloc] init];
     [formatter setLocale:[NSLocale localeWithLocaleIdentifier:@"en_US_POSIX"]];
     [formatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss.SSSZZZZZ"];
     NSDate* date = [formatter dateFromString:self.timeString];
-    if (!date) return @""; // 处理解析失败
+    if (!date) {
+        return @""; // 处理解析失败
+    }
     NSDate* today = [NSDate date];
     NSCalendar *calendar = [NSCalendar currentCalendar];
     if ([calendar isDateInYesterday:date]) {

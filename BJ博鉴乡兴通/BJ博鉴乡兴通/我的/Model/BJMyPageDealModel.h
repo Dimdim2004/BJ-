@@ -12,6 +12,7 @@ typedef enum : NSUInteger {
     MyPageVideo,
     MyPagePosts,
 } currentType;
+@class BJCommityDataModel;
 @interface BJMyPageDealModel : NSObject
 @property (nonatomic, copy) NSArray<NSString*>* imagesURLAry;
 @property (nonatomic, copy) NSString* avatar;
@@ -23,6 +24,7 @@ typedef enum : NSUInteger {
 @property (nonatomic, copy) NSString* userName;
 @property (nonatomic, assign) NSInteger workId;
 @property (nonatomic, assign) NSInteger commentCount;
+- (BJCommityDataModel*)changeToShowModel;
 @end
 
 NS_ASSUME_NONNULL_END

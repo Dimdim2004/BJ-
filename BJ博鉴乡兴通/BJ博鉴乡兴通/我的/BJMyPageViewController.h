@@ -10,8 +10,9 @@
 @class BJMyPageModel;
 @class BJMyPageDealModel;
 NS_ASSUME_NONNULL_BEGIN
+@protocol updateDataDelegate;
 
-@interface BJMyPageViewController : UIViewController <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout>
+@interface BJMyPageViewController : UIViewController <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, updateDataDelegate>
 @property (nonatomic, strong) NSMutableArray<BJMyPageDealModel*>* iModel;
 @property (nonatomic, strong) BJMyPageModel* headModel;
 @end

@@ -15,8 +15,10 @@
 #import "SDWebImage/SDWebImage.h"
 #import "BJNetworkingManger.h"
 #import "BJSubCommentsModel.h"
+#import "BJAttentionDataModel.h"
 #import "BJImageModel.h"
 #import "BJUploadCommentModel.h"
+#import "BJCommunityViewController.h"
 @interface BJInvitationViewController () {
     NSInteger _pageId;
     NSInteger _pageSize;
@@ -29,6 +31,7 @@
     NSInteger _currentSection;
     BOOL _loadMore;
     BOOL _isLoading;
+    BOOL isMyself;
 }
 
 @end
@@ -37,6 +40,11 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    if (self.commityModel.userId == [BJNetworkingManger sharedManger].userId) {
+        isMyself = YES;
+    } else {
+        isMyself = NO;
+    }
     _loadMore = YES;
     _isLoading = YES;
     _replyId = 0;
@@ -87,12 +95,14 @@
     [self.iView.starButton addTarget:self action:@selector(selectLike:) forControlEvents:UIControlEventTouchUpInside];
     if (self.commityModel.isFavorite == 1) {
         self.iView.likeButton.selected = 1;
-        [self.iView.likeButton setTitle:[NSString stringWithFormat:@"%ld", self.commityModel.favoriteCount] forState:UIControlStateSelected];
+        [self.iView.likeButton setTitle:[NSString stringWithFormat:@"%ld", self.commityModel.favoriteCount + 1] forState:UIControlStateSelected];
+        [self.iView.likeButton setTitle:[NSString stringWithFormat:@"%ld", self.commityModel.favoriteCount] forState:UIControlStateNormal];
     } else {
         [self.iView.likeButton setTitle:[NSString stringWithFormat:@"%ld", self.commityModel.favoriteCount] forState:UIControlStateNormal];
+        [self.iView.likeButton setTitle:[NSString stringWithFormat:@"%ld", self.commityModel.favoriteCount + 1] forState:UIControlStateSelected];
     }
     
-
+    NSLog(@"评论个数%ld, 文章内容%@, 文章标题%@", self.commityModel.commentCount, self.commityModel.content, self.commityModel.title);
     [self.iView.commentButton setTitle:[NSString stringWithFormat:@"%ld", self.commityModel.commentCount] forState:UIControlStateNormal];
 }
 - (void)registerTableview {
@@ -213,13 +223,13 @@
     } else {
         if (self.commentModel.commentList.count > 0) {
             BJSubCommentsModel* commentModel = self.commentModel.commentList[section - 1];
-            NSLog(@"当前的一个commentId%ld", commentModel.commentId);
+            NSLog(@"加载高度时候查询得到当前的一个commentId%ld", commentModel.commentId);
             if (_dicty[@(commentModel.commentId)]) {
                 BJCommentsModel* currentCommentModel = _dicty[@(commentModel.commentId)];
                 NSLog(@"当前的一个row个数%ld", currentCommentModel.commentList.count);
                 return currentCommentModel.commentList.count + 1;
             } else {
-                NSLog(@"当前没有展开一条子评论");
+                NSLog(@"123123123当前没有展开一条子评论");
                 return 1;
             }
         } else {
@@ -266,7 +276,8 @@
         }
         if (indexPath.row == 0) {
             BJInvitationTableViewCell* commentCell = [self.iView.mainView dequeueReusableCellWithIdentifier:@"comments"];
-            commentCell.selectionStyle = UITableViewCellSelectionStyleNone;
+            [self addTapToCommentCell:commentCell];
+            //commentCell.selectionStyle = UITableViewCellSelectionStyleNone;
             BJSubCommentsModel* currentModel = self.commentModel.commentList[indexPath.section - 1];
             [commentCell.replyButton addTarget:self action:@selector(showKeyboard:) forControlEvents:UIControlEventTouchUpInside];
             if (currentModel.total > 0 && self.dicty[@(currentModel.commentId)] == nil) {
@@ -283,6 +294,7 @@
             }
             
             commentCell.textView.text = currentModel.content;
+            
             commentCell.nameLabel.text = currentModel.username;
             
             if ([currentModel.avatar isEqualToString:@""]) {
@@ -297,11 +309,16 @@
         //        commentCell.textView.text = currentModel.content;
         //        commentCell.nameLabel.text = currentModel.username;
             [commentCell.likeButton setTitle:@"0" forState:UIControlStateNormal];
+            [commentCell.likeButton setTitle:@"1" forState:UIControlStateSelected];
+            commentCell.likeButton.selected = currentModel.isLike;
+            NSLog(@"当前这%ld行主评论对应的一个按钮是否被点过赞%ld", indexPath.section - 1, currentModel.isLike);
+            
             [commentCell.likeButton addTarget:self action:@selector(selectLike:) forControlEvents:UIControlEventTouchUpInside];
             return commentCell;
         } else {
             NSLog(@"处理展开后的评论");
             BJInvitationSubCommentsTableViewCell* subCommentCell = [self.iView.mainView dequeueReusableCellWithIdentifier:@"subComments"];
+            [self addTapToCommentCell:subCommentCell];
             subCommentCell.selectionStyle = UITableViewCellSelectionStyleNone;
             BJSubCommentsModel* currentModel = self.commentModel.commentList[indexPath.section - 1];
             NSInteger commentId = currentModel.commentId;
@@ -329,6 +346,10 @@
         //        commentCell.textView.text = currentModel.content;
         //        commentCell.nameLabel.text = currentModel.username;
             [subCommentCell.likeButton setTitle:@"0" forState:UIControlStateNormal];
+            [subCommentCell.likeButton setTitle:@"1" forState:UIControlStateSelected];
+            subCommentCell.likeButton.selected = currentCommentModel.isLike;
+            
+            NSLog(@"当前这%ld行子评论对应的一个按钮是否被点过赞%d", indexPath.row - 1, currentCommentModel.isLike);
             subCommentCell.nameLabel.text = [NSString stringWithFormat:@"%@回复%@", currentCommentModel.username, currentCommentModel.replyToUsername];
             [subCommentCell.likeButton addTarget:self action:@selector(selectLike:) forControlEvents:UIControlEventTouchUpInside];
             [subCommentCell.image sd_setImageWithURL:[NSURL URLWithString:currentCommentModel.avatar]];
@@ -408,14 +429,26 @@
                 NSLog(@"还没有创建一个字店对应二级评论");
                 self.dicty[@(commentId)] = commentModel;
                 BJSubCommentsModel* subComment = commentModel.commentList[0];
-                NSLog(@"%@", subComment.content);
-                [self.iView.mainView reloadSections:[NSIndexSet indexSetWithIndex:currentSection] withRowAnimation:UITableViewRowAnimationAutomatic];
+                NSLog(@"%d", subComment.isLike);
+                //NSLog(@"%d", commentModel.commentList[0].isLike);
+                [UIView setAnimationsEnabled:NO];
+                [self.iView.mainView performBatchUpdates:^{
+                    [self.iView.mainView reloadSections:[NSIndexSet indexSetWithIndex:currentSection] withRowAnimation:UITableViewRowAnimationAutomatic];
+                } completion:^(BOOL finished) {
+                    [UIView setAnimationsEnabled:YES];
+                }];
+                
                 currentModel.pageId++;
             } else {
                 NSLog(@"创建过一个字店对应二级评论");
                 BJCommentsModel* currentCommentModel = (BJCommentsModel*)self.dicty[@(commentId)];
                 [currentCommentModel.commentList addObjectsFromArray:commentModel.commentList];
-                [self.iView.mainView reloadSections:[NSIndexSet indexSetWithIndex:currentSection] withRowAnimation:UITableViewRowAnimationAutomatic];
+                [UIView setAnimationsEnabled:NO];
+                [self.iView.mainView performBatchUpdates:^{
+                    [self.iView.mainView reloadSections:[NSIndexSet indexSetWithIndex:currentSection] withRowAnimation:UITableViewRowAnimationAutomatic];
+                } completion:^(BOOL finished) {
+                    [UIView setAnimationsEnabled:YES];
+                }];
                 currentModel.pageId++;
             }
         });
@@ -424,18 +457,47 @@
     }];
 }
 -(void)selectLike:(UIButton*)btn {
+    __weak id weakSelf = self;
+    
     if (btn == self.iView.likeButton) {
         [[BJNetworkingManger sharedManger] likeWork:self.workId andType:1 attenationSuccess:^(BJAttentionDataModel * _Nonnull dataModel) {
+            
+            __strong BJInvitationViewController* strongSelf = (BJInvitationViewController*)weakSelf;
+            strongSelf.commityModel.isFavorite = !strongSelf.commityModel.isFavorite;
+            [strongSelf.delegate updateFavourite:strongSelf.commityModel.isFavorite andCommentCount:strongSelf.commityModel.commentCount withWorkId:strongSelf.workId];
             NSLog(@"点赞操作成果");
         } error:^(NSError * _Nonnull error) {
             NSLog(@"点赞操作失败error");
         }];
     }
+    if ([btn.superview.superview isKindOfClass:[BJInvitationTableViewCell class]]) {
+        NSIndexPath* indexPath = [self.iView.mainView indexPathForCell:(BJInvitationHeaderTableViewCell*)btn.superview.superview];
+        BJSubCommentsModel* subCommentModel = self.commentModel.commentList[indexPath.section - 1];
+        subCommentModel.isLike = !btn.selected;
+        [self.commentModel.commentList replaceObjectAtIndex:indexPath.section - 1 withObject:subCommentModel];
+        NSLog(@"处理当前的主评论一个点击按钮%ld", subCommentModel.isLike);
+    } else if ([btn.superview.superview isKindOfClass:[BJInvitationSubCommentsTableViewCell class]]) {
+        NSIndexPath* indexPath = [self.iView.mainView indexPathForCell:(BJInvitationHeaderTableViewCell*)btn.superview.superview];
+        BJSubCommentsModel* subCommentModel = self.commentModel.commentList[indexPath.section - 1];
+        BJCommentsModel* commentModel = self.dicty[@(subCommentModel.commentId)];
+        BJSubCommentsModel* currentCommentModel = commentModel.commentList[indexPath.row - 1];
+        currentCommentModel.isLike = !btn.selected;
+        NSLog(@"处理%ld子评论的一个点击按钮%ld", indexPath.row, currentCommentModel.isLike);
+        [commentModel.commentList replaceObjectAtIndex:indexPath.row - 1 withObject:currentCommentModel];
+    }
     btn.selected = !btn.selected;
     NSString* likeString = btn.titleLabel.text;
     NSString* newlikeString = [NSString stringWithFormat:@"%d", [likeString intValue] + (btn.selected ? 1 : -1)];
-    [btn setTitle:newlikeString forState:UIControlStateSelected];
+    if (btn.selected) {
+        [btn setTitle:likeString forState:UIControlStateNormal];
+        [btn setTitle:newlikeString forState:UIControlStateSelected];
+    } else {
+        [btn setTitle:newlikeString forState:UIControlStateSelected];
+        [btn setTitle:likeString forState:UIControlStateNormal];
+    }
+    
 }
+
 - (void)downLoadComment {
     if (self.commentModel.commentList.count == 0) {
         return;
@@ -483,9 +545,11 @@
         BJInvitationTableViewCell* cell = (BJInvitationTableViewCell*)btn.superview.superview;
         NSIndexPath* path = [self.iView.mainView indexPathForCell:cell];
         BJSubCommentsModel* iModel = self.commentModel.commentList[path.section - 1];
+        _currentSection = path.section;
         _parentId = iModel.commentId; //设置回复的评论的id
         _replyId = iModel.userId; //设置回复的人的id
-        self.iView.commentTextView.text = [NSString stringWithFormat:@"回复%@", iModel.username];
+        _commentId = iModel.commentId;
+        NSLog(@"回复一级评论的commnenId为%ld", _commentId);
     } else {
         BJInvitationSubCommentsTableViewCell* cell = (BJInvitationSubCommentsTableViewCell*)btn.superview.superview;
         NSIndexPath* path = [self.iView.mainView indexPathForCell:cell];
@@ -498,7 +562,8 @@
         _parentId = currentModel.commentId;  //设置回复的评论的id
         NSLog(@"回复的当前的一个commentid %ld", _parentId);
         _replyId = currentModel.userId; //设置回复的人的id
-        self.iView.commentTextView.text = [NSString stringWithFormat:@"回复%@", currentModel.username];
+        _currentSection = path.section;
+
     }
     
     [self.iView.commentTextView becomeFirstResponder];
@@ -565,7 +630,7 @@
     iconButton.imageView.clipsToBounds = YES;
     iconButton.layer.cornerRadius = 20;
     iconButton.layer.masksToBounds = YES;
-
+    
     if (self.commityModel.avatar.length != 0) {
         NSLog(@"加载头像开始%@", self.commityModel.avatar);
         [iconButton sd_setImageWithURL:[NSURL URLWithString:self.commityModel.avatar]
@@ -598,28 +663,45 @@
     
     self.navigationItem.leftBarButtonItems = @[leftButton, space, headButton, space, titleButton];
     
-    UIButton* attentionButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    attentionButton.backgroundColor = UIColor.whiteColor;
-    [attentionButton addTarget:self action:@selector(attention:) forControlEvents:UIControlEventTouchUpInside];
-    [attentionButton setTitle:@"关注" forState:UIControlStateNormal];
-    attentionButton.layer.masksToBounds = YES;
-    attentionButton.layer.cornerRadius = 10;
-    attentionButton.frame = CGRectMake(0, 0, 80, 30);
-    attentionButton.layer.borderWidth = 1;
     
-    attentionButton.layer.masksToBounds = YES;
-    attentionButton.layer.cornerRadius = 13;
-    UIColor* myColor = [UIColor colorWithRed:98.0 / 255.0 green:184.0 / 255.0 blue:120 / 255.0 alpha:1];
-    attentionButton.layer.borderColor = myColor.CGColor;
-    [attentionButton setTitleColor:myColor forState:UIControlStateNormal];
-    UIBarButtonItem* rightButton = [[UIBarButtonItem alloc] initWithCustomView:attentionButton];
-    self.navigationItem.rightBarButtonItems = @[rightButton, space];
+    NSLog(@"当前有没有关注这个人%ld", self.commityModel.isFollowing);
+    if (self.commityModel.userId != [BJNetworkingManger sharedManger].userId) {
+        UIButton* attentionButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        attentionButton.backgroundColor = UIColor.whiteColor;
+        [attentionButton addTarget:self action:@selector(attention:) forControlEvents:UIControlEventTouchUpInside];
+        [attentionButton setTitle:@"关注" forState:UIControlStateNormal];
+        attentionButton.layer.masksToBounds = YES;
+        attentionButton.layer.cornerRadius = 10;
+        attentionButton.frame = CGRectMake(0, 0, 80, 30);
+        attentionButton.layer.borderWidth = 1;
+        
+        attentionButton.layer.masksToBounds = YES;
+        attentionButton.layer.cornerRadius = 13;
+        attentionButton.selected = self.commityModel.isFollowing;
+        UIColor* myColor = [UIColor colorWithRed:98.0 / 255.0 green:184.0 / 255.0 blue:120 / 255.0 alpha:1];
+        if (attentionButton.selected) {
+            [attentionButton setTitle:@"已关注" forState:UIControlStateNormal];
+            [attentionButton setTitleColor:UIColor.whiteColor forState:UIControlStateNormal];
+            attentionButton.backgroundColor = myColor;
+        } else {
+            [attentionButton setTitle:@"关注" forState:UIControlStateNormal];
+            attentionButton.backgroundColor = UIColor.whiteColor;
+            [attentionButton setTitleColor:myColor forState:UIControlStateNormal];
+        }
+        attentionButton.layer.borderColor = myColor.CGColor;
+        UIBarButtonItem* rightButton = [[UIBarButtonItem alloc] initWithCustomView:attentionButton];
+        self.navigationItem.rightBarButtonItems = @[rightButton, space];
+    } else {
+        ;
+    }
+    
     
 }
 - (void)attention:(UIButton*)btn {
     btn.selected = !btn.selected;
     UIColor* myColor = [UIColor colorWithRed:98.0 / 255.0 green:184.0 / 255.0 blue:120 / 255.0 alpha:1];
-    [[BJNetworkingManger sharedManger] attentionSomeone:self.userId follow:btn.selected attenationSuccess:^(BJAttentionDataModel * _Nonnull dataModel) {
+    NSLog(@"当前给谁点击关注%ld", self.commityModel.userId);
+    [[BJNetworkingManger sharedManger] attentionSomeone:self.commityModel.userId follow:btn.selected attenationSuccess:^(BJAttentionDataModel * _Nonnull dataModel) {
         NSLog(@"success");
     } error:^(NSError * _Nonnull error) {
         NSLog(@"error");
@@ -666,14 +748,19 @@
                 strongSelf->_parentId = 0; //设置成默认状态
                 strongSelf->_replyId = 0;//设置成默认状态
             } else {
+                NSLog(@"我截获的一个commentId为%ld", strongSelf->_commentId);
+                BJSubCommentsModel* fatherCommentModel = strongSelf.commentModel.commentList[currentSection - 1];
+                fatherCommentModel.total += 1;
                 BJCommentsModel* currentCommentModel = self.dicty[@(strongSelf->_commentId)];
-                if (currentCommentModel.commentList.count == 0) {
+                if (currentCommentModel == nil) {
                     NSLog(@"当前这条评论还没加载子评论");
+                    currentCommentModel = [[BJCommentsModel alloc] init];
                     
                     currentCommentModel.commentList = [NSMutableArray array];
                 }
                 BJSubCommentsModel* replyModel = self.commentModel.commentList[currentSection - 1];
-                postModel.replyToUsername = [NSString stringWithFormat:@"我回复%@", replyModel.username];
+                postModel.replyToUsername = [NSString stringWithFormat:@"%@", replyModel.username];
+                NSLog(@"%@", replyModel.username);
                 [currentCommentModel.commentList addObject:postModel];
                 
                
@@ -695,19 +782,25 @@
             } else  if (!firstFlag) {
                 NSLog(@"该评论是二级评论");
                 [strongSelf.iView.mainView performBatchUpdates:^{
-                    NSIndexPath* indexpath = [NSIndexPath indexPathForRow:0 inSection:currentSection];
-                    [strongSelf.iView.mainView insertRowsAtIndexPaths:@[indexpath] withRowAnimation:UITableViewRowAnimationAutomatic];
+                    NSIndexPath* indexpath = [NSIndexPath indexPathForRow:1 inSection:currentSection];
+                    [strongSelf.iView.mainView reloadSections:[NSIndexSet indexSetWithIndex:currentSection] withRowAnimation:UITableViewRowAnimationNone];
+//                    [strongSelf.iView.mainView insertRowsAtIndexPaths:@[indexpath] withRowAnimation:UITableViewRowAnimationAutomatic];
                     } completion:nil];
             } else {
+                
                 NSLog(@"该评论是第一次发评论");
                 [strongSelf.iView.mainView performBatchUpdates:^{
                     NSIndexPath* indexpath = [NSIndexPath indexPathForRow:0 inSection:currentSection];
                     [strongSelf.iView.mainView reloadRowsAtIndexPaths:@[indexpath] withRowAnimation:UITableViewRowAnimationAutomatic];
                     } completion:nil];
             }
-            
+            strongSelf.commityModel.commentCount += 1;
+            [strongSelf.delegate updateFavourite:strongSelf.commityModel.isFavorite andCommentCount:strongSelf.commityModel.commentCount withWorkId:strongSelf.workId];
+            [strongSelf.iView.commentButton setTitle:[NSString stringWithFormat:@"%ld", strongSelf.commityModel.commentCount] forState:UIControlStateNormal];
             //[self.iView.mainView reloadData];
+            
             [strongSelf hideKeyborad];
+            [strongSelf showUploadCommentSuccess];
         });
     } error:^(NSError * _Nonnull error) {
         NSLog(@"error,发布失败");
@@ -719,9 +812,111 @@
     UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"发布评论成功" message:@"" preferredStyle:UIAlertControllerStyleAlert];
     [alert addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:nil]];
     [self presentViewController:alert animated:YES completion:nil];
-    
 }
-
+- (void)deleteCommentWithSection:(NSInteger)section Row:(NSInteger)row{
+    NSInteger commentId;
+    BJSubCommentsModel* deleteModel;
+    if (row != 0) {
+        BJSubCommentsModel* commentModel = self.commentModel.commentList[section - 1];
+        BJCommentsModel* currentModel = self.dicty[@(commentModel.commentId)];
+        BJSubCommentsModel* currentCommentModel = currentModel.commentList[row - 1];
+        commentId = currentCommentModel.commentId;
+        deleteModel = currentCommentModel;
+    } else {
+        BJSubCommentsModel* commentModel = self.commentModel.commentList[section - 1];
+        commentId = commentModel.commentId;
+        deleteModel = commentModel;
+    }
+    BJSubCommentsModel* commentModel = self.commentModel.commentList[section - 1];
+    BJCommentsModel* currentModel = self.dicty[@(commentModel.commentId)];
+    
+    __weak BJInvitationViewController* weakSelf = self;
+    [[BJNetworkingManger sharedManger] deleteCommentId:commentId WithWorkId:_workId WithType:1 loadSuccess:^(BJAttentionDataModel * _Nonnull dataModel) {
+        __strong BJInvitationViewController* strongSelf = weakSelf;
+        if (dataModel.status == 1000) {
+            NSLog(@"删除评论成功");
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [UIView setAnimationsEnabled:NO];
+                if (row == 0) {
+                    NSLog(@"删除一级评论");
+                    [strongSelf.commentModel.commentList removeObject:deleteModel];
+                    [strongSelf.iView.mainView performBatchUpdates:^{
+                        [strongSelf.iView.mainView deleteSections:[NSIndexSet indexSetWithIndex:section] withRowAnimation:UITableViewRowAnimationAutomatic];
+                                    } completion:^(BOOL finished) {
+                                        [UIView setAnimationsEnabled:YES];
+                                        [strongSelf.delegate updateFavourite:strongSelf.commityModel.isFavorite andCommentCount:strongSelf.commityModel.commentCount - deleteModel.total - 1 withWorkId:strongSelf->_workId];
+                                    }];
+                } else {
+                    NSLog(@"删除二级评论");
+                    [currentModel.commentList removeObject:deleteModel];
+                    [strongSelf.iView.mainView performBatchUpdates:^{
+                        [strongSelf.iView.mainView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:row inSection:section]] withRowAnimation:UITableViewRowAnimationAutomatic];
+                                    } completion:^(BOOL finished) {
+                                        [UIView setAnimationsEnabled:YES];
+                                        [strongSelf.delegate updateFavourite:strongSelf.commityModel.isFavorite andCommentCount:strongSelf.commityModel.commentCount - deleteModel.total withWorkId:strongSelf->_workId];
+                                    }];
+                }
+                
+            });
+        }
+    } failure:^(NSError * _Nonnull error) {
+        NSLog(@"error");
+    }];
+}
+- (void)addTapToCommentCell:(UITableViewCell*)cell {
+    BOOL flag = NO;
+    if (self.commityModel.userId == [BJNetworkingManger sharedManger].userId) {
+        UITapGestureRecognizer* tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(pressCommentAlert:)];
+        [cell addGestureRecognizer:tap];
+        
+        return;
+    }
+    if ([cell isKindOfClass:[BJInvitationTableViewCell class]]) {
+        BJInvitationTableViewCell* currentCell = (BJInvitationTableViewCell*)cell;
+        NSIndexPath* indexPath = [self.iView.mainView indexPathForCell:currentCell];
+        BJSubCommentsModel* commentModel = self.commentModel.commentList[indexPath.section];
+        if ([BJNetworkingManger sharedManger].userId == commentModel.userId) {
+            UITapGestureRecognizer* tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(pressCommentAlert:)];
+            [cell addGestureRecognizer:tap];
+        }
+    } else if ([cell isKindOfClass:[BJInvitationSubCommentsTableViewCell class]]) {
+        BJInvitationSubCommentsTableViewCell* currentCell = (BJInvitationSubCommentsTableViewCell*)cell;
+        NSIndexPath* indexPath = [self.iView.mainView indexPathForCell:currentCell];
+        BJSubCommentsModel* commentModel = self.commentModel.commentList[indexPath.section];
+        if ([BJNetworkingManger sharedManger].userId == commentModel.userId) {
+            UITapGestureRecognizer* tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(pressCommentAlert:)];
+            [cell addGestureRecognizer:tap];
+        }
+    }
+    
+   
+}
+- (void)pressCommentAlert:(UITapGestureRecognizer*)tap {
+    UIView* superView = tap.view;
+    NSLog(@"%@", [superView class]);
+    NSIndexPath* indexPath;
+    NSInteger section;
+    NSInteger row;
+    if ([superView isKindOfClass:[BJInvitationTableViewCell class]]) {
+        BJInvitationTableViewCell* currentCell = (BJInvitationTableViewCell*)superView;
+        indexPath = [self.iView.mainView indexPathForCell:currentCell];
+        section = indexPath.section;
+        row = indexPath.row;
+    } else {
+        BJInvitationSubCommentsTableViewCell* currentCell = (BJInvitationSubCommentsTableViewCell*)superView;
+        indexPath = [self.iView.mainView indexPathForCell:currentCell];
+        section = indexPath.section;
+        row = indexPath.row;
+    }
+    
+    UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"删除评论" message:@"" preferredStyle:UIAlertControllerStyleActionSheet];
+    [alert addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        [self deleteCommentWithSection:section Row:row];
+    }]];
+    [alert addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleDefault handler:nil]];
+    [self presentViewController:alert animated:YES completion:nil];
+}
 /*
 #pragma mark - Navigation
 

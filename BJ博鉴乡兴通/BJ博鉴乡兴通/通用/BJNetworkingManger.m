@@ -59,10 +59,12 @@ const NSString* mapAPK = @"dhK73tBBx4BWr97HK8JnKocfz53ctjps";
     for (int i = 0; i < imageAry.count; i++) {
         @autoreleasepool {
             NSLog(@"这张图片的地址%p", imageAry[i]);
+            
             NSData* data = UIImageJPEGRepresentation(imageAry[i], 0.8);
             if (data == nil) {
                 NSLog(@"解析失败了");
             }
+            NSLog(@"第 %d 张图片: 长度 = %lu", i, (unsigned long)data.length);
             [dataAry addObject:data];
         }
     }
@@ -70,7 +72,7 @@ const NSString* mapAPK = @"dhK73tBBx4BWr97HK8JnKocfz53ctjps";
     [manger POST:stirng parameters:dicty headers:nil constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
         for (int i = 0; i < dataAry.count; i++) {
             NSString *fileName = [NSString stringWithFormat:@"%@.jpg", [[NSUUID UUID] UUIDString]];
-            NSString* pemName = [NSString stringWithFormat:@"images_%d", i];
+            NSString* pemName = [NSString stringWithFormat:@"images"];
             [formData appendPartWithFileData:dataAry[i] name:pemName fileName:fileName mimeType:@"image/jpeg"];
             NSLog(@"%@", fileName);
         }
@@ -89,8 +91,11 @@ const NSString* mapAPK = @"dhK73tBBx4BWr97HK8JnKocfz53ctjps";
 - (void)loadImage:(NSInteger)pageId PageSize:(NSInteger)pageSize WithSuccess:(commitySuccess)commitySuccess failure:(error)returnError {
     AFHTTPSessionManager *manager = [BJNetworkingManger BJcreateAFHTTPSessionManagerWithBaseURLString:urlString];
     NSString* string = [NSString stringWithFormat:@"%@/posts?page=%ld&page_size=%ld",urlString, pageId, pageSize];
+   
     manager.requestSerializer = [AFJSONRequestSerializer serializer];
     [manager.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+    NSString* bearerString = [NSString stringWithFormat:@"Bearer %@", self.token];
+    [manager.requestSerializer setValue:bearerString forHTTPHeaderField:@"Authorization"];
     manager.responseSerializer = [AFJSONResponseSerializer serializer];
     
     [manager GET:string parameters:nil headers:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
@@ -98,8 +103,8 @@ const NSString* mapAPK = @"dhK73tBBx4BWr97HK8JnKocfz53ctjps";
         
         BJCommityModel* commityModel = [BJCommityModel yy_modelWithJSON:responseObject];
         if (commityModel.status == 1000) {
-            //NSLog(@"%@", responseObject);
-            NSLog(@"%@", commityModel);
+            NSLog(@"%@", responseObject);
+            //NSLog(@"%@", commityModel);
             commitySuccess(commityModel);
         }
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
@@ -230,6 +235,7 @@ const NSString* mapAPK = @"dhK73tBBx4BWr97HK8JnKocfz53ctjps";
     manager.responseSerializer = [AFJSONResponseSerializer serializer];
     NSString* bearerString = [NSString stringWithFormat:@"Bearer %@", self.token];
     [manager.requestSerializer setValue:bearerString forHTTPHeaderField:@"Authorization"];
+    //[manager.requestSerializer setValue:@"multipart/form-data" forHTTPHeaderField:@"Content-Type"];
 //    [manager.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
 //    [manager.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Accept"];
     NSString* string = @"";
@@ -238,8 +244,9 @@ const NSString* mapAPK = @"dhK73tBBx4BWr97HK8JnKocfz53ctjps";
     } else {
         string = [NSString stringWithFormat:@"%@/users/unfollow", urlString];
     }
+    NSLog(@"%ld", userId);
     NSDictionary* dicty = @{@"follower_id":[NSNumber numberWithInteger:userId]};
-    [manager POST:string parameters:nil headers:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+    [manager POST:string parameters:dicty headers:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         NSLog(@"%@", responseObject);
         BJAttentionDataModel* dataModel = [BJAttentionDataModel yy_modelWithJSON:responseObject];
         NSLog(@"%@, %ld, %@", dataModel.msg, dataModel.status, dataModel.data);
@@ -279,10 +286,10 @@ const NSString* mapAPK = @"dhK73tBBx4BWr97HK8JnKocfz53ctjps";
     [manager.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Accept"];
     NSDictionary* dicty = @{@"user_id":@(userId), @"page":@(pageId), @"page_size":@(pageSize)};
     [manager GET:string parameters:dicty headers:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-        NSLog(@"申请个人主页成功");
+        //NSLog(@"申请个人主页成功");
         BJMyPageLikeModel* likeModel = [BJMyPageLikeModel yy_modelWithJSON:responseObject];
-        NSLog(@"%@", responseObject);
-        NSLog(@"%@", likeModel.posts);
+        //NSLog(@"%@", responseObject);
+        //NSLog(@"%@", likeModel.posts);
         success(likeModel);
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         NSLog(@"NewWork error");
@@ -302,10 +309,32 @@ const NSString* mapAPK = @"dhK73tBBx4BWr97HK8JnKocfz53ctjps";
         NSLog(@"申请个人信息成功");
         BJMyPageModel* likeModel = [BJMyPageModel yy_modelWithJSON:responseObject];
         NSLog(@"%@", responseObject);
-        
         success(likeModel);
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         NSLog(@"NewWork error");
     }];
 }
+- (void)deleteCommentId:(NSInteger)commentId WithWorkId:(NSInteger)workId WithType:(NSInteger)type loadSuccess:(attentionSuccess)deleteSuccess failure:(error)error {
+    AFHTTPSessionManager *manager = [BJNetworkingManger BJcreateAFHTTPSessionManagerWithBaseURLString:urlString];
+
+    NSString *string = [NSString stringWithFormat:@"%@/users/uncomment", urlString];
+    
+    manager.requestSerializer = [AFJSONRequestSerializer serializer]; // 发送 JSON
+    manager.responseSerializer = [AFJSONResponseSerializer serializer]; // 解析 JSON
+    
+    NSString *bearerString = [NSString stringWithFormat:@"Bearer %@", self.token];
+    [manager.requestSerializer setValue:bearerString forHTTPHeaderField:@"Authorization"];
+    [manager.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+
+    NSDictionary *dicty = @{@"comment_id": @(commentId), @"work_id": @(workId), @"type": @(type)};
+
+    [manager POST:string parameters:dicty headers:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        BJAttentionDataModel* deleteModel = [BJAttentionDataModel yy_modelWithJSON:responseObject];
+        NSLog(@"%@", responseObject);
+        deleteSuccess(deleteModel);
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        NSLog(@"NewWork error: %@", error);
+    }];
+}
+
 @end

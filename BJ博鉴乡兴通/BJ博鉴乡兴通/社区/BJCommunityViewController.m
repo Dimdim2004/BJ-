@@ -330,12 +330,13 @@
         BJCommityDataModel* dataModel = commityModel.data[indexPath.item];
         invitationViewController.commityModel = dataModel;
         invitationViewController.workId = dataModel.postId;
-        NSLog(@"%ld", dataModel.images.count);
+        NSLog(@"%ld", dataModel.postId);
         BJImageModel* firstImage = dataModel.images[0];
-        NSLog(@"%ld", firstImage.height);
+        NSLog(@"当前点开这个人的主页的时候有没有被关注%ld", dataModel.isFollowing);
     } else {
         invitationViewController.workId = 0;
     }
+    invitationViewController.delegate = self;
     [self.navigationController pushViewController:invitationViewController animated:YES];
 }
 #pragma mark - UITableViewDataSourcePrefetching
@@ -385,6 +386,28 @@
 - (BJCommityFootReusableView *)visibleFooter {
     NSArray<UICollectionReusableView*> *footers = [self.iView.mainView visibleSupplementaryViewsOfKind:UICollectionElementKindSectionFooter];
     return footers.count > 0 ? (BJCommityFootReusableView *)footers.firstObject : nil;
+}
+
+-(void)updateFavourite:(NSInteger)isFavourite andCommentCount:(NSInteger)commentCount withWorkId:(NSInteger)workId {
+    BJCommityModel* iModel;
+    BJCommityDataModel* dataModel;
+    for (int i = 0; i < self.model.count; i++) {
+        iModel = self.model[i];
+        for (int j = 0; j < iModel.data.count; j++) {
+            dataModel = iModel.data[j];
+            if (dataModel.postId == workId) {
+                dataModel.isFavorite = isFavourite;
+                dataModel.commentCount = commentCount;
+                NSMutableArray* ary = [iModel.data mutableCopy];
+                [ary replaceObjectAtIndex:j withObject:dataModel];
+                iModel.data = [ary copy];
+                [self.model replaceObjectAtIndex:i withObject:iModel];
+                [self.iView.mainView reloadItemsAtIndexPaths:@[[NSIndexPath indexPathForItem:j inSection:i]]];
+                return;
+            }
+        }
+        
+    }
 }
 /*
 #pragma mark - Navigation

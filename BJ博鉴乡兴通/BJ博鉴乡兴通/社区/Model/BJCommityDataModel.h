@@ -17,9 +17,11 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy) NSString* content;
 @property (nonatomic, assign) NSInteger imageCount;
 @property (nonatomic, copy) NSArray* images;
+@property (nonatomic, assign) NSInteger userId;
 @property (nonatomic, assign) NSInteger favoriteCount;
 @property (nonatomic, assign) NSInteger commentCount;
 @property (nonatomic, assign) BOOL isFavorite;
+@property (nonatomic, assign) BOOL isFollowing;
 @property (nonatomic, copy) NSString* timeString;
 @end
 

@@ -27,7 +27,16 @@ WCDB_PRIMARY_AUTO_INCREMENT(noteId)
 - (NSString *)tableName {
     return @"BJMyPageDraftModel";
 }
+- (instancetype)init
+{
+    self = [super init];
+    if (self) {
+        self.isAutoIncrement = YES;
+    }
+    return self;
+}
 - (NSString *)primaryKey {
+    
     return @"noteId";
 }
 

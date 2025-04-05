@@ -7,9 +7,10 @@
 
 #import "BJCommityDataModel.h"
 #import "BJImageModel.h"
+
 @implementation BJCommityDataModel
 + (NSDictionary<NSString *,id> *)modelCustomPropertyMapper {
-    return @{@"postId":@"post_id", @"avatar":@"user.avatar", @"timeString":@"created_at", @"username":@"user.username",  @"commentCount":@"comment_count",  @"favoriteCount":@"favorite_count", @"isFavorite":@"is_favorite"};
+    return @{@"postId":@"post_id", @"avatar":@"user.avatar", @"timeString":@"created_at", @"username":@"user.username",  @"commentCount":@"comment_count",  @"favoriteCount":@"favorite_count", @"isFavorite":@"is_favorite", @"userId":@"user.user_id", @"isFollowing":@"is_following"};
 }
 + (NSArray<NSString *> *)modelPropertyBlacklist {
     return @[@"isExpand"];
@@ -17,4 +18,5 @@
 + (NSDictionary<NSString *,id> *)modelContainerPropertyGenericClass {
     return @{@"images":[BJImageModel class]};
 }
+
 @end

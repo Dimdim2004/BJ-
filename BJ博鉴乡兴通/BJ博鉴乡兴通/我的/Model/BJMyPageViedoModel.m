@@ -24,6 +24,7 @@
     newModel.imagesURLAry = @[self.coverUrl];
     newModel.isFavourte = self.isFavourite;
     newModel.type = MyPageVideo;
+    newModel.avatar = self.avatar;
     return newModel;
 }
 @end

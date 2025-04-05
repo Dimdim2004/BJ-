@@ -6,10 +6,12 @@
 //
 
 #import "BJMyPageDraftViewController.h"
+#import "BJPostCommityViewController.h"
 #import "BJMainCommunityView.h"
 #import "BJCommityCollectionViewCell.h"
 #import "BJMyDraftModel.h"
 #import "BJLocalDataManger.h"
+#import "BJCommityPostModel.h"
 #import "BJMyPageDraftModel.h"
 #import "BJNetworkingManger.h"
 #import "SDWebImage/SDWebImage.h"
@@ -93,11 +95,30 @@
     cell.nameLabel.text = [BJNetworkingManger sharedManger].username;
     [cell.profileView sd_setImageWithURL:[BJNetworkingManger sharedManger].avatar];
     NSArray* ary = draftModel.images;
+    [cell.likeButton setImage:[UIImage imageNamed:@"lajitong.png"] forState:UIControlStateNormal];
+    [cell.likeButton addTarget:self action:@selector(deleteDraft:) forControlEvents:UIControlEventTouchUpInside];
     cell.imageView.image = self.imageAry[indexPath.item];
     cell.contentView.backgroundColor = UIColor.whiteColor;
     
     
     return cell;
+}
+- (void)deleteDraft:(UIButton*)button {
+    BJCommityCollectionViewCell* cell = (BJCommityCollectionViewCell*)button.superview.superview;
+    NSIndexPath* indexPath = [self.iView.mainView indexPathForCell:cell];
+    BJMyPageDraftModel* iModel = self.model[indexPath.item];
+    [[BJLocalDataManger sharedManger] loadDataManger:[[BJMyPageDraftModel alloc] init]];
+    NSLog(@"%ld", iModel.noteId);
+    [[BJLocalDataManger sharedManger] deleteDarftData:iModel withKeyValue:iModel.noteId];
+    NSMutableArray* ary = [NSMutableArray arrayWithArray:self.model];
+    [ary removeObject:iModel];
+    self.model = [ary copy];
+    [UIView setAnimationsEnabled:NO];
+    [self.iView.mainView performBatchUpdates:^{
+        [self.iView.mainView deleteItemsAtIndexPaths:@[indexPath]];
+    } completion:^(BOOL finished) {
+        [UIView setAnimationsEnabled:YES];
+    }];
 }
 - (CGFloat)loadHeight:(UIImage*)image andString:(NSString*)text {
     CGFloat imageHeight = image.size.height / image.size.width * 186.5;
@@ -112,6 +133,26 @@
 }
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
     return 1;
+}
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    BJPostCommityViewController* commityViewController = [[BJPostCommityViewController alloc] init];
+    commityViewController.modalPresentationStyle = UIModalPresentationFullScreen;
+    BJMyPageDraftModel* draModel = self.model[indexPath.item];
+    NSMutableArray* uploadImageAry = [@[] mutableCopy];
+    NSURL *documentsURL = [[fileManager URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] firstObject];
+    for (int i = 0; i < draModel.images.count; i++) {
+        NSURL *fileURL = [documentsURL URLByAppendingPathComponent:draModel.images[i]];
+        [uploadImageAry addObject:[UIImage imageWithContentsOfFile:fileURL.path]];
+    }
+    commityViewController.uploadPhotos = [uploadImageAry copy];
+    commityViewController.model = [[BJCommityPostModel alloc] init];
+    commityViewController.model.titleString = draModel.titleString;
+    commityViewController.model.contetnString = draModel.contentString;
+    commityViewController.type = 1;
+    commityViewController.currentNoteId = draModel.noteId;
+    [self presentViewController:commityViewController animated:YES completion:nil];
+    
 }
 /*
 #pragma mark - Navigation

@@ -28,10 +28,20 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.uploadPhotos = @[];
-    self.model = [[BJCommityPostModel alloc] init];
-    self.model.titleString = @"";
-    self.model.contetnString = @"";
+    if (self.uploadPhotos == nil) {
+        self.uploadPhotos = @[];
+    }
+    if (self.model == nil) {
+        self.model = [[BJCommityPostModel alloc] init];
+    }
+    
+    if (self.model.titleString == nil) {
+        self.model.titleString = @"";
+    }
+    if (self.model.contetnString == nil) {
+        self.model.contetnString = @"";
+    }
+    
     self.postView = [[BJPostCommityView alloc] initWithFrame:self.view.bounds];
     [self.postView.mainView registerClass:[BJPostTableViewCell class] forCellReuseIdentifier:@"title"];
     [self.postView.mainView registerClass:[BJCommityPostLoactionTableViewCell class] forCellReuseIdentifier:@"loaction"];
@@ -43,7 +53,12 @@
     self.postView.mainView.dataSource = self;
     [self.postView.backButton addTarget:self action:@selector(dismiss) forControlEvents:UIControlEventTouchUpInside];
     [self.postView.postButton addTarget:self action:@selector(post) forControlEvents:UIControlEventTouchUpInside];
-    [self.postView.draftButton addTarget:self action:@selector(draft) forControlEvents:UIControlEventTouchUpInside];
+    if (self.type != 1) {
+        [self.postView.draftButton addTarget:self action:@selector(draft) forControlEvents:UIControlEventTouchUpInside];
+    } else {
+        self.postView.draftButton.hidden = YES;
+    }
+    
     [self.postView.previewButton addTarget:self action:@selector(preview) forControlEvents:UIControlEventTouchUpInside];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification  object:nil];
     //[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification  object:nil];
@@ -83,7 +98,54 @@
     [_textField resignFirstResponder];
 }
 - (void)dismiss {
+    if (self.type == 1) {
+        [self showSaveAlert];
+        return;
+    }
     [self dismissViewControllerAnimated:YES completion:nil];
+}
+- (void)updateDataBase {
+    BJMyPageDraftModel* model = [[BJMyPageDraftModel alloc] init];
+    model.noteId = _currentNoteId;
+    //BJMymagesInDraftModel* imagesModel = [[BJMymagesInDraftModel alloc] init];
+    [[BJLocalDataManger sharedManger] loadDataManger:model];
+    NSArray* ary = [[BJLocalDataManger sharedManger] search:model];
+    if (self.textField.text.length > 0 && self.textView.text.length > 0 && ![self.textView.text isEqualToString:@"请输入内容"]) {
+        model.contentString = self.textView.text;
+        model.titleString = self.textField.text;
+        NSLog(@"%@", [BJNetworkingManger sharedManger].email);
+        if ([BJNetworkingManger sharedManger].email != nil) {
+            model.email = [BJNetworkingManger sharedManger].email;
+           
+        } else {
+            model.email = @"3073623804@qq.com";
+        }
+        dispatch_async(dispatch_get_main_queue(), ^{
+            NSArray* ary = [self saveImages];
+            NSMutableArray* array = [NSMutableArray array];
+            for (int i = 0; i < ary.count; i++) {
+                [array addObject: ary[i]];
+            }
+            model.images = [NSArray arrayWithArray:array];
+            
+            NSLog(@"查询当前的数组情况%@", [[BJLocalDataManger sharedManger] search:model]);
+            [[BJLocalDataManger sharedManger] updateDraft:model withKeyValue:model.noteId];
+            [[BJLocalDataManger sharedManger] closeCurrentDatabase];
+            
+            [self showDraftSuccessAlert];
+        });
+    }
+}
+- (void)showSaveAlert {
+    UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"是否要保存更改" message:@"退出编辑发表页面" preferredStyle:UIAlertControllerStyleAlert];
+    [alert addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        [self updateDataBase];
+    }]];
+    [alert addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        [self dismissViewControllerAnimated:YES completion:nil];
+    }]];
+    [self presentViewController:alert animated:YES completion:nil];
+    return;
 }
 - (void)post {
     if (self.textField.text.length > 0 && self.textView.text.length > 0 && ![self.textView.text isEqualToString:@"请输入内容"] ) {
@@ -103,7 +165,6 @@
     //BJMymagesInDraftModel* imagesModel = [[BJMymagesInDraftModel alloc] init];
     [[BJLocalDataManger sharedManger] loadDataManger:model];
     NSArray* ary = [[BJLocalDataManger sharedManger] search:model];
-    model.noteId = ary.count;
     if (self.textField.text.length > 0 && self.textView.text.length > 0 && ![self.textView.text isEqualToString:@"请输入内容"]) {
         model.contentString = self.textView.text;
         model.titleString = self.textField.text;

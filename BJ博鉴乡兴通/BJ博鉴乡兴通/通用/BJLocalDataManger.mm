@@ -77,14 +77,34 @@ static id localSharedManger = nil;
     }
     return ret;
 }
-- (BOOL)deleteData:(NSObject<DatabaseProtocol, WCTTableCoding>*)object {
+- (BOOL)deleteData:(NSObject<DatabaseProtocol, WCTTableCoding>*)object withPrimaryKey:(NSInteger) keyValue {
     NSLog(@"%@", [object primaryKey]);
     NSLog(@"%@", [object tableName]);
-    BOOL ret = [self.database deleteFromTable:[object tableName] where:[object primaryKey]];
+    BOOL ret = 1;
+    
+
     if (ret) {
         NSLog(@"删除成功");
     } else {
         NSLog(@"删除失败");
+    }
+    return ret;
+}
+- (BOOL)deleteDarftData:(BJMyPageDraftModel*)draftModel withKeyValue:(NSInteger)keyValue {
+    BOOL ret = [self.database deleteFromTable:[draftModel tableName] where:BJMyPageDraftModel.noteId == keyValue];
+    if (ret) {
+        NSLog(@"删除成功");
+    } else {
+        NSLog(@"删除失败");
+    }
+    return ret;
+}
+- (BOOL)updateDraft:(BJMyPageDraftModel*)draftModel withKeyValue:(NSInteger)keyValue {
+    BOOL ret = [self.database updateTable:[draftModel tableName] setProperties:BJMyPageDraftModel.allProperties toObject:draftModel where:BJMyPageDraftModel.noteId == keyValue];
+    if (ret) {
+        NSLog(@"更新成功");
+    } else {
+        NSLog(@"更新失败");
     }
     return ret;
 }
@@ -100,7 +120,7 @@ static id localSharedManger = nil;
     return array;
 }
 - (NSArray*)search:(BJMyPageDraftModel*)object WithEmail:(NSString*)email {
-    NSArray* array = [self.database getObjectsOfClass:[object class] fromTable:[object tableName] where:object.email == email];
+    NSArray* array = [self.database getObjectsOfClass:[object class] fromTable:[object tableName] where:BJMyPageDraftModel.email == email];
     return array;
 }
 @end

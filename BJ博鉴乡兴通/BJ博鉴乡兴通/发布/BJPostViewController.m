@@ -27,6 +27,7 @@
 - (void) pushCommityPostViewController {
     BJPostCommityViewController* commityViewController = [[BJPostCommityViewController alloc] init];
     commityViewController.modalPresentationStyle = UIModalPresentationFullScreen;
+    
     [self presentViewController:commityViewController animated:YES completion:nil];
 }
 - (void)dismiss {
