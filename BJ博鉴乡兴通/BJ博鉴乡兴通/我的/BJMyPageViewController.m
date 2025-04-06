@@ -157,6 +157,7 @@
 }
 - (void)setNavgationBar {
     UINavigationBarAppearance* apperance = [[UINavigationBarAppearance alloc] init];
+    apperance.backgroundColor = UIColor.whiteColor;
     apperance.shadowColor = [UIColor clearColor];
     apperance.shadowImage = [[UIImage alloc] init];
     self.navigationController.navigationBar.standardAppearance = apperance;
@@ -164,7 +165,9 @@
     NSString* string = @"santiaogang.png";
     apperance.backgroundColor = UIColor.whiteColor;
     UIBarButtonItem* leftButton = [[UIBarButtonItem alloc] initWithCustomView:[[UIImageView alloc] initWithImage:[UIImage imageNamed:string]]];
+    UIBarButtonItem* rightButton = [[UIBarButtonItem alloc] initWithCustomView:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"sousuo.png"]]];
     self.navigationItem.leftBarButtonItem = leftButton;
+    self.navigationItem.rightBarButtonItem = rightButton;
 }
 - (void)loadImageWithAry:(NSArray*)ary {
     __weak id weakSelf = self;
@@ -233,6 +236,9 @@
    
 }
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
+    if (indexPath.section == 0) {
+        return;
+    }
     BJInvitationViewController* invitationViewController = [[BJInvitationViewController alloc] init];
     invitationViewController.hidesBottomBarWhenPushed = YES;
     if (self.iModel.count != 0) {

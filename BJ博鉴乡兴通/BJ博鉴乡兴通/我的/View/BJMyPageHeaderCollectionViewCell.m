@@ -13,6 +13,7 @@
     self = [super initWithFrame:frame];
     if (self) {
         UIColor* myColor = [UIColor colorWithRed:48 / 255.0 green:50 / 255.0 blue:57 / 255.0 alpha:1];
+        UIColor* selfColor = [UIColor colorWithRed:238 / 255.0 green:238 / 255.0 blue:238 / 255.0 alpha:1];
         self.contentView.backgroundColor = UIColor.whiteColor;
         self.iconView = [[UIImageView alloc] init];
         self.iconView.layer.masksToBounds = YES;
@@ -91,7 +92,14 @@
         self.shopButton.titleLabel.font = [UIFont systemFontOfSize:14];
         self.hometownButton.titleLabel.font = [UIFont systemFontOfSize:14];
         self.shoppingCraftButtton.titleLabel.font = [UIFont systemFontOfSize:14];
-        
+        UIButton* editMyselfButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        editMyselfButton.titleLabel.font = [UIFont systemFontOfSize:14];
+        editMyselfButton.backgroundColor = selfColor;
+        editMyselfButton.layer.masksToBounds = YES;
+        [editMyselfButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+        [editMyselfButton setTitle:@"编辑主页" forState:UIControlStateNormal];
+        editMyselfButton.layer.cornerRadius = 10;
+        [self addSubview:editMyselfButton];
         [self addSubview:self.shopButton];
         [self addSubview:self.darftButton];
         [self addSubview:self.hometownButton];
@@ -128,25 +136,31 @@
         [self.shopButton mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.equalTo(self).offset(0);
             make.height.equalTo(@(60));
-            make.width.equalTo(@100);
+            make.width.equalTo(@90);
             make.top.equalTo(@220);
+        }];
+        [editMyselfButton mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo(self.attentaionLabel.mas_right).offset(30);
+            make.width.equalTo(@100);
+            make.height.equalTo(@40);
+            make.top.equalTo(self.attentaionLabel).offset(10);
         }];
         [self.darftButton mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.equalTo(self.shopButton.mas_right).offset(5);
             make.height.equalTo(@(60));
-            make.width.equalTo(@100);
+            make.width.equalTo(@95);
             make.top.equalTo(@220);
         }];
         [self.hometownButton mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.equalTo(self.darftButton.mas_right).offset(5);
             make.height.equalTo(@(60));
-            make.width.equalTo(@100);
+            make.width.equalTo(@90);
             make.top.equalTo(@220);
         }];
         [self.shoppingCraftButtton mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.equalTo(self.hometownButton.mas_right).offset(5);
             make.height.equalTo(@(60));
-            make.width.equalTo(@100);
+            make.width.equalTo(@95);
             make.top.equalTo(@220);
         }];
     }
@@ -197,25 +211,25 @@
     [self.shopButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.scrollView).offset(10);
         make.height.equalTo(@(50));
-        make.width.equalTo(@100);
+        make.width.equalTo(@80);
         make.centerY.equalTo(self.scrollView);
     }];
     [self.darftButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.shopButton.mas_right).offset(10);
         make.height.equalTo(@(50));
-        make.width.equalTo(@90);
+        make.width.equalTo(@80);
         make.centerY.equalTo(self.scrollView);
     }];
     [self.hometownButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.darftButton.mas_right).offset(10);
         make.height.equalTo(@(50));
-        make.width.equalTo(@90);
+        make.width.equalTo(@80);
         make.centerY.equalTo(self.scrollView);
     }];
     [self.shoppingCraftButtton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.hometownButton.mas_right).offset(10);
         make.height.equalTo(@(50));
-        make.width.equalTo(@90);
+        make.width.equalTo(@80);
         make.centerY.equalTo(self.scrollView);
     }];
 }

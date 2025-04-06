@@ -203,7 +203,9 @@
     NSString* string = @"santiaogang.png";
     apperance.backgroundColor = UIColor.whiteColor;
     UIBarButtonItem* leftButton = [[UIBarButtonItem alloc] initWithCustomView:[[UIImageView alloc] initWithImage:[UIImage imageNamed:string]]];
+    UIBarButtonItem* rightButton = [[UIBarButtonItem alloc] initWithCustomView:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"sousuo.png"]]];
     self.navigationItem.leftBarButtonItem = leftButton;
+    self.navigationItem.rightBarButtonItem = rightButton;
 }
 - (void)setSegmentControl {
     UIView* constantView= [[UIView alloc] initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width - 120, 44)];
@@ -299,6 +301,7 @@
             cell.imageView.image = [UIImage imageNamed:@"1.png"];
         }
         cell.likeButton.selected = dataModel.isFavorite;
+        
         [cell.likeButton setTitle:[NSString stringWithFormat:@"%ld",dataModel.favoriteCount] forState:UIControlStateNormal];
         cell.contentView.backgroundColor = UIColor.whiteColor;
     }
@@ -397,6 +400,7 @@
             dataModel = iModel.data[j];
             if (dataModel.postId == workId) {
                 dataModel.isFavorite = isFavourite;
+                dataModel.favoriteCount = dataModel.favoriteCount - (dataModel.isFavorite ? -1 : 1);
                 dataModel.commentCount = commentCount;
                 NSMutableArray* ary = [iModel.data mutableCopy];
                 [ary replaceObjectAtIndex:j withObject:dataModel];

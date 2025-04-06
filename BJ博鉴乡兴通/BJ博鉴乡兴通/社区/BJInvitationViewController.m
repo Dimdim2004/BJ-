@@ -95,8 +95,8 @@
     [self.iView.starButton addTarget:self action:@selector(selectLike:) forControlEvents:UIControlEventTouchUpInside];
     if (self.commityModel.isFavorite == 1) {
         self.iView.likeButton.selected = 1;
-        [self.iView.likeButton setTitle:[NSString stringWithFormat:@"%ld", self.commityModel.favoriteCount + 1] forState:UIControlStateSelected];
-        [self.iView.likeButton setTitle:[NSString stringWithFormat:@"%ld", self.commityModel.favoriteCount] forState:UIControlStateNormal];
+        [self.iView.likeButton setTitle:[NSString stringWithFormat:@"%ld", self.commityModel.favoriteCount] forState:UIControlStateSelected];
+        [self.iView.likeButton setTitle:[NSString stringWithFormat:@"%ld", self.commityModel.favoriteCount - 1] forState:UIControlStateNormal];
     } else {
         [self.iView.likeButton setTitle:[NSString stringWithFormat:@"%ld", self.commityModel.favoriteCount] forState:UIControlStateNormal];
         [self.iView.likeButton setTitle:[NSString stringWithFormat:@"%ld", self.commityModel.favoriteCount + 1] forState:UIControlStateSelected];

@@ -8,6 +8,7 @@
 #import "BJCommityCollectionViewCell.h"
 #import "Masonry.h"
 @implementation BJCommityCollectionViewCell
+
 - (instancetype)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
@@ -59,10 +60,12 @@
         }];
         [self.likeButton mas_makeConstraints:^(MASConstraintMaker *make) {
             make.right.equalTo(self.contentView);
-            make.width.equalTo(@30);
+            make.width.equalTo(@45);
             make.height.equalTo(@30);
-            make.bottom.equalTo(self.contentView).offset(-10);
+            make.bottom.equalTo(self.contentView).offset(-5);
         }];
+        self.likeButton.titleLabel.font = [UIFont systemFontOfSize:13];
+        [self.likeButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
         [self.imageView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.top.equalTo(self.mas_top).priorityHigh();
             make.left.and.right.equalTo(self.contentView);
