@@ -151,6 +151,11 @@
     if (self.textField.text.length > 0 && self.textView.text.length > 0 && ![self.textView.text isEqualToString:@"请输入内容"] ) {
         id manger = [BJNetworkingManger sharedManger];
         [manger uploadWithImage:self.uploadPhotos andTitle:self.textField.text Content:self.textView.text uploadSuccess:^(BJUploadSuccessModel * _Nonnull uploadModel) {
+            if (self.type == 1) {
+                BJMyPageDraftModel* iModel = [[BJMyPageDraftModel alloc] init];
+                iModel.noteId = self->_currentNoteId;
+                [[BJLocalDataManger sharedManger] deleteDarftData:iModel withKeyValue:_currentNoteId];
+            }
                 [self showPostSuccessAlert];
             } error:^(NSError * _Nonnull error) {
                 NSLog(@"上传失败");
@@ -200,6 +205,7 @@
 - (void)showPostSuccessAlert {
     UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"发布成功" message:@"退出编辑发表页面" preferredStyle:UIAlertControllerStyleAlert];
     [alert addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        
         [self dismissViewControllerAnimated:YES completion:nil];
     }]];
     [self presentViewController:alert animated:YES completion:nil];
