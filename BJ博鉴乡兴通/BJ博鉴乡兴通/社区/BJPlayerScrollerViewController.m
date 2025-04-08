@@ -7,6 +7,7 @@
 
 #import "BJPlayerScrollerViewController.h"
 #import <AVFoundation/AVFoundation.h>
+
 #import <AVKit/AVKit.h>
 @interface BJPlayerScrollerViewController ()
 

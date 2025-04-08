@@ -9,10 +9,10 @@
 
 @implementation BJSubCommentsModel
 + (NSDictionary<NSString *,id> *)modelCustomPropertyMapper {
-    return @{@"userId":@"id", @"replyId":@"reply_to_id", @"timeString":@"created_at"};
+    return @{@"commentId":@"id", @"replyId":@"reply_to_id", @"timeString":@"created_at", @"replyToUsername":@"reply_to_username", @"userId":@"user_id"};
 }
 + (NSArray<NSString *> *)modelPropertyBlacklist {
-    return @[@"isExpand", @"isLike"];
+    return @[@"isExpand", @"isLike", @"pageId"];
 }
 
 @end

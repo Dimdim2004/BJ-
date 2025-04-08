@@ -23,6 +23,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) BJCommityPostModel* model;
 @property (nonatomic, strong) UITextField* textField;
 @property (nonatomic, strong) UITextView* textView;
+@property (nonatomic, assign) NSInteger type;
+@property (nonatomic, assign) NSInteger currentNoteId;
 @end
 
 NS_ASSUME_NONNULL_END

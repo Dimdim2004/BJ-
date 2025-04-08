@@ -11,8 +11,10 @@
 - (CGFloat) textHight:(NSString*)string andFont:(UIFont*)font Width:(CGFloat)width {
     CGRect textRect = [string boundingRectWithSize:CGSizeMake(width, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName: font} context:nil];
     CGFloat twoLineHeight = [self LineHeight:font Width:width];
-    if (twoLineHeight > textRect.size.height) {
+    if (twoLineHeight > textRect.size.height && textRect.size.height > 20) {
         return ceil(textRect.size.height);
+    } else if (textRect.size.height < 20) {
+        return 20;
     } else {
         return ceil(twoLineHeight);
     }

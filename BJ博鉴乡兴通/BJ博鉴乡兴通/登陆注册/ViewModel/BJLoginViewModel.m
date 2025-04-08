@@ -37,12 +37,12 @@
     return self.isValidEmail && self.isValidPassword;
 }
 - (void)submmitWithSuccess:(loginSuccess)success failure:(error)error {
-    AFHTTPSessionManager *manager = [BJNetworkingManger BJcreateAFHTTPSessionManagerWithBaseURLString:@"https://121.43.226.108:8080"];
+    AFHTTPSessionManager *manager = [BJNetworkingManger BJcreateAFHTTPSessionManagerWithBaseURLString:@"https://39.105.136.3:9797"];
     manager.requestSerializer = [AFJSONRequestSerializer serializer];
     manager.responseSerializer = [AFJSONResponseSerializer serializer];
     [manager.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
     [manager.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Accept"];
-    NSString* string = @"https://121.43.226.108:8080/login";
+    NSString* string = @"https://39.105.136.3:9797/login";
     NSDictionary* dicty = @{@"email":self.user.email, @"password":self.user.password};
     [manager POST:string parameters:dicty headers:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         NSLog(@"success");

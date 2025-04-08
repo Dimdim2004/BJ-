@@ -8,7 +8,7 @@
 #import "BJMyDraftModel.h"
 #import "WCDB/WCDBObjc.h"
 
-@interface BJMyDraftModel (WCTTableCoding) 
+@interface BJMyDraftModel (WCTTableCoding) <WCTTableCoding>
 WCDB_PROPERTY(titleString)
 WCDB_PROPERTY(contentString)
 WCDB_PROPERTY(noteId)
@@ -18,7 +18,7 @@ WCDB_PROPERTY(email)
 @implementation BJMyDraftModel
 
 WCDB_IMPLEMENTATION(BJMyDraftModel)
-WCDB_PRIMARY_ASC_AUTO_INCREMENT(noteId)
+WCDB_PRIMARY_AUTO_INCREMENT(noteId)
 WCDB_SYNTHESIZE(titleString)
 WCDB_SYNTHESIZE(contentString)
 WCDB_SYNTHESIZE(noteId)
