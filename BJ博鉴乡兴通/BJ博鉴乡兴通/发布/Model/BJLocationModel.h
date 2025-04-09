@@ -6,10 +6,12 @@
 //
 
 #import <Foundation/Foundation.h>
-
+#import <YYModel.h>
 NS_ASSUME_NONNULL_BEGIN
 
-@interface BJLocationModel : NSObject
+@interface BJLocationModel : NSObject<YYModel>
+@property (nonatomic,strong)NSString *name;
+@property (nonatomic,strong)NSString *countryID;
 
 @end
 

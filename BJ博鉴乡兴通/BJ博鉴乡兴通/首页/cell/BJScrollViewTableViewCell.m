@@ -50,7 +50,7 @@
    self.scrollView.showsHorizontalScrollIndicator = NO;
 
    [self.contentView addSubview:self.scrollView];
-   self.scrollView.frame = CGRectMake(0, 0, 393, 223);
+   self.scrollView.frame = CGRectMake(0, 0, 393, 235);
     
    
 }

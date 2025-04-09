@@ -18,6 +18,8 @@
 #import "BJCheckEmailModel.h"
 #import "BJFindPasswordSuccessModel.h"
 #import "BJFindingPasswordViewModel.h"
+
+
 @interface SceneDelegate ()
 
 @end
@@ -37,7 +39,7 @@
     homePageVC.view.backgroundColor = [UIColor whiteColor];
     homePageVC.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"主页" image:[UIImage imageNamed:@"home.png"] tag:0];
     
-    // 创建 BJShopViewController 并设置相关属性
+ 
     BJShopViewController *shopVC = [[BJShopViewController alloc] init];
     shopVC.view.backgroundColor = [UIColor whiteColor];
     shopVC.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"商城" image:[UIImage imageNamed:@"shop.png"] tag:1];

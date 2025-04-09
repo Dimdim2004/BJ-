@@ -9,17 +9,20 @@
 #import "BJCommentsModel.h"
 @class AFHTTPSessionManager;
 @class BJCommityModel;
-@class BJUploadSuccessModel,BJCountryModel;
+@class BJUploadSuccessModel,BJCountryModel,BJDynamicModel,BJLocationModel;
 @class UIImage;
 NS_ASSUME_NONNULL_BEGIN
 
 @interface BJNetworkingManger : NSObject
 typedef void(^commentSuccess)(BJCommentsModel* commentModel);
 typedef void(^addressSuccess)(NSString* addressString);
+typedef void(^countryIDSuccess)(NSString* countryIDString);
 typedef void(^error)(NSError* error);
 typedef void(^uploadSuccess)(BJUploadSuccessModel* uploadModel);
 typedef void(^commitySuccess)(BJCommityModel* commityModel);
 typedef void(^countrySuccess)(BJCountryModel* countryModel);
+typedef void(^dynamicSuccess)(NSArray<BJDynamicModel *>* dynamicModel);
+typedef void(^locationSuccess)(NSArray<BJLocationModel *>* locationModel);
 
 typedef void(^error)(NSError* error);
 @property (nonatomic, strong) NSString* token;
@@ -32,9 +35,12 @@ typedef void(^error)(NSError* error);
 + (AFHTTPSessionManager *)BJcreateAFHTTPSessionManagerWithBaseURLString:(NSString *)urlString;
 - (void)uploadWithComment:(NSString*)commentString andPraentId:(NSInteger)parentId replyId:(NSInteger)replyId  workId:(NSInteger)workId type:(NSInteger)type uploadSuccess:(uploadSuccess)uploadSuccess error:(error)error;
 
-- (void)loadWithCountryID:(NSString *)countryID WithSuccess:(commitySuccess)success failure:(error)error;
+- (void)loadWithCountryID:(NSInteger)countryID WithSuccess:(commitySuccess)success failure:(error)error;
 - (void)findTargetCountryWithLatitude:(CGFloat)latitude andLongitude:(CGFloat)longitude WithSuccess:(countrySuccess)success failure:(error)error;
-
+- (void)uploadWithParams:(NSDictionary*)params uploadSuccess:(countryIDSuccess)countryIDSuccess error:(error)error;
+-(void)loadCountryInfoWithCountryID:(NSInteger)countryID WithSuccess:(countrySuccess)success failure:(error)error;
+- (void)loadMainPageImage:(NSInteger)pageId PageSize:(NSInteger)pageSize WithSuccess:(dynamicSuccess)success failure:(error)returnError;
+-(void)loadAllCountryIDWithSuccess:(locationSuccess)success failure:(error)error;
 +(instancetype) sharedManger;
 @end
 

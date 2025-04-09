@@ -14,8 +14,15 @@
         @"countryDescription" : @"description",
         @"longitude" : @"lon",
         @"latitude" : @"lat",
-        @"countryID" : @"id"
+        @"countryID" : @"id",
+        @"imageUrl": @"image"
     };
 }
 
+- (NSString *)description
+{
+    // 打印出model的所有内容
+    return [NSString stringWithFormat:@"%@, %@ %ld",self.name, self.imageUrl,self.countryID];
+    
+}
 @end

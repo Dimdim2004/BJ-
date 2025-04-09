@@ -8,5 +8,10 @@
 #import "BJLocationModel.h"
 
 @implementation BJLocationModel
++ (NSDictionary *)modelCustomPropertyMapper {
+    return @{
+        @"countryID" : @"id",
+    };
+}
 
 @end

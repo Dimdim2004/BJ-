@@ -6,10 +6,12 @@
 //
 
 #import <UIKit/UIKit.h>
-
+@class BJMyHometownViewController;
 NS_ASSUME_NONNULL_BEGIN
 
 @interface BJWatetFlowTableViewCell : UITableViewCell
+@property (nonatomic, strong)UICollectionView *collectionView;
+@property (nonatomic, weak)BJMyHometownViewController *scrollDelegate;
 
 @end
 

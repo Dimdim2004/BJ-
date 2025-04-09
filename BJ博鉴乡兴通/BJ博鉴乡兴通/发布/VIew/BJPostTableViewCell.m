@@ -25,7 +25,6 @@
     if ([reuseIdentifier isEqualToString:@"title"]) {
         self.titleView = [[UITextField alloc] init];
         self.titleView.font = [UIFont systemFontOfSize:23];
-        self.titleView.placeholder = @"请输入标题";
         self.titleView.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
         self.titleView.leftViewMode = UITextFieldViewModeAlways;
         self.titleView.leftView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 16, 0)];

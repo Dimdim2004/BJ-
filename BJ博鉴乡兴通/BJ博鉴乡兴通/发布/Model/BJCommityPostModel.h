@@ -12,7 +12,8 @@ NS_ASSUME_NONNULL_BEGIN
 @interface BJCommityPostModel : NSObject
 
 @property (nonatomic, strong) NSString* titleString;
-@property (nonatomic, strong) NSString* contetnString;
+@property (nonatomic, strong) NSString* contentString;
 @end
 
 NS_ASSUME_NONNULL_END
+

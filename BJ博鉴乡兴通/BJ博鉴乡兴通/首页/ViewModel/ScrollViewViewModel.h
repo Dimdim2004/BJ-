@@ -6,10 +6,12 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface ScrollViewViewModel : NSObject
+@property (weak, nonatomic) UIViewController<UIScrollViewDelegate> *targetVC;
 
 @end
 

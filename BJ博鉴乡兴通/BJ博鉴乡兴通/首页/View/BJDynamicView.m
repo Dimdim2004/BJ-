@@ -9,36 +9,51 @@
 #import "BJDynamicModel.h"
 #import "BJDynamicTableViewCell.h"
 #import <Masonry.h>
+#import "BJNetworkingManger.h"
+#import "BJHomePageViewController.h"
+
+
+
 @interface BJDynamicView ()<UITableViewDelegate,UITableViewDataSource,BJDynamicTableViewCellDelegate,UIGestureRecognizerDelegate>
-@property (strong, nonatomic)NSArray<BJDynamicModel *> *dynamicModel;
+@property (strong, nonatomic)NSMutableArray<BJDynamicModel *> *dynamicModel;
+@property (assign, nonatomic)NSInteger page;
+@property (nonatomic, assign) BOOL isLoading;
+@property (nonatomic, assign) BOOL hasMoreData;
 @end
 
 @implementation BJDynamicView
 
--(instancetype)initWithDynamicModel:(NSArray<BJDynamicModel *> *)dynamicModel {
+    
+-(instancetype)init {
     self = [super init];
     if (self) {
-        self.dynamicModel = dynamicModel;
-        self.backgroundColor = [UIColor whiteColor];
-        
         [self setupView];
+        self.page = 1;
+        self.isLoading = NO;
+        self.hasMoreData = YES;
+        self.dynamicModel = [NSMutableArray array];
+        [self setupModels];
     }
     return self;
 }
 
+-(void)setupModels {
+    [[BJNetworkingManger sharedManger] loadMainPageImage:self.page PageSize:5 WithSuccess:^(NSArray<BJDynamicModel *> * _Nonnull dynamicModel) { [self.dynamicModel addObjectsFromArray:dynamicModel];
+        [self.tableView reloadData];
+    } failure:^(NSError * _Nonnull error) {
+        NSLog(@"error:%@",error);
+    }];
+}
 
 -(void)setupView {
     self.tableView = [[UITableView alloc] initWithFrame:self.bounds style:UITableViewStylePlain];
     self.tableView.backgroundColor = [UIColor whiteColor];
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    self.tableView.bounces = NO;
     self.tableView.scrollEnabled = NO;
-
     [self addSubview:self.tableView];
-    
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
-    [self.tableView registerClass:[BJDynamicTableViewCell class] forCellReuseIdentifier:@" DynamicTableViewCell"];
+    [self.tableView registerClass:[BJDynamicTableViewCell class] forCellReuseIdentifier:@"DynamicTableViewCell"];
     self.tableView.estimatedRowHeight = 200;
     self.tableView.rowHeight = UITableViewAutomaticDimension;
     [self.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -46,12 +61,6 @@
     }];
     self.tableView.panGestureRecognizer.cancelsTouchesInView = NO;
 
-    UILabel *footerLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.bounds.size.width, 30)];
-    footerLabel.text = @"已经没有更多内容";
-    footerLabel.textAlignment = NSTextAlignmentCenter;
-    footerLabel.textColor = [UIColor lightGrayColor];
-    
-    self.tableView.tableFooterView = footerLabel;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -63,9 +72,9 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    BJDynamicTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@" DynamicTableViewCell"];
+    BJDynamicTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"DynamicTableViewCell"];
     cell.delegate = self;
-    [cell configureWithModel:self.dynamicModel[indexPath.row]];
+    [cell configureWithModel:self.dynamicModel[indexPath.section]];
     return cell;
 }
 
@@ -128,8 +137,50 @@
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
 
-    if (self.tableView.contentOffset.y <= 0) {
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"ShouldEnableOuterScroll" object:nil];
+    [self.scrollDelegate scrollViewDidScroll:scrollView];
+
+    CGFloat contentHeight = scrollView.contentSize.height;
+    CGFloat scrollViewHeight = CGRectGetHeight(scrollView.frame);
+    CGFloat offsetY = scrollView.contentOffset.y;
+    
+    if (offsetY > (contentHeight - scrollViewHeight - 100) && !self.isLoading && self.hasMoreData) {
+        
+        [self loadMoreData];
     }
+}
+
+- (void)loadMoreData {
+    self.isLoading = YES;
+    self.page += 1;
+
+    UIActivityIndicatorView *spinner = [[UIActivityIndicatorView alloc]
+        initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleMedium];
+    spinner.frame = CGRectMake(0, 0, self.bounds.size.width, 44);
+    [spinner startAnimating];
+    self.tableView.tableFooterView = spinner;
+    
+    [[BJNetworkingManger sharedManger] loadMainPageImage:self.page PageSize:5 WithSuccess:^(NSArray<BJDynamicModel *> * _Nonnull dynamicModel) {
+        if (dynamicModel.count > 0) {
+            [self.dynamicModel addObjectsFromArray:dynamicModel];
+            [self.tableView reloadData];
+        } else {
+            self.hasMoreData = NO;
+        }
+        
+        self.isLoading = NO;
+        [self resetFooterView];
+    } failure:^(NSError * _Nonnull error) {
+        self.isLoading = NO;
+        [self resetFooterView];
+        NSLog(@"加载失败: %@", error);
+    }];
+}
+
+- (void)resetFooterView {
+    UILabel *footer = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.bounds.size.width, 44)];
+    footer.text = self.hasMoreData ? @"正在加载..." : @"已经没有更多内容";
+    footer.textAlignment = NSTextAlignmentCenter;
+    footer.textColor = [UIColor lightGrayColor];
+    self.tableView.tableFooterView = footer;
 }
 @end

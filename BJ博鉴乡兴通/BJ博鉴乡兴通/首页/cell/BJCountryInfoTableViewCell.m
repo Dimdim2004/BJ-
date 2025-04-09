@@ -44,12 +44,7 @@
         [self.contentView addSubview:label];
         
         
-        [_locationButton mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.left.equalTo(locationImageView.mas_right).offset(10);
-            make.centerY.equalTo(locationImageView);
-            make.right.equalTo(self.contentView).offset(-10);
-            make.height.equalTo(@30);
-        }];
+       
         
         
         [_nameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -74,18 +69,28 @@
         [locationImageView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.bottom.equalTo(self.contentView.mas_bottom).offset(-10);
             make.left.equalTo(self.contentView).offset(15);
-            make.width.equalTo(@20);
-            make.height.equalTo(@20);
+            make.width.equalTo(@30);
+            make.height.equalTo(@30);
         }];
         
-
+        [_locationButton mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo(locationImageView.mas_right).offset(10);
+            make.centerY.equalTo(locationImageView);
+            make.right.equalTo(self.contentView).offset(-10);
+            make.height.equalTo(@30);
+        }];
     }
     return self;
 }
 
 - (void)configureWithModel:(BJCountryModel *)model {
     [_locationButton setTitle: [NSString stringWithFormat:@"位置：%@", model.location] forState:UIControlStateNormal];
-    _descriptionLabel.text = model.countryDescription;
+    if(model.countryDescription.length == 0) {
+        _descriptionLabel.text = @"暂无简介";
+    } else {
+        _descriptionLabel.text = model.countryDescription;
+    }
+   
     _nameLabel.text = model.name;
 }
 

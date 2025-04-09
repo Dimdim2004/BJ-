@@ -7,10 +7,17 @@
 
 #import <UIKit/UIKit.h>
 
+@protocol BJSendBackProtocol <NSObject>
+
+-(void)sendBackCountryID:(NSString *)countryID;
+
+@end
+
 NS_ASSUME_NONNULL_BEGIN
-
+@class BJLocationModel;
 @interface BJLocationViewController : UIViewController
-
+@property (strong, nonatomic)NSArray<BJLocationModel *> *models;
+@property (weak, nonatomic) id<BJSendBackProtocol> delegate;
 @end
 
 NS_ASSUME_NONNULL_END

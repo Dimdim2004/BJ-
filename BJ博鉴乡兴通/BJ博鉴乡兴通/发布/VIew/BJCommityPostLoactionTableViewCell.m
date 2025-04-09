@@ -23,6 +23,7 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if ([self.reuseIdentifier isEqualToString:@"loaction"]) {
         self.titleView = [[UITextField alloc] init];
+        self.titleView.enabled = NO;
         self.titleView.text = @"关联到村";
         self.titleView.frame = CGRectMake(40, 5, 100, 30);
         [self.contentView addSubview:self.titleView];
@@ -33,6 +34,7 @@
         [self.contentView addSubview:self.iconView];
     } else if ([self.reuseIdentifier isEqualToString:@"friendRange"]) {
         self.titleView = [[UITextField alloc] init];
+        self.titleView.enabled = NO;
         self.titleView.text = @"公开可见";
         self.titleView.frame = CGRectMake(40, 5, 100, 30);
         [self.contentView addSubview:self.titleView];

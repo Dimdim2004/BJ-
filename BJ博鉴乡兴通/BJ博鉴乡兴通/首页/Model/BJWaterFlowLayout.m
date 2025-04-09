@@ -7,54 +7,78 @@
 
 #import "BJWaterFlowLayout.h"
 
+
+
 @implementation BJWaterFlowLayout
+- (instancetype)init
+{
+    self = [super init];
+    if (self) {
+        self.columnCount = 2;
+        self.columnSpacing = 10;
+        self.rowSpacing = 10;
+        self.sectionInset = UIEdgeInsetsMake(10, 10, 10, 10);
+    }
+    return self;
+}
+
 - (void)prepareLayout {
     [super prepareLayout];
-    NSInteger columnCount = 2; // 两列布局
-    CGFloat itemWidth = (self.collectionView.bounds.size.width - (columnCount - 1) * 10) / columnCount;
     
-    // 初始化列高度数组
     _columnHeights = [NSMutableArray array];
-    for (int i = 0; i < columnCount; i++) {
+    for (int i = 0; i < self.columnCount; i++) {
         [_columnHeights addObject:@(self.sectionInset.top)];
     }
     
-    // 计算每个 item 的位置
-    _attributesArray = [NSMutableArray array];
+    _attrsArray = [NSMutableArray array];
     NSInteger itemCount = [self.collectionView numberOfItemsInSection:0];
-    for (NSInteger i = 0; i < itemCount; i++) {
+    for (int i = 0; i < itemCount; i++) {
         NSIndexPath *indexPath = [NSIndexPath indexPathForItem:i inSection:0];
         UICollectionViewLayoutAttributes *attrs = [self layoutAttributesForItemAtIndexPath:indexPath];
-        [_attributesArray addObject:attrs];
+        [_attrsArray addObject:attrs];
     }
+    self.footerReferenceSize = CGSizeMake([UIScreen mainScreen].bounds.size.width, 50);
 }
 
-//- (UICollectionViewLayoutAttributes *)layoutAttributesForItemAtIndexPath:(NSIndexPath *)indexPath {
-//    // 获取数据模型中的高度
-//    PostModel *model = self.dataSource[indexPath.item];
-//    CGFloat itemHeight = model.imageHeight + 60; // 60为标题和描述的固定高度
-//    
-//    // 找到最短列
-//    NSInteger shortestColumn = 0;
-//    CGFloat minHeight = [_columnHeights[0] floatValue];
-//    for (int i = 1; i < _columnHeights.count; i++) {
-//        if ([_columnHeights[i] floatValue] < minHeight) {
-//            minHeight = [_columnHeights[i] floatValue];
-//            shortestColumn = i;
-//        }
-//    }
-//    
-//    // 计算坐标
-//    CGFloat x = self.sectionInset.left + (itemWidth + 10) * shortestColumn;
-//    CGFloat y = minHeight + 10;
-//    CGRect frame = CGRectMake(x, y, itemWidth, itemHeight);
-//    
-//    // 更新列高度
-//    _columnHeights[shortestColumn] = @(CGRectGetMaxY(frame));
-//    
-//    // 创建布局属性
-//    UICollectionViewLayoutAttributes *attrs = [UICollectionViewLayoutAttributes layoutAttributesForCellWithIndexPath:indexPath];
-//    attrs.frame = frame;
-//    return attrs;
-//}
+-(CGFloat)getHeightWithLowIndex{
+    return [_columnHeights[0] doubleValue] > [_columnHeights[1] doubleValue] ? 1 : 0;
+}
+
+- (CGSize)collectionViewContentSize {
+    int index = [self getHeightWithLowIndex];
+    return CGSizeMake(0, [_columnHeights[index] doubleValue] + self.sectionInset.bottom + 50);
+}
+
+- (UICollectionViewLayoutAttributes *)layoutAttributesForItemAtIndexPath:(NSIndexPath *)indexPath {
+    CGFloat width = self.collectionView.bounds.size.width;
+    NSInteger lowIndex = [self getHeightWithLowIndex];
+    UICollectionViewLayoutAttributes *attrs = [UICollectionViewLayoutAttributes layoutAttributesForCellWithIndexPath:indexPath];
+    CGFloat itemWidth = (width - self.sectionInset.left - self.sectionInset.right - (self.columnCount - 1) * self.columnSpacing) / self.columnCount;
+    CGFloat itemHeight = [self.delegate heightForRowAtIndexPath:indexPath itemWidth:itemWidth] + 60;
+    
+    CGFloat itemX = self.sectionInset.left + (self.columnSpacing + itemWidth) * lowIndex;
+    CGFloat itemY = [_columnHeights[lowIndex] doubleValue] + self.rowSpacing;
+    attrs.frame = CGRectMake(itemX, itemY, itemWidth, itemHeight);
+    self.columnHeights[lowIndex] = @(CGRectGetMaxY(attrs.frame));
+    return attrs;
+}
+
+- (NSArray<__kindof UICollectionViewLayoutAttributes *> *)layoutAttributesForElementsInRect:(CGRect)rect {
+    return _attrsArray;
+}
+
+- (UICollectionViewLayoutAttributes *)layoutAttributesForSupplementaryViewOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath {
+    if ([kind isEqualToString:UICollectionElementKindSectionFooter]) {
+        UICollectionViewLayoutAttributes *attrs = [UICollectionViewLayoutAttributes
+            layoutAttributesForSupplementaryViewOfKind:kind
+                                         withIndexPath:indexPath];
+        NSInteger lastItemIndex = [self.collectionView numberOfItemsInSection:0] - 1;
+        UICollectionViewLayoutAttributes *lastItemAttrs = [self layoutAttributesForItemAtIndexPath:
+            [NSIndexPath indexPathForItem:lastItemIndex inSection:0]];
+        CGFloat footerY = CGRectGetMaxY(lastItemAttrs.frame) + self.sectionInset.bottom;
+        attrs.frame = CGRectMake(0, footerY, self.footerReferenceSize.width, self.footerReferenceSize.height);
+        return attrs;
+    }
+    return [super layoutAttributesForSupplementaryViewOfKind:kind atIndexPath:indexPath];
+}
 @end

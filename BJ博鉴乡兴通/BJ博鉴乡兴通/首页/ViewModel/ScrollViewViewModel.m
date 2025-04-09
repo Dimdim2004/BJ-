@@ -7,6 +7,6 @@
 
 #import "ScrollViewViewModel.h"
 
-@implementation ScrollViewViewModel
 
+@implementation ScrollViewViewModel
 @end

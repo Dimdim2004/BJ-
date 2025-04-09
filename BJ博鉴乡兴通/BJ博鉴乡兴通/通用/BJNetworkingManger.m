@@ -12,10 +12,11 @@
 #import "UIKit/UIImage.h"
 #import "BJUploadSuccessModel.h"
 #import "BJCountryModel.h"
-
-
+#import "BJDynamicModel.h"
+#import "BJDynamicImageModel.h"
+#import "BJLocationModel.h"
 static id sharedManger = nil;
-const NSString* urlString = @"https://121.43.226.108:8080";
+const NSString* urlString = @"https://39.105.136.3:9797";
 const NSString* mapAPK = @"dhK73tBBx4BWr97HK8JnKocfz53ctjps";
 @implementation BJNetworkingManger
 +(instancetype) sharedManger{
@@ -35,8 +36,6 @@ const NSString* mapAPK = @"dhK73tBBx4BWr97HK8JnKocfz53ctjps";
     [manager GET:string parameters:nil headers:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         NSLog(@"申请评论成功");
         BJCommentsModel* commentModel = [BJCommentsModel yy_modelWithJSON:responseObject];
-        NSLog(@"%@", responseObject);
-        NSLog(@"%@", commentModel.commentList);
         success(commentModel);
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         NSLog(@"NewWork error");
@@ -50,7 +49,6 @@ const NSString* mapAPK = @"dhK73tBBx4BWr97HK8JnKocfz53ctjps";
    
     NSString* bearerString = [NSString stringWithFormat:@"Bearer %@", self.token];
     [manger.requestSerializer setValue:bearerString forHTTPHeaderField:@"Authorization"];
-    //[manger.requestSerializer setValue:@"multipart/form-data" forHTTPHeaderField:@"Content-Type"];
     manger.responseSerializer = [AFJSONResponseSerializer serializer];
     NSMutableArray* dataAry = [NSMutableArray array];
     for (int i = 0; i < imageAry.count; i++) {
@@ -59,7 +57,7 @@ const NSString* mapAPK = @"dhK73tBBx4BWr97HK8JnKocfz53ctjps";
             [dataAry addObject:data];
         }
     }
-    NSDictionary* dicty = @{@"title":titleString, @"content":contentString, @"image_count":[NSNumber numberWithInt:imageAry.count]};
+    NSDictionary* dicty = @{@"title":titleString, @"content":contentString, @"image_count":@(imageAry.count)};
     [manger POST:stirng parameters:dicty headers:nil constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
         for (int i = 0; i < dataAry.count; i++) {
             NSDateFormatter* dateFormatter = [[NSDateFormatter alloc] init];
@@ -71,30 +69,45 @@ const NSString* mapAPK = @"dhK73tBBx4BWr97HK8JnKocfz53ctjps";
         }
         
     } progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-        NSLog(@"success");
-        NSLog(@"%@", responseObject);
         BJUploadSuccessModel* model = [BJUploadSuccessModel yy_modelWithJSON:responseObject];
-        NSLog(@"%@", model.data);
         uploadSuccess(model);
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         NSLog(@"error");
     }];
 }
 
+- (void)uploadWithParams:(NSDictionary*)params uploadSuccess:(countryIDSuccess)countryIDSuccess error:(error)error {
+    AFHTTPSessionManager *manger = [BJNetworkingManger BJcreateAFHTTPSessionManagerWithBaseURLString:@"https://39.105.136.3:9797"];
+    NSString* postUrlStirng = [NSString stringWithFormat:@"%@/uploadvillage", urlString];
+    manger.requestSerializer = [AFHTTPRequestSerializer serializer];
+   NSLog(@"%@", params);
+    NSString* bearerString = [NSString stringWithFormat:@"Bearer %@", self.token];
+    [manger.requestSerializer setValue:bearerString forHTTPHeaderField:@"Authorization"];
+    manger.responseSerializer = [AFJSONResponseSerializer serializer];
+    [manger POST:postUrlStirng parameters:params headers:nil constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
+        NSData *imageData = UIImageJPEGRepresentation(params[@"image"], 0.8);
+        NSString *fileName = [NSString stringWithFormat:@"%@-village.jpeg", params[@"name"]];
+        [formData appendPartWithFileData:imageData name:@"image" fileName:fileName mimeType:@"image/jpeg"];
+    } progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        NSLog(@"%@",responseObject[@"data"]);
+        countryIDSuccess(responseObject[@"data"][@"village_id"]);
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        NSLog(@"error");
+    }];
+    
+}
+
 - (void)loadImage:(NSInteger)pageId PageSize:(NSInteger)pageSize WithSuccess:(commitySuccess)commitySuccess failure:(error)returnError {
-    AFHTTPSessionManager *manager = [BJNetworkingManger BJcreateAFHTTPSessionManagerWithBaseURLString:@"https://121.43.226.108:8080"];
-    NSString* string = [NSString stringWithFormat:@"%@/posts?page_id=%ld&page_size=%ld",urlString, pageId, pageSize];
+    AFHTTPSessionManager *manager = [BJNetworkingManger BJcreateAFHTTPSessionManagerWithBaseURLString:@"https://39.105.136.3:9797"];
+    NSString* string = [NSString stringWithFormat:@"%@/posts?page=%ld&page_size=%ld",urlString, pageId, pageSize];
     manager.requestSerializer = [AFJSONRequestSerializer serializer];
     [manager.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Accept"];
     manager.responseSerializer = [AFJSONResponseSerializer serializer];
     
     [manager GET:string parameters:nil headers:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-        NSLog(@"申请图文成功");
         
         BJCommityModel* commityModel = [BJCommityModel yy_modelWithJSON:responseObject];
         if (commityModel.status == 1000) {
-            NSLog(@"%@", responseObject);
-            NSLog(@"%@", commityModel);
             commitySuccess(commityModel);
         }
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
@@ -195,42 +208,81 @@ const NSString* mapAPK = @"dhK73tBBx4BWr97HK8JnKocfz53ctjps";
 
 
 -(void)loadWithCountryID:(NSString *)countryID WithSuccess:(commitySuccess)success failure:(error)error {
-    NSString *commityUrlString = [NSString stringWithFormat:@"%@/posts/:%@",urlString,countryID];
-    AFHTTPSessionManager* manger = [AFHTTPSessionManager manager];
-    manger.requestSerializer = [AFJSONRequestSerializer serializer];
-    [manger.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Accept"];
     
-    [manger GET:commityUrlString parameters:nil headers:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-            BJCommityModel* commityModel = [BJCommityModel yy_modelWithJSON:responseObject];
-            if (commityModel.status == 1000) {
-                NSLog(@"%@", responseObject);
-                NSLog(@"%@", commityModel);
-                commitySuccess(commityModel);
-            }
+    AFHTTPSessionManager *manager = [BJNetworkingManger BJcreateAFHTTPSessionManagerWithBaseURLString:@"https://39.105.136.3:9797"];
+    NSString *commityUrlString = [NSString stringWithFormat:@"%@/posts/:%@",urlString,countryID];
+    manager.requestSerializer = [AFJSONRequestSerializer serializer];
+    [manager.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+    
+    [manager GET:commityUrlString parameters:nil headers:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        BJCommityModel* commityModel = [BJCommityModel yy_modelWithJSON:responseObject[@"data"]];
+        success(commityModel);
         } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
             NSLog(@"error");
         }];
 }
 
 - (void)findTargetCountryWithLatitude:(CGFloat)latitude andLongitude:(CGFloat)longitude WithSuccess:(countrySuccess)success failure:(error)error {
-    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
-    manager.requestSerializer = [AFHTTPRequestSerializer serializer];
-
-    [manager.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"accept"];
-    [manager.requestSerializer setValue:@"zh" forHTTPHeaderField:@"Accept-Language"];
-    [manager.requestSerializer setValue:@"multipart/form-data" forHTTPHeaderField:@"Content-Type"];
-
-//    NSDictionary *params = @{
-//        @"lon": latitude,
-//        @"lat": longitude
-//    };
-    NSString *countryUrlString = [NSString stringWithFormat:@"%@%@",urlString,@"/village"];
+    AFHTTPSessionManager *manager = [BJNetworkingManger BJcreateAFHTTPSessionManagerWithBaseURLString:@"https://39.105.136.3:9797"];
+    manager.requestSerializer = [AFJSONRequestSerializer serializer];
+    [manager.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+    manager.responseSerializer = [AFJSONResponseSerializer serializer];
+    NSString *countryUrlString = [NSString stringWithFormat:@"%@/village?lon=%f&lat=%f",urlString,longitude,latitude];
     [manager GET:countryUrlString parameters:nil headers:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-        NSLog(@"%@",responseObject);
-        BJCountryModel* countryModel = [BJCountryModel yy_modelWithJSON:responseObject[@"data"]];
+        BJCountryModel* countryModel = [BJCountryModel yy_modelWithJSON:responseObject[@"data"][0]];
         success(countryModel);
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-        NSLog(@"error");
+        NSLog(@"%@", error);
+    }];
+}
+
+-(void)loadCountryInfoWithCountryID:(NSInteger)countryID WithSuccess:(countrySuccess)success failure:(error)error {
+    AFHTTPSessionManager *manager = [BJNetworkingManger BJcreateAFHTTPSessionManagerWithBaseURLString:@"https://39.105.136.3:9797"];
+    manager.requestSerializer = [AFJSONRequestSerializer serializer];
+    [manager.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+    manager.responseSerializer = [AFJSONResponseSerializer serializer];
+    NSString *countryInfoUrlString = [NSString stringWithFormat:@"%@/village/%ld",urlString ,(long)countryID];
+    [manager GET:countryInfoUrlString parameters:nil headers:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        NSLog(@"%@", responseObject[@"data"]);
+        BJCountryModel* countryModel = [BJCountryModel yy_modelWithDictionary:responseObject[@"data"]];
+        success(countryModel);
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        NSLog(@"%@", error);
+    }];
+}
+
+- (void)loadMainPageImage:(NSInteger)pageId PageSize:(NSInteger)pageSize WithSuccess:(dynamicSuccess)success failure:(error)returnError {
+    AFHTTPSessionManager *manager = [BJNetworkingManger BJcreateAFHTTPSessionManagerWithBaseURLString:@"https://39.105.136.3:9797"];
+    NSString* string = [NSString stringWithFormat:@"%@/posts?page=%ld&page_size=%ld",urlString, pageId, pageSize];
+    manager.requestSerializer = [AFJSONRequestSerializer serializer];
+    [manager.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+    manager.responseSerializer = [AFJSONResponseSerializer serializer];
+    
+    [manager GET:string parameters:nil headers:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        NSArray *dataArray = responseObject[@"data"];
+        NSArray<BJDynamicModel *> *models = [NSArray yy_modelArrayWithClass:[BJDynamicModel class] json:dataArray];
+        success(models);
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        NSLog(@"NetWork work error");
+        returnError(error);
+    }];
+
+    
+}
+
+-(void)loadAllCountryIDWithSuccess:(locationSuccess)success failure:(error)error {
+    AFHTTPSessionManager *manager = [BJNetworkingManger BJcreateAFHTTPSessionManagerWithBaseURLString:@"https://39.105.136.3:9797"];
+    NSString* string = [NSString stringWithFormat:@"%@/villages",urlString];
+    manager.requestSerializer = [AFJSONRequestSerializer serializer];
+    [manager.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+    manager.responseSerializer = [AFJSONResponseSerializer serializer];
+    
+    [manager GET:string parameters:nil headers:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        NSLog(@"%@", responseObject[@"data"]);
+        NSArray<BJLocationModel *> *dataArray = [NSArray yy_modelArrayWithClass:[BJLocationModel class] json:responseObject[@"data"]];
+        success(dataArray);
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        NSLog(@"error:%@", error);
     }];
 }
 @end

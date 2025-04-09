@@ -8,6 +8,8 @@
 #import "BJNotFoundViewController.h"
 #import "BJnetworkingManger.h"
 #import <Masonry.h>
+#import "BJPostCountryViewController.h"
+#import "BJCountryModel.h"
 @interface BJNotFoundViewController ()<UITextViewDelegate>
 
 @end
@@ -17,6 +19,12 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = @"未找到";
+    UINavigationBarAppearance *appearance = [self.navigationController.navigationBar.standardAppearance copy];
+    appearance.titleTextAttributes = @{
+           NSForegroundColorAttributeName: [UIColor blackColor]
+       };
+    self.navigationController.navigationBar.standardAppearance = appearance;
+    self.navigationController.navigationBar.scrollEdgeAppearance = appearance;
     self.navigationController.navigationBar.tintColor = [UIColor blackColor];
     [self setupViews];
 }
@@ -27,20 +35,8 @@
     self.imageView.contentMode = UIViewContentModeScaleAspectFit;
     [self.view addSubview:self.imageView];
 
-    // 创建渐变层
-    CAGradientLayer *gradientLayer = [CAGradientLayer layer];
-    gradientLayer.colors = @[
-        (id)[UIColor clearColor].CGColor,
-        (id)[UIColor colorWithWhite:1 alpha:1].CGColor
-                         
-    ];
-    gradientLayer.locations = @[@0.5, @0.8];
-    gradientLayer.startPoint = CGPointMake(0.5, 0.5);
-    gradientLayer.endPoint = CGPointMake(1.0, 0.5);
-    gradientLayer.frame = self.imageView.bounds;
-
-    // 添加为蒙版
-    self.imageView.layer.mask = gradientLayer;
+    
+    
     self.backButton = [[UIButton alloc] init];
     [self.backButton addTarget:self action:@selector(leftButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
     [self.backButton setImage:[UIImage systemImageNamed:@"chevron.left"] forState:UIControlStateNormal];
@@ -49,6 +45,7 @@
     [self.view addSubview:self.backButton];
 
     self.descriptionTextView = [[UITextView alloc] init];
+    self.descriptionTextView.backgroundColor = [UIColor clearColor];
     NSString *fullText = @"抱歉,您所处的村庄还未被我们发现，请 点击此处 进行创建乡村页面";
     NSMutableAttributedString *attributedText = [[NSMutableAttributedString alloc] initWithString:fullText];
     NSRange clickRange = [fullText rangeOfString:@"点击此处"]; [attributedText addAttribute:NSForegroundColorAttributeName value:[UIColor grayColor] range:NSMakeRange(0, attributedText.length)];
@@ -65,7 +62,7 @@
     [self.imageView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.equalTo(self.view);
         make.height.width.equalTo(@400);
-        make.top.equalTo(self.view).offset(80);
+        make.top.equalTo(self.view).offset(58);
     }];
     
     [self.descriptionTextView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -78,7 +75,10 @@
 
 - (BOOL)textView:(UITextView *)textView shouldInteractWithURL:(NSURL *)URL inRange:(NSRange)characterRange {
     if([URL.absoluteString isEqualToString:@"clickToCommit"]) {
-        NSLog(@"2");
+        BJPostCountryViewController* commityViewController = [[BJPostCountryViewController alloc] initWithMaxCount:1 andHidden:YES];
+        commityViewController.countryModel = self.model;
+        commityViewController.modalPresentationStyle = UIModalPresentationFullScreen;
+        [self presentViewController:commityViewController animated:YES completion:nil];
         return NO;
     }
     return YES;

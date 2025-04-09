@@ -17,20 +17,47 @@
 #import "BJLocalDataManger.h"
 #import "BJMymagesInDraftModel.h"
 #import "BJNetworkingManger.h"
-@interface BJPostCommityViewController () {
+#import "BJLocationViewController.h"
+
+@interface BJPostCommityViewController ()<BJSendBackProtocol>
+{
     UITapGestureRecognizer* _resTap;
+    NSInteger _maxCount;
+    BOOL _hidden;
 }
 
 @end
 
 @implementation BJPostCommityViewController
 
+- (instancetype)initWithMaxCount:(NSInteger)maxCount andHidden:(BOOL)hidden {
+    self = [super init];
+    if (self) {
+        _maxCount = maxCount;
+        _hidden = hidden;
+    }
+    return self;
+}
+
+
+- (NSString *)placeholderForFirstText {
+    return @"请输入标题";
+}
+
+- (NSString *)placeholderForSecondText {
+    return @"请输入内容";
+}
+
+- (NSString *)placeholderForButtonText {
+    return @"发布内容";
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.uploadPhotos = @[];
     self.model = [[BJCommityPostModel alloc] init];
     self.model.titleString = @"";
-    self.model.contetnString = @"";
+    self.model.contentString = @"";
     self.postView = [[BJPostCommityView alloc] initWithFrame:self.view.bounds];
     [self.postView.mainView registerClass:[BJPostTableViewCell class] forCellReuseIdentifier:@"title"];
     [self.postView.mainView registerClass:[BJCommityPostLoactionTableViewCell class] forCellReuseIdentifier:@"loaction"];
@@ -40,11 +67,21 @@
     [self.view addSubview:self.postView];
     self.postView.mainView.delegate = self;
     self.postView.mainView.dataSource = self;
+    
     [self.postView.backButton addTarget:self action:@selector(dismiss) forControlEvents:UIControlEventTouchUpInside];
-    [self.postView.postButton addTarget:self action:@selector(post) forControlEvents:UIControlEventTouchUpInside];
-    [self.postView.draftButton addTarget:self action:@selector(draft) forControlEvents:UIControlEventTouchUpInside];
+    self.postView.backButton.hidden = YES;
+    [self.postView.postButton addTarget:self action:@selector(post:) forControlEvents:UIControlEventTouchUpInside];
+    [self.postView.postButton setTitle:[self placeholderForButtonText] forState:UIControlStateNormal];
+    [self.postView.draftButton addTarget:self action:@selector(draft:) forControlEvents:UIControlEventTouchUpInside];
     [self.postView.previewButton addTarget:self action:@selector(preview) forControlEvents:UIControlEventTouchUpInside];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification  object:nil];
+    
+    UIButton *leftButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 20, 20)];
+    [leftButton addTarget:self action:@selector(dismiss) forControlEvents:UIControlEventTouchUpInside];
+    [leftButton setImage:[UIImage imageNamed:@"back2.png"] forState:UIControlStateNormal];
+    UIBarButtonItem *leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:leftButton];
+    self.navigationItem.leftBarButtonItem = leftBarButtonItem;
+    
     //[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification  object:nil];
     
     
@@ -77,15 +114,22 @@
     }
     
 }
+
 - (void)tapClick {
     [_textView resignFirstResponder];
     [_textField resignFirstResponder];
 }
+
 - (void)dismiss {
     [self dismissViewControllerAnimated:YES completion:nil];
 }
-- (void)post {
-    if (self.textField.text.length > 0 && self.textView.text.length > 0 && ![self.textView.text isEqualToString:@"请输入内容"] ) {
+
+- (void)post:(UIButton *)sender {
+    [UIView animateWithDuration:0.2 animations:^{
+        sender.alpha = 1;
+        sender.transform = CGAffineTransformIdentity;
+    }];
+    if (self.textField.text.length > 0 && self.textView.text.length > 0 && ![self.textView.text isEqualToString:[self placeholderForSecondText]] ) {
         id manger = [BJNetworkingManger sharedManger];
         [manger uploadWithImage:self.uploadPhotos andTitle:self.textField.text Content:self.textView.text uploadSuccess:^(BJUploadSuccessModel * _Nonnull uploadModel) {
                 [self showPostSuccessAlert];
@@ -94,15 +138,23 @@
             }];
     } else {
         NSLog(@"文字不能为空");
+        [self showPostFailAlert];
     }
     
 }
-- (void)draft {
+
+
+
+-(void)draft:(UIButton *)sender {
+    sender.alpha = 0.8;
+    [UIView animateWithDuration:0.2 animations:^{
+        sender.alpha = 1;
+    }];
     BJMyDraftModel* model = [[BJMyDraftModel alloc] init];
     BJMymagesInDraftModel* imagesModel = [[BJMymagesInDraftModel alloc] init];
     [[BJLocalDataManger sharedManger] loadDataManger:model];
     NSInteger noteId = 0;
-    if (self.textField.text.length > 0 && self.textView.text.length > 0 && ![self.textView.text isEqualToString:@"请输入内容"]) {
+    if (self.textField.text.length > 0 && self.textView.text.length > 0 && ![self.textView.text isEqualToString:[self placeholderForSecondText]]) {
         model.contentString = self.textView.text;
         model.titleString = self.textField.text;
         if ([BJNetworkingManger sharedManger].email != nil) {
@@ -138,11 +190,18 @@
     }]];
     [self presentViewController:alert animated:YES completion:nil];
 }
+
 - (void)showPostSuccessAlert {
     UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"发布成功" message:@"退出编辑发表页面" preferredStyle:UIAlertControllerStyleAlert];
     [alert addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         [self dismissViewControllerAnimated:YES completion:nil];
     }]];
+    [self presentViewController:alert animated:YES completion:nil];
+}
+
+- (void)showPostFailAlert {
+    UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"发布失败" message:@"请将发布内容填写完整" preferredStyle:UIAlertControllerStyleAlert];
+    [alert addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:nil]];
     [self presentViewController:alert animated:YES completion:nil];
 }
 - (NSArray*)saveImages {
@@ -173,14 +232,13 @@
     }];
     return [NSArray arrayWithArray:ary];
 }
-- (void)preview  {
+- (void)preview {
     BJPreviewlViewController* preViewController = [[BJPreviewlViewController alloc] init];
     preViewController.modalPresentationStyle = UIModalPresentationFullScreen;
     preViewController.photos = [self.uploadPhotos copy];
     preViewController.model = [[BJPreviewModel alloc] init];
     preViewController.model.titleString = self.model.titleString;
-    preViewController.model.contetnString = self.model.contetnString;
-    NSLog(@"%@", preViewController.photos);
+    preViewController.model.contetnString = self.model.contentString;
     [self presentViewController:preViewController animated:YES completion:nil];
 }
 - (void)textFieldDidEndEditing:(UITextField *)textField {
@@ -189,7 +247,7 @@
     }
 }
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 5;
+    return _hidden ? 3 : 5;
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     return 1;
@@ -207,17 +265,17 @@
 }
 - (void)textViewDidEndEditing:(UITextView *)textView {
     if (textView.text.length < 1) {
-        self.model.contetnString = @"";
+        self.model.contentString = @"";
         textView.textColor = UIColor.grayColor;
-        textView.text = @"请输入内容";
+        textView.text = [self placeholderForSecondText];
     } else {
-        self.model.contetnString = textView.text;
+        self.model.contentString = textView.text;
     }
    
 }
 - (void)textViewDidBeginEditing:(UITextView *)textView {
     NSLog(@"%@", textView.text);
-    if ([textView.text isEqualToString:@"请输入内容"]) {
+    if ([textView.text isEqualToString:[self placeholderForSecondText]]) {
         textView.textColor = UIColor.blackColor;
         textView.text = @"";
     } else {
@@ -225,80 +283,99 @@
     }
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    BJPostTableViewCell* titleCell = [tableView dequeueReusableCellWithIdentifier:@"title"];
-    BJPostTableViewCell* contentCell = [tableView dequeueReusableCellWithIdentifier:@"content"];
-    BJPostTableViewCell* buttonCell = [tableView dequeueReusableCellWithIdentifier:@"image"];
-    BJCommityPostLoactionTableViewCell* loactionCell = [tableView dequeueReusableCellWithIdentifier:@"loaction"];
-    BJCommityPostLoactionTableViewCell* friendCell = [tableView dequeueReusableCellWithIdentifier:@"friendRange"];
-    titleCell.selectionStyle = UITableViewCellSelectionStyleNone;
-    contentCell.selectionStyle = UITableViewCellSelectionStyleNone;
-    buttonCell.selectionStyle = UITableViewCellSelectionStyleNone;
-    loactionCell.selectionStyle = UITableViewCellSelectionStyleNone;
-    friendCell.selectionStyle = UITableViewCellSelectionStyleNone;
     if (indexPath.section == 0) {
+        BJPostTableViewCell* buttonCell = [tableView dequeueReusableCellWithIdentifier:@"image"];
+        buttonCell.selectionStyle = UITableViewCellSelectionStyleNone;
         [buttonCell.btn addTarget:self action:@selector(pushSelectImage) forControlEvents:UIControlEventTouchUpInside];
+        buttonCell.backgroundColor = [UIColor whiteColor];
         [buttonCell addPhotosAry:self.uploadPhotos];
+        
         return buttonCell ;
     } else if (indexPath.section == 1) {
-        titleCell.titleView.text = self.model.titleString.length == 0 ? @"" : self.model.titleString;
+        BJPostTableViewCell* titleCell = [tableView dequeueReusableCellWithIdentifier:@"title"];
+        titleCell.selectionStyle = UITableViewCellSelectionStyleNone;
+        if (!_hidden) {
+            titleCell.titleView.text = self.model.titleString.length == 0 ? @"" : self.model.titleString;
+        }
+        
         titleCell.titleView.delegate = self;
         titleCell.titleView.tag = 100;
         _textField = titleCell.titleView;
+        titleCell.backgroundColor = [UIColor whiteColor];
+        _textField.placeholder = [self placeholderForFirstText];
         return titleCell;
     } else if (indexPath.section == 2) {
-        contentCell.contentTextView.text = self.model.contetnString.length == 0 ? @"请输入内容" : self.model.contetnString;
+        BJPostTableViewCell* contentCell = [tableView dequeueReusableCellWithIdentifier:@"content"];
+        contentCell.selectionStyle = UITableViewCellSelectionStyleNone;
+        contentCell.contentTextView.text = self.model.contentString.length == 0 ? [self placeholderForSecondText] : self.model.contentString;
         contentCell.contentTextView.delegate = self;
-        contentCell.contentTextView.textColor =  self.model.contetnString.length == 0 ? UIColor.lightGrayColor : UIColor.blackColor;
+        contentCell.backgroundColor = [UIColor whiteColor];
+        contentCell.contentTextView.textColor =  self.model.contentString.length == 0 ? UIColor.lightGrayColor : UIColor.blackColor;
         _textView = contentCell.contentTextView;
         return contentCell;
     } else if (indexPath.section == 3) {
+        BJCommityPostLoactionTableViewCell* loactionCell = [tableView dequeueReusableCellWithIdentifier:@"loaction"];
+        loactionCell.selectionStyle = UITableViewCellSelectionStyleNone;
+        loactionCell.backgroundColor = [UIColor whiteColor];
+        loactionCell.hidden = _hidden;
         return loactionCell;
     } else {
+        BJCommityPostLoactionTableViewCell* friendCell = [tableView dequeueReusableCellWithIdentifier:@"friendRange"];
+        friendCell.selectionStyle = UITableViewCellSelectionStyleNone;
+        friendCell.backgroundColor = [UIColor whiteColor];
+        friendCell.hidden = _hidden;
         return friendCell;
     }
 }
+
+
 - (void)pushSelectImage {
-    NSLog(@"推出选择照片的页面");
-        //能选择的最大图片数
-        NSInteger maxCount = 9;
-        TZImagePickerController *imagePickerVc = [[TZImagePickerController alloc] initWithMaxImagesCount:maxCount columnNumber:4 delegate:self pushPhotoPickerVc:YES];
-        imagePickerVc.isSelectOriginalPhoto = NO;
-        [imagePickerVc setUiImagePickerControllerSettingBlock:^(UIImagePickerController *imagePickerController) {
-            imagePickerController.videoQuality = UIImagePickerControllerQualityTypeHigh;
-        }];
-        [imagePickerVc.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor blackColor]}];
-        
-        imagePickerVc.allowPickingVideo = NO;
-        imagePickerVc.allowPickingImage = YES;
-        imagePickerVc.allowPickingOriginalPhoto = NO;
-        imagePickerVc.allowPickingGif = NO;
-        imagePickerVc.allowPickingMultipleVideo = NO;// 是否可以多选视频
-        imagePickerVc.showSelectedIndex = YES;
-        imagePickerVc.sortAscendingByModificationDate = YES;
-        imagePickerVc.modalPresentationStyle = UIModalPresentationFullScreen;
-        if (@available(iOS 13.0, *)) {
-            imagePickerVc.statusBarStyle = UIStatusBarStyleDarkContent;
-        } else {
-            imagePickerVc.statusBarStyle = UIStatusBarStyleDefault;
-        }
-        // 你可以通过block或者代理，来得到用户选择的照片.
+
+    TZImagePickerController *imagePickerVc = [[TZImagePickerController alloc] initWithMaxImagesCount:_maxCount columnNumber:4 delegate:self pushPhotoPickerVc:YES];
+    imagePickerVc.isSelectOriginalPhoto = NO;
+    [imagePickerVc setUiImagePickerControllerSettingBlock:^(UIImagePickerController *imagePickerController) {
+        imagePickerController.videoQuality = UIImagePickerControllerQualityTypeHigh;
+    }];
+    [imagePickerVc.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor blackColor]}];
+    
+    imagePickerVc.allowPickingVideo = NO;
+    imagePickerVc.allowPickingImage = YES;
+    imagePickerVc.allowPickingOriginalPhoto = NO;
+    imagePickerVc.allowPickingGif = NO;
+    imagePickerVc.allowPickingMultipleVideo = NO;// 是否可以多选视频
+    imagePickerVc.showSelectedIndex = YES;
+    imagePickerVc.sortAscendingByModificationDate = YES;
+    imagePickerVc.modalPresentationStyle = UIModalPresentationFullScreen;
+    if (@available(iOS 13.0, *)) {
+        imagePickerVc.statusBarStyle = UIStatusBarStyleDarkContent;
+    } else {
+        imagePickerVc.statusBarStyle = UIStatusBarStyleDefault;
+    }
     __weak id weakSelf = self;
     [imagePickerVc setDidFinishPickingPhotosHandle:^(NSArray<UIImage *> *photos, NSArray *assets, BOOL isSelectOriginalPhoto) {
-        self.uploadPhotos = [photos copy];
-        [self.postView.mainView reloadData];
+        __strong BJPostCommityViewController *strongSelf = weakSelf;
+        strongSelf.uploadPhotos = [photos copy];
+        [strongSelf.postView.mainView reloadData];
     }];
-        [self presentViewController:imagePickerVc animated:YES completion:nil];
+    [self presentViewController:imagePickerVc animated:YES completion:nil];
    
 }
 
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (indexPath.section == 3) {
+        [[BJNetworkingManger sharedManger] loadAllCountryIDWithSuccess:^(NSArray<BJLocationModel *> * _Nonnull locationModel) {
+            BJLocationViewController *locationVC = [[BJLocationViewController alloc] init];
+            locationVC.models = locationModel;
+            locationVC.delegate = self;
+            [self presentViewController:locationVC animated:YES completion:nil];
+        } failure:^(NSError * _Nonnull error) {
+            NSLog(@"error:%@", error);
+        }];
+        
+    }
 }
-*/
 
+- (void)sendBackCountryID:(NSString *)countryID {
+    
+}
 @end

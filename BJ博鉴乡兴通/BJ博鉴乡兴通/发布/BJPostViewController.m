@@ -25,9 +25,11 @@
     // Do any additional setup after loading the view.
 }
 - (void) pushCommityPostViewController {
-    BJPostCommityViewController* commityViewController = [[BJPostCommityViewController alloc] init];
-    commityViewController.modalPresentationStyle = UIModalPresentationFullScreen;
-    [self presentViewController:commityViewController animated:YES completion:nil];
+    
+    BJPostCommityViewController* commityViewController = [[BJPostCommityViewController alloc] initWithMaxCount:9 andHidden:NO];
+    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:commityViewController];
+    navigationController.modalPresentationStyle = UIModalPresentationFullScreen;
+    [self presentViewController:navigationController animated:YES completion:nil];
 }
 - (void)dismiss {
     [self dismissViewControllerAnimated:YES completion:nil];

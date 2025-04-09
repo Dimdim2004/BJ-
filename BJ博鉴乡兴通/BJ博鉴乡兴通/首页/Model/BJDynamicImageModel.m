@@ -8,5 +8,14 @@
 #import "BJDynamicImageModel.h"
 
 @implementation BJDynamicImageModel
++ (NSDictionary *)modelCustomPropertyMapper {
+    return @{
+        @"sortOrder" : @"sort_order"
+    };
+}
 
+- (NSString *)description
+{
+    return [NSString stringWithFormat:@"%@",self.url];
+}
 @end

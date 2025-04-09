@@ -23,6 +23,12 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) BJCommityPostModel* model;
 @property (nonatomic, strong) UITextField* textField;
 @property (nonatomic, strong) UITextView* textView;
+
+- (NSString *)placeholderForFirstText;
+- (NSString *)placeholderForSecondText;
+- (NSString *)placeholderForButtonText;
+- (void)post:(UIButton *)sender;
+- (instancetype)initWithMaxCount:(NSInteger)maxCount andHidden:(BOOL)hidden;
 @end
 
 NS_ASSUME_NONNULL_END

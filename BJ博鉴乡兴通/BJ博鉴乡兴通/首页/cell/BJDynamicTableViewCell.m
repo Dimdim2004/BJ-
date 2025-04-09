@@ -9,7 +9,7 @@
 #import "BJDynamicModel.h"
 #import <Masonry.h>
 #import <SDWebImage.h>
-
+#import "BJDynamicImageModel.h"
 
 @interface BJDynamicTableViewCell ()
 @property (strong, nonatomic) UIImageView *avatarImageView;
@@ -17,6 +17,7 @@
 @property (strong, nonatomic) UILabel *timeLabel;
 @property (strong, nonatomic) UILabel *contentLabel;
 @property (strong, nonatomic) UIView *imageContainer;
+
 @property (strong, nonatomic) UIButton *likeButton;
 @property (strong, nonatomic) UIButton *commentButton;
 @property (strong, nonatomic) UIButton *shareButton;
@@ -40,27 +41,30 @@
     return self;
 }
 
+- (void)prepareForReuse {
+    [super prepareForReuse];
+    [_imageContainer.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
+    self.isLoad = NO;
+}
+
 - (void)setupUI {
-    // 头像
     _avatarImageView = [UIImageView new];
     _avatarImageView.contentMode = UIViewContentModeScaleAspectFill;
-    _avatarImageView.layer.cornerRadius = 5;
+    _avatarImageView.layer.cornerRadius = 20;
     _avatarImageView.clipsToBounds = YES;
     [self.contentView addSubview:_avatarImageView];
-    
-    // 用户名
+
     _nameLabel = [UILabel new];
     _nameLabel.font = [UIFont systemFontOfSize:16 weight:UIFontWeightSemibold];
     _nameLabel.textColor = [UIColor darkTextColor];
     [self.contentView addSubview:_nameLabel];
     
-    // 时间
+
     _timeLabel = [UILabel new];
     _timeLabel.font = [UIFont systemFontOfSize:12];
     _timeLabel.textColor = [UIColor grayColor];
     [self.contentView addSubview:_timeLabel];
     
-    // 正文
     _contentLabel = [UILabel new];
     _contentLabel.font = [UIFont systemFontOfSize:15];
     _contentLabel.textColor = [UIColor darkTextColor];
@@ -179,7 +183,7 @@
 }
 
 #pragma mark - Private Methods
-- (void)setupImages:(NSArray *)images {
+- (void)setupImages:(NSArray<BJDynamicImageModel *> *)images {
     [_imageContainer.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
     
     CGFloat itemSize = [self imageItemSizeForCount:images.count];
@@ -196,9 +200,8 @@
                                         action:@selector(imageTapped:)]];
         [_imageContainer addSubview:imageView];
         
-        imageView.image = [UIImage imageNamed:images[i]];
-//        [imageView sd_setImageWithURL:[NSURL URLWithString:images[i]]
-//                     placeholderImage:[UIImage imageNamed:@"image_placeholder"]];
+
+        [imageView sd_setImageWithURL:[NSURL URLWithString:images[i].url] placeholderImage:[UIImage imageNamed:@"image_placeholder"]];
         
         // 计算布局
         NSInteger row = i / 3;
@@ -218,7 +221,7 @@
 - (CGFloat)imageItemSizeForCount:(NSInteger)count {
     if (count == 0) return 0;
     if (count == 1) return 150; // 大图尺寸
-    CGFloat containerWidth = CGRectGetWidth(self.contentView.frame) - 70; // 根据实际布局计算
+    CGFloat containerWidth = [UIScreen mainScreen].bounds.size.width - 140; // 根据实际布局计算
     return (containerWidth - 2 * 5) / 3; // 3列布局
 }
 

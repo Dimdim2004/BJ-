@@ -6,14 +6,15 @@
 //
 
 #import <Foundation/Foundation.h>
-
+#import <YYModel.h>
 NS_ASSUME_NONNULL_BEGIN
-
-@interface BJDynamicModel : NSObject
+@class BJDynamicImageModel;
+@interface BJDynamicModel : NSObject<YYModel>
 @property (nonatomic, copy) NSString *userName;
+@property (nonatomic, copy) NSString *postID;
 @property (nonatomic, copy) NSString *avatarUrl;
 @property (nonatomic, copy) NSString *content;
-@property (nonatomic, strong) NSArray<NSString *> *images;
+@property (nonatomic, strong) NSArray<BJDynamicImageModel *> *images;
 @property (nonatomic, copy) NSString *timeText;
 @property (nonatomic, copy) NSString *numofLikes;
 @property (nonatomic, copy) NSString *numofComment;

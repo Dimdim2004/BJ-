@@ -8,6 +8,7 @@
 #import "BJDisplayView.h"
 #import "BJDisplayModel.h"
 #import <Masonry.h>
+
 @interface BJDisplayView ()
 @property (nonatomic, strong) UIImageView *hometownImageView;
 @property (nonatomic, strong) UILabel *nameLabel;

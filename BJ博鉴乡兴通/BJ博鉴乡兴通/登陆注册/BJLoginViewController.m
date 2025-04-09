@@ -233,25 +233,24 @@
         make.height.equalTo(@20);
     }];
 }
+
 - (void)presentCheck {
     BJCheckEmailViewController* checkEmailViewController = [[BJCheckEmailViewController alloc] init];
-    checkEmailViewController.modalPresentationStyle = UIModalPresentationFullScreen;
     [self presentViewController:checkEmailViewController animated:YES completion:nil];
 }
+
 - (void)presentChange {
     BJFindPasswordViewController* changePasswordViewController = [[BJFindPasswordViewController alloc] init];
-    changePasswordViewController.modalPresentationStyle = UIModalPresentationFullScreen;
     BJFindingPasswordViewModel* changeModel = [[BJFindingPasswordViewModel alloc] initWithAuthTyoe:0];
     [self presentViewController:changePasswordViewController animated:YES completion:nil];
 }
+
 - (void)quickPush {
     [self.delegate changeTab];
 }
 -(void)presentRegister {
-    NSLog(@"111");
-    BJRegisterViewController* registerViewController = [[BJRegisterViewController alloc] init];
-//    registerViewController.modalPresentationStyle = UIModalPresentationFullScreen;
 
+    BJRegisterViewController* registerViewController = [[BJRegisterViewController alloc] init];
     [self presentViewController:registerViewController animated:YES completion:nil];
 }
 - (void)setupBindings {

@@ -9,6 +9,11 @@
 /* Begin PBXBuildFile section */
 		21049CFD2D89172C00B5E8C5 /* BJScaleFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 21049CFC2D89172C00B5E8C5 /* BJScaleFlowLayout.m */; };
 		210CA7EC2D8DB58000567240 /* placeholderForAddress.png in Resources */ = {isa = PBXBuildFile; fileRef = 210CA7EB2D8DB58000567240 /* placeholderForAddress.png */; };
+		2132FA602DA1688B0049EEC3 /* ScrollViewViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 2132FA5F2DA1688B0049EEC3 /* ScrollViewViewModel.m */; };
+		2132FA622DA232910049EEC3 /* Commity.png in Resources */ = {isa = PBXBuildFile; fileRef = 2132FA612DA232910049EEC3 /* Commity.png */; };
+		2132FA642DA232950049EEC3 /* Personal.png in Resources */ = {isa = PBXBuildFile; fileRef = 2132FA632DA232950049EEC3 /* Personal.png */; };
+		2132FA702DA3E9680049EEC3 /* BJDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2132FA6F2DA3E9680049EEC3 /* BJDetailViewController.m */; };
+		2132FA732DA3F34D0049EEC3 /* BJProductModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 2132FA722DA3F34D0049EEC3 /* BJProductModel.m */; };
 		213582222D814131001F7459 /* likes_selected.png in Resources */ = {isa = PBXBuildFile; fileRef = 2135821E2D814131001F7459 /* likes_selected.png */; };
 		213582242D814131001F7459 /* share.png in Resources */ = {isa = PBXBuildFile; fileRef = 213582202D814131001F7459 /* share.png */; };
 		213582252D814131001F7459 /* comment.png in Resources */ = {isa = PBXBuildFile; fileRef = 213582212D814131001F7459 /* comment.png */; };
@@ -72,6 +77,16 @@
 		219F0EB72D4160DD00F69C9B /* logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 219F0EB62D4160DD00F69C9B /* logo.png */; };
 		219F0EBB2D41CEDE00F69C9B /* BJScrollViewTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 219F0EBA2D41CEDE00F69C9B /* BJScrollViewTableViewCell.m */; };
 		219F0EBD2D41DA2B00F69C9B /* logo2.png in Resources */ = {isa = PBXBuildFile; fileRef = 219F0EBC2D41DA2B00F69C9B /* logo2.png */; };
+		21C1922B2D9F7CF200B062BA /* BJWatetFlowTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 21C1922A2D9F7CF200B062BA /* BJWatetFlowTableViewCell.m */; };
+		21D17B952D9431710063E5CD /* BJPostCountryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 21D17B942D9431710063E5CD /* BJPostCountryViewController.m */; };
+		21D17B992D985E570063E5CD /* BJDynamicImageModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 21D17B982D985E570063E5CD /* BJDynamicImageModel.m */; };
+		21D17B9C2D9A87530063E5CD /* BJLocationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 21D17B9B2D9A87520063E5CD /* BJLocationViewController.m */; };
+		21D17B9F2D9B80630063E5CD /* BJLocationModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 21D17B9E2D9B80630063E5CD /* BJLocationModel.m */; };
+		21F5202B2DA54E37005EE089 /* apple.png in Resources */ = {isa = PBXBuildFile; fileRef = 21F520262DA54E35005EE089 /* apple.png */; };
+		21F5202C2DA54E37005EE089 /* hongzao.png in Resources */ = {isa = PBXBuildFile; fileRef = 21F520272DA54E36005EE089 /* hongzao.png */; };
+		21F5202D2DA54E37005EE089 /* cha.png in Resources */ = {isa = PBXBuildFile; fileRef = 21F520282DA54E36005EE089 /* cha.png */; };
+		21F5202E2DA54E37005EE089 /* nihoutao.png in Resources */ = {isa = PBXBuildFile; fileRef = 21F520292DA54E37005EE089 /* nihoutao.png */; };
+		21F5202F2DA54E37005EE089 /* heimi.png in Resources */ = {isa = PBXBuildFile; fileRef = 21F5202A2DA54E37005EE089 /* heimi.png */; };
 		2707B9E64770065027B653A9 /* libPods-BJ博鉴乡兴通.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1C9BCFB67B8FE7DD9598BE59 /* libPods-BJ博鉴乡兴通.a */; };
 		E90703C42D78987B001DE0EE /* santiaogang.png in Resources */ = {isa = PBXBuildFile; fileRef = E90703C32D78987B001DE0EE /* santiaogang.png */; };
 		E91427E72D79C87C001ED3F8 /* back.png in Resources */ = {isa = PBXBuildFile; fileRef = E91427E62D79C87C001ED3F8 /* back.png */; };
@@ -175,6 +190,14 @@
 		21049CFB2D89172C00B5E8C5 /* BJScaleFlowLayout.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BJScaleFlowLayout.h; sourceTree = "<group>"; };
 		21049CFC2D89172C00B5E8C5 /* BJScaleFlowLayout.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BJScaleFlowLayout.m; sourceTree = "<group>"; };
 		210CA7EB2D8DB58000567240 /* placeholderForAddress.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = placeholderForAddress.png; sourceTree = "<group>"; };
+		2132FA5E2DA1688B0049EEC3 /* ScrollViewViewModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ScrollViewViewModel.h; sourceTree = "<group>"; };
+		2132FA5F2DA1688B0049EEC3 /* ScrollViewViewModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ScrollViewViewModel.m; sourceTree = "<group>"; };
+		2132FA612DA232910049EEC3 /* Commity.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Commity.png; sourceTree = "<group>"; };
+		2132FA632DA232950049EEC3 /* Personal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Personal.png; sourceTree = "<group>"; };
+		2132FA6E2DA3E9680049EEC3 /* BJDetailViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BJDetailViewController.h; sourceTree = "<group>"; };
+		2132FA6F2DA3E9680049EEC3 /* BJDetailViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BJDetailViewController.m; sourceTree = "<group>"; };
+		2132FA712DA3F34D0049EEC3 /* BJProductModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BJProductModel.h; sourceTree = "<group>"; };
+		2132FA722DA3F34D0049EEC3 /* BJProductModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BJProductModel.m; sourceTree = "<group>"; };
 		2135821E2D814131001F7459 /* likes_selected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = likes_selected.png; sourceTree = "<group>"; };
 		213582202D814131001F7459 /* share.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = share.png; sourceTree = "<group>"; };
 		213582212D814131001F7459 /* comment.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = comment.png; sourceTree = "<group>"; };
@@ -272,6 +295,22 @@
 		219F0EB92D41CEDE00F69C9B /* BJScrollViewTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BJScrollViewTableViewCell.h; sourceTree = "<group>"; };
 		219F0EBA2D41CEDE00F69C9B /* BJScrollViewTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BJScrollViewTableViewCell.m; sourceTree = "<group>"; };
 		219F0EBC2D41DA2B00F69C9B /* logo2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = logo2.png; sourceTree = "<group>"; };
+		21C192292D9F7CF200B062BA /* BJWatetFlowTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BJWatetFlowTableViewCell.h; sourceTree = "<group>"; };
+		21C1922A2D9F7CF200B062BA /* BJWatetFlowTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BJWatetFlowTableViewCell.m; sourceTree = "<group>"; };
+		21D17B932D9431710063E5CD /* BJPostCountryViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BJPostCountryViewController.h; sourceTree = "<group>"; };
+		21D17B942D9431710063E5CD /* BJPostCountryViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BJPostCountryViewController.m; sourceTree = "<group>"; };
+		21D17B962D9432320063E5CD /* BJPostViewControllerDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BJPostViewControllerDelegate.h; sourceTree = "<group>"; };
+		21D17B972D985E570063E5CD /* BJDynamicImageModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BJDynamicImageModel.h; sourceTree = "<group>"; };
+		21D17B982D985E570063E5CD /* BJDynamicImageModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BJDynamicImageModel.m; sourceTree = "<group>"; };
+		21D17B9A2D9A87520063E5CD /* BJLocationViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BJLocationViewController.h; sourceTree = "<group>"; };
+		21D17B9B2D9A87520063E5CD /* BJLocationViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BJLocationViewController.m; sourceTree = "<group>"; };
+		21D17B9D2D9B80630063E5CD /* BJLocationModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BJLocationModel.h; sourceTree = "<group>"; };
+		21D17B9E2D9B80630063E5CD /* BJLocationModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BJLocationModel.m; sourceTree = "<group>"; };
+		21F520262DA54E35005EE089 /* apple.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = apple.png; sourceTree = "<group>"; };
+		21F520272DA54E36005EE089 /* hongzao.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = hongzao.png; sourceTree = "<group>"; };
+		21F520282DA54E36005EE089 /* cha.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cha.png; sourceTree = "<group>"; };
+		21F520292DA54E37005EE089 /* nihoutao.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = nihoutao.png; sourceTree = "<group>"; };
+		21F5202A2DA54E37005EE089 /* heimi.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = heimi.png; sourceTree = "<group>"; };
 		AAE3039BA091A97AB111073F /* Pods-BJ博鉴乡兴通.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BJ博鉴乡兴通.debug.xcconfig"; path = "Target Support Files/Pods-BJ博鉴乡兴通/Pods-BJ博鉴乡兴通.debug.xcconfig"; sourceTree = "<group>"; };
 		E90703C32D78987B001DE0EE /* santiaogang.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = santiaogang.png; sourceTree = "<group>"; };
 		E91427E62D79C87C001ED3F8 /* back.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = back.png; sourceTree = "<group>"; };
@@ -443,6 +482,24 @@
 			path = Pods;
 			sourceTree = "<group>";
 		};
+		2132FA5A2DA105AA0049EEC3 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				2132FA5E2DA1688B0049EEC3 /* ScrollViewViewModel.h */,
+				2132FA5F2DA1688B0049EEC3 /* ScrollViewViewModel.m */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		2132FA742DA3F3560049EEC3 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				2132FA712DA3F34D0049EEC3 /* BJProductModel.h */,
+				2132FA722DA3F34D0049EEC3 /* BJProductModel.m */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
 		2166BB062D7FE77F009C0CB1 /* Model */ = {
 			isa = PBXGroup;
 			children = (
@@ -454,6 +511,8 @@
 				2195DC122D8FE36200A96D08 /* BJCountryModel.m */,
 				2150F6DA2D91AEE300B76A1C /* BJWaterFlowLayout.h */,
 				2150F6DB2D91AEE300B76A1C /* BJWaterFlowLayout.m */,
+				21D17B972D985E570063E5CD /* BJDynamicImageModel.h */,
+				21D17B982D985E570063E5CD /* BJDynamicImageModel.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -525,11 +584,14 @@
 		216DB6D92D2FDF7C005BF4C2 /* 首页 */ = {
 			isa = PBXGroup;
 			children = (
+				2132FA5A2DA105AA0049EEC3 /* ViewModel */,
 				2166BB062D7FE77F009C0CB1 /* Model */,
 				219A06982D75491300EA43BA /* View */,
 				219F0EB82D41CE8600F69C9B /* cell */,
 				2166BAFA2D7E90DC009C0CB1 /* BJHomePageViewController.h */,
 				219F0E8C2D3E7E2200F69C9B /* BJHomePageViewController.m */,
+				21D17B932D9431710063E5CD /* BJPostCountryViewController.h */,
+				21D17B942D9431710063E5CD /* BJPostCountryViewController.m */,
 				216E87112D73FF360027E674 /* BJMapViewController.h */,
 				216E87122D73FF360027E674 /* BJMapViewController.m */,
 				219A07072D7BFDA900EA43BA /* BJMyHometownViewController.h */,
@@ -543,12 +605,15 @@
 		216DB6DA2D2FDF87005BF4C2 /* 商城 */ = {
 			isa = PBXGroup;
 			children = (
+				2132FA742DA3F3560049EEC3 /* Model */,
 				219F0E8E2D3E7E5D00F69C9B /* BJShopViewController.h */,
 				219F0E8F2D3E7E5D00F69C9B /* BJShopViewController.m */,
 				214C58892D87B868007A5AC6 /* BJScaleTableViewCell.h */,
 				214C588A2D87B868007A5AC6 /* BJScaleTableViewCell.m */,
 				21049CFB2D89172C00B5E8C5 /* BJScaleFlowLayout.h */,
 				21049CFC2D89172C00B5E8C5 /* BJScaleFlowLayout.m */,
+				2132FA6E2DA3E9680049EEC3 /* BJDetailViewController.h */,
+				2132FA6F2DA3E9680049EEC3 /* BJDetailViewController.m */,
 			);
 			path = "商城";
 			sourceTree = "<group>";
@@ -582,6 +647,8 @@
 		216DB6DE2D2FDFBD005BF4C2 /* 发布 */ = {
 			isa = PBXGroup;
 			children = (
+				21D17B9A2D9A87520063E5CD /* BJLocationViewController.h */,
+				21D17B9B2D9A87520063E5CD /* BJLocationViewController.m */,
 				219F0E912D3E7EAC00F69C9B /* BJPostViewController.h */,
 				219F0E922D3E7EAC00F69C9B /* BJPostViewController.m */,
 				E98B0C6A2D707ACD00439CCE /* BJPostImageViewController.h */,
@@ -649,6 +716,7 @@
 				E91428622D8C6DAE001ED3F8 /* BJLocalDataManger.h */,
 				E91428632D8C6DAE001ED3F8 /* BJLocalDataManger.mm */,
 				E9F693AC2D8FFE8F00627E30 /* DatabaseProtocol.h */,
+				21D17B962D9432320063E5CD /* BJPostViewControllerDelegate.h */,
 			);
 			path = "通用";
 			sourceTree = "<group>";
@@ -656,6 +724,13 @@
 		219F0E9B2D3E83D600F69C9B /* 图片 */ = {
 			isa = PBXGroup;
 			children = (
+				21F520262DA54E35005EE089 /* apple.png */,
+				21F520282DA54E36005EE089 /* cha.png */,
+				21F5202A2DA54E37005EE089 /* heimi.png */,
+				21F520272DA54E36005EE089 /* hongzao.png */,
+				21F520292DA54E37005EE089 /* nihoutao.png */,
+				2132FA632DA232950049EEC3 /* Personal.png */,
+				2132FA612DA232910049EEC3 /* Commity.png */,
 				2150F6E02D92575E00B76A1C /* notFound.png */,
 				2195DC162D8FF57200A96D08 /* LoginBackView.png */,
 				E914284C2D8ADB63001ED3F8 /* likeSmall.png */,
@@ -724,6 +799,8 @@
 				2195DC192D9008FD00A96D08 /* BJCountryInfoTableViewCell.m */,
 				2195DC1D2D91123000A96D08 /* BJCountryDynamicTableViewCell.h */,
 				2195DC1E2D91123000A96D08 /* BJCountryDynamicTableViewCell.m */,
+				21C192292D9F7CF200B062BA /* BJWatetFlowTableViewCell.h */,
+				21C1922A2D9F7CF200B062BA /* BJWatetFlowTableViewCell.m */,
 			);
 			path = cell;
 			sourceTree = "<group>";
@@ -745,6 +822,8 @@
 				E91428442D8982F6001ED3F8 /* BJPreviewModel.m */,
 				E914285F2D8C51BF001ED3F8 /* BJUploadSuccessModel.h */,
 				E91428602D8C51BF001ED3F8 /* BJUploadSuccessModel.m */,
+				21D17B9D2D9B80630063E5CD /* BJLocationModel.h */,
+				21D17B9E2D9B80630063E5CD /* BJLocationModel.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -1000,12 +1079,16 @@
 				219A06BD2D78948E00EA43BA /* annotation.png in Resources */,
 				2195DC172D8FF57300A96D08 /* LoginBackView.png in Resources */,
 				219A07052D7BF70700EA43BA /* toMyHometown.png in Resources */,
+				21F5202E2DA54E37005EE089 /* nihoutao.png in Resources */,
 				E914284B2D89BD4E001ED3F8 /* number.png in Resources */,
 				E91428482D89BC9B001ED3F8 /* likeInvat.png in Resources */,
+				21F5202B2DA54E37005EE089 /* apple.png in Resources */,
 				219A06DF2D79390B00EA43BA /* 1.png in Resources */,
 				219A06E32D7939CC00EA43BA /* 2.png in Resources */,
 				E914283C2D8921D4001ED3F8 /* pinglun-3.png in Resources */,
+				21F5202D2DA54E37005EE089 /* cha.png in Resources */,
 				219F0EAF2D3E8B5C00F69C9B /* shop.png in Resources */,
+				2132FA642DA232950049EEC3 /* Personal.png in Resources */,
 				219F0EAD2D3E8B5C00F69C9B /* myPage.png in Resources */,
 				219F0EAF2D3E8B5C00F69C9B /* shop.png in Resources */,
 				E9F693B12D91787100627E30 /* likeBig.png in Resources */,
@@ -1056,7 +1139,10 @@
 				E91428322D884D66001ED3F8 /* caogaoxiang.png in Resources */,
 				219F0E9F2D3E843100F69C9B /* jiahao.png in Resources */,
 				E9F693B32D91793E00627E30 /* starBig.png in Resources */,
+				21F5202F2DA54E37005EE089 /* heimi.png in Resources */,
+				2132FA622DA232910049EEC3 /* Commity.png in Resources */,
 				219A07062D7BF70700EA43BA /* toMap.png in Resources */,
+				21F5202C2DA54E37005EE089 /* hongzao.png in Resources */,
 				216DB6B42D2FDEF3005BF4C2 /* Base in Resources */,
 				E91428012D805CF2001ED3F8 /* didian.png in Resources */,
 				210CA7EC2D8DB58000567240 /* placeholderForAddress.png in Resources */,
@@ -1128,6 +1214,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E98B0CCD2D73466100439CCE /* BJDataModel.m in Sources */,
+				2132FA732DA3F34D0049EEC3 /* BJProductModel.m in Sources */,
 				E91427FF2D805A71001ED3F8 /* BJCommityPostLoactionTableViewCell.m in Sources */,
 				E914283F2D8923F7001ED3F8 /* BJPreviewlViewController.m in Sources */,
 				219A069E2D754EF500EA43BA /* BJAnnotation.m in Sources */,
@@ -1138,12 +1225,15 @@
 				E98B0CC72D7344C600439CCE /* BJCodeSuccessModel.m in Sources */,
 				E91427F62D7F182D001ED3F8 /* BJCodeModel.m in Sources */,
 				E9F8F0E12D40CB720040ABA6 /* BJCommunityUIColectionViewFlowLayout.m in Sources */,
+				2132FA702DA3E9680049EEC3 /* BJDetailViewController.m in Sources */,
 				E914280A2D8071C3001ED3F8 /* BJNetworkingManger.m in Sources */,
 				E914280E2D8072A4001ED3F8 /* BJInvitationModel.m in Sources */,
 				E98B0C742D70867A00439CCE /* BJUserModel.m in Sources */,
 				E98B0C692D70697400439CCE /* BJPostTableViewCell.m in Sources */,
+				21D17B992D985E570063E5CD /* BJDynamicImageModel.m in Sources */,
 				219F0EA22D3E848100F69C9B /* BJTabBarController.m in Sources */,
 				E98B0C712D70858600439CCE /* BJLoginViewController.m in Sources */,
+				21C1922B2D9F7CF200B062BA /* BJWatetFlowTableViewCell.m in Sources */,
 				E91428572D8AEFC2001ED3F8 /* BJImageModel.m in Sources */,
 				E9F693BE2D92559500627E30 /* BJMyPageFlowLayout.m in Sources */,
 				216E87132D73FF360027E674 /* BJMapViewController.m in Sources */,
@@ -1152,6 +1242,7 @@
 				E9F8F0F32D4FB0FD0040ABA6 /* BJInvitationViewController.m in Sources */,
 				E9F8F0E52D40EFBF0040ABA6 /* BJMainCommunityView.m in Sources */,
 				21049CFD2D89172C00B5E8C5 /* BJScaleFlowLayout.m in Sources */,
+				21D17B9F2D9B80630063E5CD /* BJLocationModel.m in Sources */,
 				E98B0CCA2D73455600439CCE /* BJRegisterSuccessModel.m in Sources */,
 				219F0E992D3E7ED200F69C9B /* BJMyPageViewController.m in Sources */,
 				E914281D2D807F34001ED3F8 /* BJFindPasswordSuccessModel.m in Sources */,
@@ -1188,6 +1279,7 @@
 				2166BAF92D7C875B009C0CB1 /* BJSegmentControlTableViewCell.m in Sources */,
 				2166BB0F2D7FF226009C0CB1 /* BJDynamicTableViewCell.m in Sources */,
 				2135822A2D82612E001F7459 /* BJDynamicView.m in Sources */,
+				21D17B952D9431710063E5CD /* BJPostCountryViewController.m in Sources */,
 				E9F8F0EC2D4A220B0040ABA6 /* BJCommityCollectionViewCell.m in Sources */,
 				E9F8F13C2D54D29E0040ABA6 /* BJInvitationTopContentView.m in Sources */,
 				E91428172D807C93001ED3F8 /* BJCheckEmailViewController.m in Sources */,
@@ -1209,7 +1301,9 @@
 				219F0E962D3E7EC000F69C9B /* BJCommunityViewController.m in Sources */,
 				E98B0C772D70875E00439CCE /* BJLoginViewModel.m in Sources */,
 				E91428202D81CBD8001ED3F8 /* BJFindPasswordViewController.m in Sources */,
+				2132FA602DA1688B0049EEC3 /* ScrollViewViewModel.m in Sources */,
 				E91428452D8982F6001ED3F8 /* BJPreviewModel.m in Sources */,
+				21D17B9C2D9A87530063E5CD /* BJLocationViewController.m in Sources */,
 				E9F8F1362D54CD2B0040ABA6 /* BJInvitationTableViewCell.m in Sources */,
 				219F0E932D3E7EAC00F69C9B /* BJPostViewController.m in Sources */,
 				219A06F62D79EAC800EA43BA /* BJNavigationBar.m in Sources */,

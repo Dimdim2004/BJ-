@@ -11,8 +11,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface BJCountryModel : NSObject<YYModel>
 @property (strong, nonatomic)NSString *name;
-@property (strong, nonatomic)NSString *image;
-@property (strong, nonatomic)NSString *countryID;
+@property (strong, nonatomic)NSString *imageUrl;
+@property (assign, nonatomic)NSInteger countryID;
 @property (strong, nonatomic)NSString *location;
 @property (strong, nonatomic)NSString *countryDescription;
 @property (assign, nonatomic)CGFloat longitude;

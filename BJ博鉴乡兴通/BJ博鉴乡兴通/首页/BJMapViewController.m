@@ -9,8 +9,9 @@
 #import <AFNetworking/AFNetworking.h>
 #import <SDWebImage.h>
 #import "BJDisplayModel.h"
+#import "BJCountryModel.h"
 #import "BJMyHometownViewController.h"
-
+#import "BJNotFoundViewController.h"
 
 const static NSString *mapAPK = @"dhK73tBBx4BWr97HK8JnKocfz53ctjps";
 
@@ -21,7 +22,8 @@ const static NSString *mapAPK = @"dhK73tBBx4BWr97HK8JnKocfz53ctjps";
 @property (nonatomic, assign) BOOL isLoaded;
 @property (nonatomic, strong)NSMutableDictionary *anotationCache;
 @property (nonatomic, strong)CLGeocoder *geocoder;
-@property (nonatomic, strong)BJDisplayModel *currentDisplayModel;
+@property (nonatomic, strong)BJAnnotation *currentAnnotation;
+@property (nonatomic, copy)NSString *locationName;
 @end
 
 @implementation BJMapViewController
@@ -104,11 +106,33 @@ const static NSString *mapAPK = @"dhK73tBBx4BWr97HK8JnKocfz53ctjps";
 }
 
 -(void)enterDisplayView {
-    BJMyHometownViewController *hometownVC = [[BJMyHometownViewController alloc] init];
+    [[BJNetworkingManger sharedManger] findTargetCountryWithLatitude:self.currentAnnotation.coordinate.latitude andLongitude:self.currentAnnotation.coordinate.longitude WithSuccess:^(BJCountryModel * _Nonnull countryModel) {
+        if (!countryModel) {
+            BJNotFoundViewController *notFoundVC = [[BJNotFoundViewController alloc] init];
+            countryModel = [[BJCountryModel alloc] init];
+            countryModel.name = self.currentAnnotation.title;
+            countryModel.longitude = self.currentAnnotation.coordinate.longitude;
+            countryModel.latitude = self.currentAnnotation.coordinate.latitude;
+            countryModel.location = self.locationName;
+            notFoundVC.model = countryModel;
+
+            [self.navigationController pushViewController:notFoundVC animated:YES];
+        } else {
+            BJMyHometownViewController *hometownVC = [[BJMyHometownViewController alloc] init];
+            countryModel.location = self.locationName;
+            hometownVC.countryModel = countryModel;
+            
+            self.navigationController.tabBarController.tabBar.hidden = YES;
+            [self.navigationController pushViewController:hometownVC animated:YES];
+        }
+        
+    } failure:^(NSError * _Nonnull error) {
+        NSLog(@"获取地址失败: %@", error.localizedDescription);
+    }];
     
-    hometownVC.countryModel = self.currentDisplayModel;
-    self.navigationController.tabBarController.tabBar.hidden = YES;
-    [self.navigationController pushViewController:hometownVC animated:YES];
+    
+    
+    
 }
 
 #pragma mark - 计算路线
@@ -161,7 +185,6 @@ const static NSString *mapAPK = @"dhK73tBBx4BWr97HK8JnKocfz53ctjps";
 
 - (MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id<MKAnnotation>)annotation {
     if ([annotation isKindOfClass:[BJAnnotation class]]) {
-        //复用修改图标显示错误
         static NSString *reuseID = @"CustomAnnotation";
         MKAnnotationView *view = [mapView dequeueReusableAnnotationViewWithIdentifier:reuseID];
         if (!view) {
@@ -176,26 +199,24 @@ const static NSString *mapAPK = @"dhK73tBBx4BWr97HK8JnKocfz53ctjps";
 }
 
 - (void)mapView:(MKMapView *)mapView didSelectAnnotationView:(MKAnnotationView *)view {
-        BJAnnotation *annotation = (BJAnnotation *)view.annotation;
-        NSString *cacheKey = [self cacheKeyForCoordinate:annotation.coordinate];
-        
-        // 检查缓存
-        if (self.anotationCache[cacheKey]) {
-            [self updateDisplayViewWithCache:self.anotationCache[cacheKey]];
-        } else {
-            [self loadDataForAnnotation:annotation cacheKey:cacheKey];
-        }
-        [self calculateRoutewithSelectedAnnotation:view.annotation.coordinate];
-        
-        CGRect finalFrame = self.displayView.frame;
-        finalFrame.origin.x = [UIScreen mainScreen].bounds.size.width * 0.05;
+    BJAnnotation *annotation = (BJAnnotation *)view.annotation;
+    NSString *cacheKey = [self cacheKeyForCoordinate:annotation.coordinate];
+    if (self.anotationCache[cacheKey]) {
+        [self updateDisplayViewWithCache:self.anotationCache[cacheKey]];
+    } else {
+        [self loadDataForAnnotation:annotation cacheKey:cacheKey];
+    }
+    [self calculateRoutewithSelectedAnnotation:view.annotation.coordinate];
+    
+    CGRect finalFrame = self.displayView.frame;
+    finalFrame.origin.x = [UIScreen mainScreen].bounds.size.width * 0.05;
 
-        [UIView animateWithDuration:0.3
-                              delay:0
-                            options:UIViewAnimationOptionCurveEaseOut
-                         animations:^{
-            self.displayView.frame = finalFrame;
-        } completion:nil];
+    [UIView animateWithDuration:0.3
+                          delay:0
+                        options:UIViewAnimationOptionCurveEaseOut
+                     animations:^{
+        self.displayView.frame = finalFrame;
+    } completion:nil];
 
 }
 
@@ -206,13 +227,12 @@ const static NSString *mapAPK = @"dhK73tBBx4BWr97HK8JnKocfz53ctjps";
 - (void)loadDataForAnnotation:(BJAnnotation *)annotation cacheKey:(NSString *)cacheKey {
     CLLocationCoordinate2D coordinate = annotation.coordinate;
     NSString *distance = [NSString stringWithFormat:@"距离：%@", [self calculateDistanceFromCurrentLocationTo:coordinate]];
-    
     NSString *urlString = [NSString stringWithFormat:@"https://api.map.baidu.com/panorama/v2?width=512&height=256&location=%.6f,%.6f&fov=150&ak=dhK73tBBx4BWr97HK8JnKocfz53ctjps",coordinate.longitude, coordinate.latitude];
     NSLog(@"%@",annotation.title);
     NSString *name = annotation.title;
     
     BJDisplayModel *model = [[BJDisplayModel alloc] initWithName:[name copy] distance:[distance copy] imageUrl:[urlString copy]];
-    self.currentDisplayModel = model;
+    self.currentAnnotation = annotation;
     self.anotationCache[cacheKey] = model;
     
     dispatch_group_t group = dispatch_group_create();
@@ -225,6 +245,7 @@ const static NSString *mapAPK = @"dhK73tBBx4BWr97HK8JnKocfz53ctjps";
     
     [[BJNetworkingManger sharedManger] loadWithLatitude:coordinate.latitude andLongitude:coordinate.longitude WithSuccess:^(NSString * _Nonnull addressString) {
         model.address = addressString;
+        self.locationName = addressString;
         dispatch_async(dispatch_get_main_queue(), ^{
             [self.displayView updateWithModel:model];
             NSLog(@"获取地址成功: %@", addressString);

@@ -21,16 +21,16 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "80DB845A-2D27-4B2B-8433-91507401DD48"
-            shouldBeEnabled = "Yes"
+            uuid = "393C9FD9-0362-47FA-9511-31C4C06E476E"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "BJ&#x535a;&#x9274;&#x4e61;&#x5174;&#x901a;/&#x793e;&#x533a;/Model/SubCommentsModel+DealWithComment.m"
+            filePath = "BJ&#x535a;&#x9274;&#x4e61;&#x5174;&#x901a;/&#x9996;&#x9875;/BJHomePageViewController.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "29"
-            endingLineNumber = "29"
-            landmarkName = "-isSameYearBetweenDate1:date2:"
+            startingLineNumber = "46"
+            endingLineNumber = "46"
+            landmarkName = "-viewDidLoad"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

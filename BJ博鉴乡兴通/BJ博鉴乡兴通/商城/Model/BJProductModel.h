@@ -10,7 +10,12 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface BJProductModel : NSObject
+@property (nonatomic, copy) NSString *name;
+@property (nonatomic, copy) NSString *location;
+@property (nonatomic, copy) NSString *desc;
+@property (nonatomic, copy) NSString *imageURL;
 
++ (NSArray<BJProductModel *> *)productsWithArray:(NSArray *)array;
 @end
 
 NS_ASSUME_NONNULL_END
