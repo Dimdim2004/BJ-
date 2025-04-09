@@ -399,8 +399,8 @@
         for (int j = 0; j < iModel.data.count; j++) {
             dataModel = iModel.data[j];
             if (dataModel.postId == workId) {
+                dataModel.favoriteCount = isFavourite == dataModel.isFavorite ? dataModel.favoriteCount : dataModel.favoriteCount + (isFavourite == 1 ? -1 : 1);
                 dataModel.isFavorite = isFavourite;
-                dataModel.favoriteCount = dataModel.favoriteCount - (dataModel.isFavorite ? -1 : 1);
                 dataModel.commentCount = commentCount;
                 NSMutableArray* ary = [iModel.data mutableCopy];
                 [ary replaceObjectAtIndex:j withObject:dataModel];
