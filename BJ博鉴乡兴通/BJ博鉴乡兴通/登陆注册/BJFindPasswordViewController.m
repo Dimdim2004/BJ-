@@ -42,32 +42,74 @@
     }];
 }
 - (void)setupBindings {
-    [self.viewModel addObserver:self forKeyPath:@"user.password" options:NSKeyValueObservingOptionNew context:nil];
-    [self.viewModel addObserver:self forKeyPath:@"user.rePassword" options:NSKeyValueObservingOptionNew context:nil];
+    if (self.viewModel.authType == 1) {
+        [self.viewModel addObserver:self forKeyPath:@"user.password" options:NSKeyValueObservingOptionNew context:nil];
+        [self.viewModel addObserver:self forKeyPath:@"user.rePassword" options:NSKeyValueObservingOptionNew context:nil];
+    } else {
+        NSLog(@"当前状态是修改密码");
+        [self.viewModel addObserver:self forKeyPath:@"user.password" options:NSKeyValueObservingOptionNew context:nil];
+        [self.viewModel addObserver:self forKeyPath:@"user.email" options:NSKeyValueObservingOptionNew context:nil];
+    }
+    
 }
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context {
-    if ([keyPath isEqualToString:@"user.password"] || [keyPath isEqualToString:@"user.rePassword"]) {
-        NSLog(@"111");
-        self.changeButton.enabled = self.viewModel.isVailSame && self.viewModel.isVaildPassword;
-        NSLog(@"%d, %d, %d", _changeButton.enabled, self.viewModel.isVailSame, self.viewModel.isVaildPassword);
-        if (!self.viewModel.isVaildPassword && self.viewModel.user.password.length) {
-            [self showPasswordErrorLabel];
-        } else if (self.viewModel.isVaildPassword || self.viewModel.user.password.length == 0) {
-            [self showPasswordSuccessLabel];
+    if (self.viewModel.authType == 1) {
+        NSLog(@"当前状态是找回密码");
+        if ([keyPath isEqualToString:@"user.password"] || [keyPath isEqualToString:@"user.rePassword"]) {
+            NSLog(@"111");
+            self.changeButton.enabled = self.viewModel.isVailSame && self.viewModel.isVaildPassword;
+            NSLog(@"%d, %d, %d", _changeButton.enabled, self.viewModel.isVailSame, self.viewModel.isVaildPassword);
+            if (!self.viewModel.isVaildPassword && self.viewModel.user.password.length) {
+                [self showPasswordErrorLabel];
+            } else if (self.viewModel.isVaildPassword || self.viewModel.user.password.length == 0) {
+                [self showPasswordSuccessLabel];
+            }
+            if (!self.viewModel.isVaildPassword && self.viewModel.user.rePassword.length) {
+                [self showComfirmErrorLabel];
+            } else if (self.viewModel.isVaildPassword || self.viewModel.user.rePassword.length == 0) {
+                [self showComfirmSuccessLabel];
+            }
         }
-        if (!self.viewModel.isVaildPassword && self.viewModel.user.rePassword.length) {
-            [self showComfirmErrorLabel];
-        } else if (self.viewModel.isVaildPassword || self.viewModel.user.rePassword.length == 0) {
-            [self showComfirmSuccessLabel];
+    } else if (self.viewModel.authType == 0) {
+        NSLog(@"KVO进入当前状态是修改密码");
+        if ([keyPath isEqualToString:@"user.password"] || [keyPath isEqualToString:@"user.email"]) {
+            NSLog(@"这里的一个调用邮箱是否正确%@", self.viewModel.user.email);
+            self.changeButton.enabled = self.viewModel.isVaildEmail && self.viewModel.isVaildPassword;
+            
+            NSLog(@"%d, %d, %d", _changeButton.enabled, self.viewModel.isVaildEmail, self.viewModel.isVaildPassword);
+            if (!self.viewModel.isVaildPassword && self.viewModel.user.password.length) {
+                [self showPasswordErrorLabel];
+            } else if (self.viewModel.isVaildPassword || self.viewModel.user.password.length == 0) {
+                [self showPasswordSuccessLabel];
+            }
+            if (!self.viewModel.isVaildEmail && self.viewModel.user.email.length) {
+                [self showComfirmErrorLabel];
+            } else if (self.viewModel.isVaildEmail || self.viewModel.user.email.length == 0) {
+                [self showComfirmSuccessLabel];
+            }
         }
     }
+    
 }
 - (void)textFieldDidEndEditing:(UITextField *)textField {
-    if (textField == _changeRepeatTextField) {
-        self.viewModel.user.rePassword = textField.text;
+    if (self.viewModel.authType == 0) {
+        NSLog(@"当前状态是修改密码");
+        if (textField == _changeRepeatTextField) {
+            self.viewModel.user.password = [textField.text copy];
+            self.viewModel.user.rePassword = [textField.text copy];
+            NSLog(@"修改的是密码%@", self.viewModel.user.password);
+        } else {
+            self.viewModel.user.email = [textField.text copy];
+            NSLog(@"输入的是邮箱%@", self.viewModel.user.email);
+        }
     } else {
-        self.viewModel.user.password = textField.text;
+        if (textField == _changeRepeatTextField) {
+            self.viewModel.user.rePassword = textField.text;
+        } else {
+            self.viewModel.user.password = textField.text;
+        }
     }
+    
     
 }
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
@@ -87,12 +129,22 @@
         make.left.right.equalTo(self.view);
         make.height.equalTo(@560);
     }];
-    
+    self.changePasswordTextField = [[UITextField alloc] init];
+    self.changePasswordTextField.font = [UIFont systemFontOfSize:20];
+    self.changePasswordTextField.keyboardType = UIKeyboardTypeDefault;
+    self.changePasswordTextField.placeholder = @"请输入密码";
+    self.changePasswordTextField.leftViewMode = UITextFieldViewModeAlways;
+    self.changePasswordTextField.leftView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 15, 0)];
+    self.changePasswordTextField.backgroundColor = myColor;
+    self.changePasswordTextField.secureTextEntry = YES;
+    self.changePasswordTextField.delegate = self;
     self.titleLabel = [[UILabel alloc] init];
     if (self.viewModel.authType == 1) {
         self.titleLabel.text = @"忘记密码";
     } else {
         self.titleLabel.text = @"修改密码";
+        self.changePasswordTextField.placeholder = @"请输入邮箱";
+        self.changePasswordTextField.secureTextEntry = NO;
     }
     
     self.titleLabel.font = [UIFont systemFontOfSize:30];
@@ -121,15 +173,7 @@
     
    
     
-    self.changePasswordTextField = [[UITextField alloc] init];
-    self.changePasswordTextField.font = [UIFont systemFontOfSize:20];
-    self.changePasswordTextField.keyboardType = UIKeyboardTypeDefault;
-    self.changePasswordTextField.placeholder = @"请输入密码";
-    self.changePasswordTextField.leftViewMode = UITextFieldViewModeAlways;
-    self.changePasswordTextField.leftView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 15, 0)];
-    self.changePasswordTextField.backgroundColor = myColor;
-    self.changePasswordTextField.secureTextEntry = YES;
-    self.changePasswordTextField.delegate = self;
+    
     
     self.changeRepeatTextField = [[UITextField alloc] init];
     self.changeRepeatTextField.font = [UIFont systemFontOfSize:20];
@@ -253,6 +297,15 @@
         [weakSelf showFailureAlert];
     }];
     
+}
+- (void)dealloc {
+    if (self.viewModel.authType == 1) {
+        [self.viewModel.user removeObserver:self forKeyPath:@"password"];
+        [self.viewModel.user removeObserver:self forKeyPath:@"rePassword"];
+    } else {
+        [self.viewModel removeObserver:self forKeyPath:@"user.password"];
+        [self.viewModel removeObserver:self forKeyPath:@"user.email"];
+    }
 }
 /*
 #pragma mark - Navigation

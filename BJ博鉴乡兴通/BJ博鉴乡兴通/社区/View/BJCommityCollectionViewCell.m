@@ -44,7 +44,7 @@
             make.left.equalTo(self.contentView).offset(6);
             make.right.equalTo(self.contentView).offset(-6);
             make.bottom.equalTo(self.contentView).offset(-40);
-            make.height.greaterThanOrEqualTo(@20);
+            make.height.greaterThanOrEqualTo(@20); 
         }];
         [self.profileView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.equalTo(self.contentView).offset(5);
@@ -62,7 +62,7 @@
             make.right.equalTo(self.contentView);
             make.width.equalTo(@45);
             make.height.equalTo(@30);
-            make.bottom.equalTo(self.contentView).offset(-5);
+            make.bottom.equalTo(self.contentView).offset(-10);
         }];
         self.likeButton.titleLabel.font = [UIFont systemFontOfSize:13];
         [self.likeButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];

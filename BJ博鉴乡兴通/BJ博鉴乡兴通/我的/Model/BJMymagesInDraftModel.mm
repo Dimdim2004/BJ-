@@ -15,6 +15,7 @@ WCDB_PROPERTY(imageFilePath)
 @implementation BJMymagesInDraftModel
 WCDB_IMPLEMENTATION(BJMymagesInDraftModel)
 WCDB_PRIMARY_ASC_AUTO_INCREMENT(imageId)
+
 WCDB_SYNTHESIZE(imageFilePath)
 WCDB_SYNTHESIZE(noteId)
 WCDB_SYNTHESIZE(imageId)

@@ -14,8 +14,8 @@ NS_ASSUME_NONNULL_BEGIN
 @interface BJCommentsModel : NSObject <YYModel>
 @property (nonatomic, assign) NSInteger status;
 @property (nonatomic, copy) NSString* msg;
-@property (nonatomic, copy) NSArray* commentList;
-@property (nonatomic, assign) NSInteger total;
+@property (nonatomic, strong) NSMutableArray* commentList;
+
 @property (nonatomic, assign) NSInteger pageId;
 @end
 

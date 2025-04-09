@@ -26,10 +26,18 @@
     }
     return self;
 }
+- (BOOL)isVaildEmail {
+    NSString *email = self.user.email;
+    NSLog(@"kvo修改密码的email%@", email);
+    NSString *pattern = @"^[1-9][0-9]{4,}@qq.com$";
+    NSPredicate *pred = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", pattern];
+    return [pred evaluateWithObject:email];
+}
 - (BOOL)isVailSame {
     return [self.user.password isEqualToString:self.user.rePassword];
 }
 - (BOOL)isVaildPassword {
+    //NSLog(@"kvo修改密码的password");
     NSString *pattern = @"^(?=.*[A-Z])(?=.*[a-z])[A-Za-z0-9]{6,}$";
     
     NSPredicate *pred = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", pattern];
@@ -37,8 +45,8 @@
     return isMatch && self.user.password.length >= 6;
 }
 - (void)submmitWithSuccess:(findSuccess)success failure:(error)error {
-    AFHTTPSessionManager *manager = [BJNetworkingManger BJcreateAFHTTPSessionManagerWithBaseURLString:@"https://121.43.226.108:8080"];
-    NSString* string = @"https://121.43.226.108:8080/reset";
+    AFHTTPSessionManager *manager = [BJNetworkingManger BJcreateAFHTTPSessionManagerWithBaseURLString:@"https://39.105.136.3:9797"];
+    NSString* string = @"https://39.105.136.3:9797/reset";
     manager.requestSerializer = [AFJSONRequestSerializer serializer];
     manager.responseSerializer = [AFJSONResponseSerializer serializer];
     [manager.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];

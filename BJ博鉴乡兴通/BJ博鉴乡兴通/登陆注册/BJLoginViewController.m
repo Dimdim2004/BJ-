@@ -87,6 +87,7 @@
     self.usernameField = [[UITextField alloc] init];
     self.usernameField.font = [UIFont systemFontOfSize:20];
     self.usernameField.placeholder = @"请输入邮箱";
+    self.usernameField.text = @"3073623804@qq.com";
     self.usernameField.tag = 1;
     self.usernameField.keyboardType = UIKeyboardTypeDefault;
     self.usernameField.leftViewMode = UITextFieldViewModeAlways;
@@ -110,6 +111,7 @@
     self.passwordField.secureTextEntry = YES;
     self.passwordField.tag = 2;
     self.passwordField.placeholder = @"请输入密码";
+    self.passwordField.text = @"Ty1234567";
     self.passwordField.leftViewMode = UITextFieldViewModeAlways;
     self.passwordField.backgroundColor = myColor;
     self.passwordField.leftView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 15, 0)];
@@ -242,6 +244,7 @@
 - (void)presentChange {
     BJFindPasswordViewController* changePasswordViewController = [[BJFindPasswordViewController alloc] init];
     BJFindingPasswordViewModel* changeModel = [[BJFindingPasswordViewModel alloc] initWithAuthTyoe:0];
+    changePasswordViewController.viewModel = changeModel;
     [self presentViewController:changePasswordViewController animated:YES completion:nil];
 }
 
@@ -311,7 +314,7 @@
 - (void)showSuccessAlert {
     UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"成功" message:@"登陆成功" preferredStyle:UIAlertControllerStyleAlert];
     [alert addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        
+        [BJNetworkingManger sharedManger].email = self.viewModel.user.email;
         [self.delegate changeTab];
     }]];
     [self presentViewController:alert animated:YES completion:nil];
@@ -340,8 +343,14 @@
     __weak id weakSelf = self;
     
     [self.viewModel submmitWithSuccess:^(BJLoginSuccessModel * _Nonnull userModel) {
-        [weakSelf showSuccessAlert];
+        if (userModel.status == 1000) {
+            [weakSelf showSuccessAlert];
+        } else {
+            [weakSelf showFailureAlert];
+        }
         [BJNetworkingManger sharedManger].token = userModel.data.token;
+        [BJNetworkingManger sharedManger].userId = userModel.data.user_id;
+        NSLog(@"%ld", [BJNetworkingManger sharedManger].userId);
         } failure:^(NSError * _Nonnull error) {
             [weakSelf showFailureAlert];
             NSLog(@"error");

@@ -9,9 +9,11 @@
 static id localSharedManger = nil;
 #import "BJMyDraftModel.h"
 #import "WCDB/WCDBObjc.h"
+#import "BJMymagesInDraftModel.h"
 #import "BJUserModel.h"
 #import "DatabaseProtocol.h"
-
+#import "BJMyPageDraftModel+WCTTableCoding.h"
+#import "BJMyPageDraftModel.h"
 @interface BJLocalDataManger()
 @property (nonatomic, strong) WCTDatabase* database;
 @end
@@ -55,7 +57,7 @@ static id localSharedManger = nil;
         if (ret) {
             NSLog(@"第一次创建表成功");
         } else {
-            NSLog(@"第一次创建数据库失败");
+            NSLog(@"第一次创建表失败");
         }
         return ret;
     } else {
@@ -66,6 +68,7 @@ static id localSharedManger = nil;
 
 - (BOOL)insert:(NSObject<DatabaseProtocol, WCTTableCoding>*)object {
     NSString* string = [object tableName];
+    NSLog(@"当前插入的一个表%@", string);
     BOOL ret = [self.database insertObject:object intoTable:string];
     if (ret) {
         NSLog(@"插入成功");
@@ -74,11 +77,34 @@ static id localSharedManger = nil;
     }
     return ret;
 }
-- (BOOL)deleteData:(NSObject<DatabaseProtocol, WCTTableCoding>*)object {
+- (BOOL)deleteData:(NSObject<DatabaseProtocol, WCTTableCoding>*)object withPrimaryKey:(NSInteger) keyValue {
     NSLog(@"%@", [object primaryKey]);
-    BOOL ret = [self.database deleteFromTable:[object tableName] where:[object primaryKey]];
+    NSLog(@"%@", [object tableName]);
+    BOOL ret = 1;
+    
+
     if (ret) {
         NSLog(@"删除成功");
+    } else {
+        NSLog(@"删除失败");
+    }
+    return ret;
+}
+- (BOOL)deleteDarftData:(BJMyPageDraftModel*)draftModel withKeyValue:(NSInteger)keyValue {
+    BOOL ret = [self.database deleteFromTable:[draftModel tableName] where:BJMyPageDraftModel.noteId == keyValue];
+    if (ret) {
+        NSLog(@"删除成功");
+    } else {
+        NSLog(@"删除失败");
+    }
+    return ret;
+}
+- (BOOL)updateDraft:(BJMyPageDraftModel*)draftModel withKeyValue:(NSInteger)keyValue {
+    BOOL ret = [self.database updateTable:[draftModel tableName] setProperties:BJMyPageDraftModel.allProperties toObject:draftModel where:BJMyPageDraftModel.noteId == keyValue];
+    if (ret) {
+        NSLog(@"更新成功");
+    } else {
+        NSLog(@"更新失败");
     }
     return ret;
 }
@@ -91,6 +117,10 @@ static id localSharedManger = nil;
 }
 - (NSArray*)search:(NSObject<DatabaseProtocol, WCTTableCoding>*)object {
     NSArray* array = [self.database getObjectsOfClass:[object class] fromTable:[object tableName]];
+    return array;
+}
+- (NSArray*)search:(BJMyPageDraftModel*)object WithEmail:(NSString*)email {
+    NSArray* array = [self.database getObjectsOfClass:[object class] fromTable:[object tableName] where:BJMyPageDraftModel.email == email];
     return array;
 }
 @end

@@ -28,16 +28,16 @@
     self.likeButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [self.likeButton setImage:[UIImage imageNamed:@"likeInvat.png"] forState:UIControlStateNormal];
     [self.likeButton setImage:[UIImage imageNamed:@"likeBig.png"] forState:UIControlStateSelected];
-    [self.likeButton setTitle:@"123" forState:UIControlStateNormal];
+    [self.likeButton setTitle:@"0" forState:UIControlStateNormal];
     [self.likeButton setTitleColor:UIColor.blackColor forState:UIControlStateNormal];
     self.starButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [self.starButton setImage:[UIImage imageNamed:@"starInvat.png"] forState:UIControlStateNormal];
     [self.starButton setImage:[UIImage imageNamed:@"starBig.png"] forState:UIControlStateSelected];
-    [self.starButton setTitle:@"123" forState:UIControlStateNormal];
+    [self.starButton setTitle:@"0" forState:UIControlStateNormal];
     [self.starButton setTitleColor:UIColor.blackColor forState:UIControlStateNormal];
     self.commentButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [self.commentButton setImage:[UIImage imageNamed:@"number.png"] forState:UIControlStateNormal];
-    [self.commentButton setTitle:@"123" forState:UIControlStateNormal];
+    [self.commentButton setTitle:@"0" forState:UIControlStateNormal];
     [self.commentButton setTitleColor:UIColor.blackColor forState:UIControlStateNormal];
     self.postButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [self.postButton setTitle:@"发表" forState:UIControlStateNormal];
@@ -54,6 +54,15 @@
     [self.postButton setTitleColor:UIColor.whiteColor forState:UIControlStateNormal];
     
     UIColor* myColor = [UIColor colorWithRed:242.0 / 255.0 green:242.0 / 255.0 blue:242 / 255.0 alpha:1];
+    
+    self.activity = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleLarge];
+    
+    
+    self.footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 393, 30)];
+    [self.footerView addSubview:self.activity];
+    [self.activity mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.equalTo(self.footerView);
+    }];
     
     self.commentTextView = [[UITextView alloc] init];
     self.commentTextView.tag = 200;
@@ -124,6 +133,26 @@
 }
 - (void)selectLike:(UIButton*)btn {
     btn.selected = !btn.selected;
+}
+- (void)loadActivity:(BOOL)loading {
+    if (loading) {
+        self.mainView.tableFooterView = self.footerView;
+        [self.activity startAnimating];
+    } else {
+        self.mainView.tableFooterView = nil;
+        [self.activity stopAnimating];
+    }
+}
+-(void)endLoadActivity {
+    [self.activity removeFromSuperview];
+    self.mainView.tableFooterView = self.footerView;
+    UILabel* label = [[UILabel alloc] init];
+    label.text = @"暂时没有更多评论了";
+    [self.footerView addSubview:label];
+    [label mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.center.equalTo(self.footerView);
+    }];
+    
 }
 /*
 // Only override drawRect: if you perform custom drawing.

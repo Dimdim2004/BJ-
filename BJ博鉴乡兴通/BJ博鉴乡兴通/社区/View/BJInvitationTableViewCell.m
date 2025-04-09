@@ -25,6 +25,7 @@
         
         self.timeLabel = [[UILabel alloc] init];
         self.textView = [[UITextView alloc] init];
+        self.textView.selectable = NO;
         self.nameLabel = [[UILabel alloc] init];
         self.nameLabel.font = [UIFont boldSystemFontOfSize:16];
         self.headLabel = [[UILabel alloc] init];
@@ -100,11 +101,11 @@
         [_timeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
             make.bottom.equalTo(self.commentButton.mas_top).offset(-5).priorityHigh();
             make.left.equalTo(self.textView).offset(5);
-            make.width.equalTo(@40);
+            make.width.equalTo(@50);
         }];
         [_replyButton mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.equalTo(self.timeLabel.mas_right).offset(5).priorityHigh();
-            make.bottom.equalTo(self.commentButton.mas_top).offset(-5);
+            make.bottom.equalTo(self.timeLabel);
             make.width.equalTo(@40);
             make.top.equalTo(_timeLabel);
         }];
@@ -130,4 +131,5 @@
     }
     return self;
 }
+
 @end
