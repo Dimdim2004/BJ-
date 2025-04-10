@@ -23,12 +23,20 @@
 }
 - (void)startLoading:(BOOL)isLoading {
     if (isLoading) {
-        NSLog(@"123213开始加载");
         [self.activity startAnimating];
     } else {
-        NSLog(@"123123停止加载");
         [self.activity stopAnimating];
     }
+}
+- (void)resetLoading {
+    for (UIView* subview in self.subviews) {
+        [subview removeFromSuperview];
+    }
+    self.activity = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleMedium];
+    [self addSubview:self.activity];
+    [self.activity mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.equalTo(self);
+    }];
 }
 - (void)endLoading {
     [self.activity removeFromSuperview];

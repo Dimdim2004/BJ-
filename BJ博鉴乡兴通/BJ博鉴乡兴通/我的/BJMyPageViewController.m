@@ -218,6 +218,10 @@
         }];
         strongSelf.isLoading = NO;
         strongSelf->_pageId++;
+        if (strongSelf->_isLoadMore == NO) {
+            [footView endLoading];
+        }
+       
     });
 }
 - (void)regiserCollectionView {
@@ -360,8 +364,7 @@
 }
 - (void)loadMore {
     if (_isLoadMore == NO) {
-        BJCommityFootReusableView* footView = [self visibleFooter];
-        [footView endLoading];
+        
         return;
     }
     if (self->_isLoading) {
@@ -432,11 +435,19 @@
     }
 }
 -(void)updateFavourite:(NSInteger)isFavourite andCommentCount:(NSInteger)commentCount withWorkId:(NSInteger)workId {
-    BJCommityModel* iModel;
+    BJMyPageDealModel* currentModel;
     BJCommityDataModel* dataModel;
-//    for (int i = 0; i < self.iModel.count; i++) {
-//        self.
-//    }
+    for (int i = 0; i < self.iModel.count; i++) {
+        currentModel = self.iModel[i];
+        if (currentModel.workId == workId) {
+            currentModel.likeCount = isFavourite != currentModel.isFavourte ? currentModel.likeCount : currentModel.likeCount + (isFavourite == 1 ? 1 : -1);
+            currentModel.isFavourte = isFavourite;
+            currentModel.commentCount = commentCount;
+            [self.iModel replaceObjectAtIndex:i withObject:currentModel];
+            //self.iModel replaceObjectAtIndex:i withObject:<#(nonnull BJMyPageDealModel *)#>
+            return;
+        }
+    }
 }
 /*
  #pragma mark - Navigation

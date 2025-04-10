@@ -105,6 +105,7 @@
     NSLog(@"评论个数%ld, 文章内容%@, 文章标题%@", self.commityModel.commentCount, self.commityModel.content, self.commityModel.title);
     [self.iView.commentButton setTitle:[NSString stringWithFormat:@"%ld", self.commityModel.commentCount] forState:UIControlStateNormal];
 }
+
 - (void)registerTableview {
     [self.iView.mainView registerClass:[BJInvitationTableViewCell class] forCellReuseIdentifier:@"comments"];
     [self.iView.mainView registerClass:[BJInvitationHeaderTableViewCell class] forCellReuseIdentifier:@"header"];
@@ -276,7 +277,7 @@
         }
         if (indexPath.row == 0) {
             BJInvitationTableViewCell* commentCell = [self.iView.mainView dequeueReusableCellWithIdentifier:@"comments"];
-            [self addTapToCommentCell:commentCell];
+            [self addTapToCommentCell:commentCell atIndexPath:indexPath];
             //commentCell.selectionStyle = UITableViewCellSelectionStyleNone;
             BJSubCommentsModel* currentModel = self.commentModel.commentList[indexPath.section - 1];
             [commentCell.replyButton addTarget:self action:@selector(showKeyboard:) forControlEvents:UIControlEventTouchUpInside];
@@ -322,7 +323,7 @@
         } else {
             NSLog(@"处理展开后的评论");
             BJInvitationSubCommentsTableViewCell* subCommentCell = [self.iView.mainView dequeueReusableCellWithIdentifier:@"subComments"];
-            [self addTapToCommentCell:subCommentCell];
+            [self addTapToCommentCell:subCommentCell atIndexPath:indexPath];
             subCommentCell.selectionStyle = UITableViewCellSelectionStyleNone;
             BJSubCommentsModel* currentModel = self.commentModel.commentList[indexPath.section - 1];
             NSInteger commentId = currentModel.commentId;
@@ -894,7 +895,7 @@
         NSLog(@"error");
     }];
 }
-- (void)addTapToCommentCell:(UITableViewCell*)cell {
+- (void)addTapToCommentCell:(UITableViewCell*)cell atIndexPath:(NSIndexPath*)indexPath {
     BOOL flag = NO;
     if (self.commityModel.userId == [BJNetworkingManger sharedManger].userId) {
         UITapGestureRecognizer* tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(pressCommentAlert:)];
@@ -903,8 +904,7 @@
     }
     if ([cell isKindOfClass:[BJInvitationTableViewCell class]]) {
         BJInvitationTableViewCell* currentCell = (BJInvitationTableViewCell*)cell;
-        NSIndexPath* indexPath = [self.iView.mainView indexPathForCell:currentCell];
-        BJSubCommentsModel* commentModel = self.commentModel.commentList[indexPath.section];
+        BJSubCommentsModel* commentModel = self.commentModel.commentList[indexPath.section - 1];
         if ([BJNetworkingManger sharedManger].userId == commentModel.userId) {
             UITapGestureRecognizer* tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(pressCommentAlert:)];
             [cell addGestureRecognizer:tap];
@@ -914,9 +914,10 @@
         }
     } else if ([cell isKindOfClass:[BJInvitationSubCommentsTableViewCell class]]) {
         BJInvitationSubCommentsTableViewCell* currentCell = (BJInvitationSubCommentsTableViewCell*)cell;
-        NSIndexPath* indexPath = [self.iView.mainView indexPathForCell:currentCell];
-        BJSubCommentsModel* commentModel = self.commentModel.commentList[indexPath.section];
-        if ([BJNetworkingManger sharedManger].userId == commentModel.userId) {
+        BJSubCommentsModel* commentModel = self.commentModel.commentList[indexPath.section - 1];
+        BJCommentsModel* currentCommentModel = self.dicty[@(commentModel.commentId)];
+        BJSubCommentsModel* subCurrentCommentModel = currentCommentModel.commentList[indexPath.row - 1];
+        if ([BJNetworkingManger sharedManger].userId == subCurrentCommentModel.userId) {
             UITapGestureRecognizer* tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(pressCommentAlert:)];
             [cell addGestureRecognizer:tap];
         } else {

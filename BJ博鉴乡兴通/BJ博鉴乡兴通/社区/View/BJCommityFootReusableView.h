@@ -13,6 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) UIActivityIndicatorView* activity;
 - (void)startLoading:(BOOL)isLoading;
 - (void)endLoading;
+- (void)resetLoading;
 @end
 
 NS_ASSUME_NONNULL_END

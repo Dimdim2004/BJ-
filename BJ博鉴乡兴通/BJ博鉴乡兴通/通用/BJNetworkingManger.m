@@ -101,11 +101,11 @@ const NSString* mapAPK = @"dhK73tBBx4BWr97HK8JnKocfz53ctjps";
     manager.responseSerializer = [AFJSONResponseSerializer serializer];
     
     [manager GET:string parameters:nil headers:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-        NSLog(@"申请图文成功");
+        //NSLog(@"申请图文成功, %d", pageId);
         
         BJCommityModel* commityModel = [BJCommityModel yy_modelWithJSON:responseObject];
         if (commityModel.status == 1000) {
-            NSLog(@"%@", responseObject);
+            //NSLog(@"%@", responseObject);
             //NSLog(@"%@", commityModel);
             commitySuccess(commityModel);
         }
