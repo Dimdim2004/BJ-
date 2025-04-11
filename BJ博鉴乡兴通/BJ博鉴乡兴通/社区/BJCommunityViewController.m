@@ -79,21 +79,23 @@
         
         [self.view addSubview:self.iView];
     } failure:^(NSError * _Nonnull error) {
-        __strong BJCommunityViewController* strongSelf = weakSelf;
-        strongSelf.iView = [[BJMainCommunityView alloc] initWithFrame:self.view.bounds];
-        strongSelf.iView.contentView.delegate = self;
-        
-            for (int j = 0; j < 20; j++) {
-                [strongSelf->_heightAry addObject:[NSNumber numberWithInteger:(random()%20 + 123)]];
-            }
-        
-        [strongSelf.iView setUIWithHeightAry:strongSelf->_heightAry andSectionCount:strongSelf->_page itemCount:strongSelf->_pageSize];
-        strongSelf.iView.mainView.delegate = self;
-        strongSelf.iView.mainView.dataSource = self;
-        [strongSelf.iView.mainView registerClass:[BJCommityCollectionViewCell class] forCellWithReuseIdentifier:@"Cell"];
-        
-        
-        [strongSelf.view addSubview:self.iView];
+        self->_loadMore = NO;
+//        __strong BJCommunityViewController* strongSelf = weakSelf;
+//        strongSelf.iView = [[BJMainCommunityView alloc] initWithFrame:self.view.bounds];
+//        strongSelf.iView.contentView.delegate = self;
+//
+//        
+//            for (int j = 0; j < 20; j++) {
+//                [strongSelf->_heightAry addObject:[NSNumber numberWithInteger:(random()%20 + 123)]];
+//            }
+//        
+//        [strongSelf.iView setUIWithHeightAry:strongSelf->_heightAry andSectionCount:strongSelf->_page itemCount:strongSelf->_pageSize];
+//        strongSelf.iView.mainView.delegate = self;
+//        strongSelf.iView.mainView.dataSource = self;
+//        [strongSelf.iView.mainView registerClass:[BJCommityCollectionViewCell class] forCellWithReuseIdentifier:@"Cell"];
+//        
+//        
+//        [strongSelf.view addSubview:self.iView];
         NSLog(@"error");
     }];
 }
@@ -171,7 +173,9 @@
                 });
             } else {
                 dispatch_async(dispatch_get_main_queue(), ^{
+                    
                     __strong BJCommunityViewController* strongSelf = weakSelf;
+                    NSLog(@"%ld", strongSelf->_imageAry.count);
                     [strongSelf->_imageAry addObject:[UIImage imageNamed:@"1.png"]];
                     CGFloat imageHieght = [UIImage imageNamed:@"1.png"].size.height * 1.0 / [UIImage imageNamed:@"1.png"].size.width * 186.5;
                     //NSLog(@"imageHeight%lf", imageHieght);
@@ -306,6 +310,7 @@
     cell.layer.cornerRadius = 3;
     cell.layer.borderWidth = 0.3;
     cell.layer.borderColor = [[UIColor lightGrayColor] CGColor];
+    
     if (self.model.count == 0) {
         cell.backgroundColor = UIColor.whiteColor;
     } else {
