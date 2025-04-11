@@ -137,19 +137,18 @@
     [self.navigationController pushViewController:mapVC animated:YES];
 }
 
--(void)ToMyHometown {
+-(void)ToMyHometown{
     BOOL flag = YES;
     self.navigationController.tabBarController.tabBar.hidden = YES;
     if (!flag) {
         BJNotFoundViewController *notFoundVC = [[BJNotFoundViewController alloc] init];
         [self.navigationController pushViewController:notFoundVC animated:YES];
     } else {
-        [[BJNetworkingManger sharedManger] loadCountryInfoWithCountryID:10 WithSuccess:^(BJCountryModel * _Nonnull countryModel) {
+        [[BJNetworkingManger sharedManger] loadCountryInfoWithCountryID:1 WithSuccess:^(BJCountryModel * _Nonnull countryModel) {
             BJMyHometownViewController *hometownVC = [[BJMyHometownViewController alloc] init];
             dispatch_async(dispatch_get_main_queue(), ^{
                 hometownVC.countryModel = countryModel;
             });
-            
             [self.navigationController pushViewController:hometownVC animated:YES];
         } failure:^(NSError * _Nonnull error) {
             NSLog(@"加载失败");
@@ -160,14 +159,12 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     switch (indexPath.section) {
         case 0:{
-            
             BJSearchBarTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"BarTableViewCell"];
             return cell;
         }
         case 1: {
             BJScaleTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ScaleTableViewCell" forIndexPath:indexPath];
             cell.backgroundColor = [UIColor clearColor];
-
             return cell;
         }
         case 2: {

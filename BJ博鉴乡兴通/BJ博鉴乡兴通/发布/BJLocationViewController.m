@@ -60,8 +60,8 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [self dismissViewControllerAnimated:YES completion:nil];
-    if([self.delegate respondsToSelector:@selector(sendBackCountryID:)]) {
-        [self.delegate sendBackCountryID:self.models[indexPath.row].countryID];
+    if([self.delegate respondsToSelector:@selector(sendBackLocation:)]) {
+        [self.delegate sendBackLocation:self.models[indexPath.row].location];
     }
 }
 @end

@@ -922,8 +922,6 @@
 				E9F693C32D92E60900627E30 /* BJUploadCommentModel.m */,
 				E91428552D8AEFC2001ED3F8 /* BJImageModel.h */,
 				E91428562D8AEFC2001ED3F8 /* BJImageModel.m */,
-				E9F8F0DF2D40CB710040ABA6 /* BJCommunityUIColectionViewFlowLayout.h */,
-				E9F8F0E02D40CB710040ABA6 /* BJCommunityUIColectionViewFlowLayout.m */,
 				E98A54EF2D943B3100CDBE13 /* BJAttentionDataModel.h */,
 				E98A54F02D943B3100CDBE13 /* BJAttentionDataModel.m */,
 			);
@@ -1586,6 +1584,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 4WJS482H6C;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "BJ博鉴乡兴通/Info.plist";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -1615,6 +1614,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 4WJS482H6C;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "BJ博鉴乡兴通/Info.plist";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;

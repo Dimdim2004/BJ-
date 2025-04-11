@@ -35,6 +35,7 @@
     self.nameLabel.text = model.name;
     self.locationLabel.text = model.address;
     self.distanceLabel.text = model.distance;
+
     if (model.image) {
         self.hometownImageView.image = model.image;
     } else {

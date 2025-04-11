@@ -25,7 +25,9 @@
     UITapGestureRecognizer* _resTap;
     NSInteger _maxCount;
     BOOL _hidden;
+    UILabel *_label;
 }
+
 
 @end
 
@@ -80,11 +82,10 @@
     self.postView.mainView.dataSource = self;
     
     [self.postView.backButton addTarget:self action:@selector(dismiss) forControlEvents:UIControlEventTouchUpInside];
-    self.postView.backButton.hidden = YES;
     [self.postView.postButton addTarget:self action:@selector(post:) forControlEvents:UIControlEventTouchUpInside];
     [self.postView.postButton setTitle:[self placeholderForButtonText] forState:UIControlStateNormal];
     if (self.type != 1) {
-        [self.postView.draftButton addTarget:self action:@selector(draft) forControlEvents:UIControlEventTouchUpInside];
+        [self.postView.draftButton addTarget:self action:@selector(draft:) forControlEvents:UIControlEventTouchUpInside];
     } else {
         self.postView.draftButton.hidden = YES;
     }
@@ -368,6 +369,7 @@
         return contentCell;
     } else if (indexPath.section == 3) {
         BJCommityPostLoactionTableViewCell* loactionCell = [tableView dequeueReusableCellWithIdentifier:@"loaction"];
+        _label = loactionCell.descLabel;
         loactionCell.selectionStyle = UITableViewCellSelectionStyleNone;
         loactionCell.backgroundColor = [UIColor whiteColor];
         loactionCell.hidden = _hidden;
@@ -428,7 +430,7 @@
     }
 }
 
-- (void)sendBackCountryID:(NSString *)countryID {
-    
+- (void)sendBackLocation:(NSString *)location{
+    _label.text = location;
 }
 @end

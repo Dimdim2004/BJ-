@@ -12,6 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface BJCommityPostLoactionTableViewCell : UITableViewCell
 @property (nonatomic, strong) UITextField* titleView;
 @property (nonatomic, strong) UIImageView* iconView;
+@property (nonatomic, strong) UILabel *descLabel;
 @end
 
 NS_ASSUME_NONNULL_END

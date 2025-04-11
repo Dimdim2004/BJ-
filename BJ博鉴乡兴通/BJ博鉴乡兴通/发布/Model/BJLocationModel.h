@@ -12,6 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface BJLocationModel : NSObject<YYModel>
 @property (nonatomic,strong)NSString *name;
 @property (nonatomic,strong)NSString *countryID;
+@property (nonatomic,strong)NSString *location;
 
 @end
 

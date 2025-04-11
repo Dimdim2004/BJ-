@@ -245,6 +245,7 @@
     BJFindPasswordViewController* changePasswordViewController = [[BJFindPasswordViewController alloc] init];
     BJFindingPasswordViewModel* changeModel = [[BJFindingPasswordViewModel alloc] initWithAuthTyoe:0];
     changePasswordViewController.viewModel = changeModel;
+    changePasswordViewController.modalPresentationStyle = UIModalPresentationPopover;
     [self presentViewController:changePasswordViewController animated:YES completion:nil];
 }
 

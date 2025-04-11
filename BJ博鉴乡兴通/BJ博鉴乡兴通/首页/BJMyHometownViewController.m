@@ -80,9 +80,15 @@
 
 - (void)setCountryModel:(BJCountryModel *)countryModel {
     self.title = countryModel.name;
-    [self.headerImageView sd_setImageWithURL:[NSURL URLWithString:countryModel.imageUrl] placeholderImage:[UIImage imageNamed:@"placeholderForAddress.png"] options:SDWebImageRetryFailed];
     _countryModel = countryModel;
-    [self.tableView reloadData];
+    NSLog(@"%@",_countryModel.imageUrl);
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.headerImageView sd_setImageWithURL:[NSURL URLWithString:self->_countryModel.imageUrl] placeholderImage:[UIImage imageNamed:@"placeholderForAddress.png"] completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
+            
+            [self.tableView reloadData];
+        }];
+    });
+    NSLog(@"%@",self.headerImageView.image);
 }
 
 
@@ -111,7 +117,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.section == 0) {
-        return 250;
+        return 230;
     } else {
         return [UIScreen mainScreen].bounds.size.height - 40;
     }
@@ -127,7 +133,6 @@
             self.headerImageView.frame = CGRectMake(0, 0, scrollView.bounds.size.width, self.imageHeight);
         }
         if (offsetY >= _maxOffsetY) {
-            NSLog(@"Main Locked");
             [scrollView setContentOffset:CGPointMake(0, _maxOffsetY) animated:NO];
             [scrollView.panGestureRecognizer setEnabled:NO];
             [scrollView.panGestureRecognizer setEnabled:YES];

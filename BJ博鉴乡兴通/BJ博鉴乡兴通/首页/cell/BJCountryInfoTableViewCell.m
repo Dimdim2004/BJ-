@@ -13,7 +13,7 @@
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
         self.selectionStyle = UITableViewCellSelectionStyleNone;
-        
+        self.backgroundColor = [UIColor whiteColor];
         _locationButton = [UIButton buttonWithType:UIButtonTypeCustom];
         _locationButton.titleLabel.font = [UIFont systemFontOfSize:15];
         [_locationButton setTitleColor:[UIColor colorWithRed:16/255.0 green:89/255.0 blue:45/255.0 alpha:1] forState:UIControlStateNormal];
@@ -63,7 +63,7 @@
             make.top.equalTo(label.mas_bottom).offset(10);
             make.left.equalTo(label.mas_left);
             make.right.equalTo(self.contentView).offset(-10);
-            make.bottom.equalTo(self.contentView).offset(-40);
+            make.bottom.equalTo(self.contentView).offset(-30);
         }];
         
         [locationImageView mas_makeConstraints:^(MASConstraintMaker *make) {

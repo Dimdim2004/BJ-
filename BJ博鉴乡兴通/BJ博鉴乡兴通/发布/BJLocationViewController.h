@@ -9,7 +9,7 @@
 
 @protocol BJSendBackProtocol <NSObject>
 
--(void)sendBackCountryID:(NSString *)countryID;
+-(void)sendBackLocation:(NSString *)location;
 
 @end
 

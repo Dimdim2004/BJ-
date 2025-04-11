@@ -107,7 +107,9 @@ const static NSString *mapAPK = @"dhK73tBBx4BWr97HK8JnKocfz53ctjps";
 
 -(void)enterDisplayView {
     [[BJNetworkingManger sharedManger] findTargetCountryWithLatitude:self.currentAnnotation.coordinate.latitude andLongitude:self.currentAnnotation.coordinate.longitude WithSuccess:^(BJCountryModel * _Nonnull countryModel) {
-        if (!countryModel) {
+        NSLog(@"%@",countryModel);
+        
+        if (!countryModel || [countryModel.name isEqualToString:@""]) {
             BJNotFoundViewController *notFoundVC = [[BJNotFoundViewController alloc] init];
             countryModel = [[BJCountryModel alloc] init];
             countryModel.name = self.currentAnnotation.title;
@@ -119,8 +121,10 @@ const static NSString *mapAPK = @"dhK73tBBx4BWr97HK8JnKocfz53ctjps";
             [self.navigationController pushViewController:notFoundVC animated:YES];
         } else {
             BJMyHometownViewController *hometownVC = [[BJMyHometownViewController alloc] init];
-            countryModel.location = self.locationName;
-            hometownVC.countryModel = countryModel;
+            dispatch_async(dispatch_get_main_queue(), ^{
+                hometownVC.countryModel = countryModel;
+            });
+            
             
             self.navigationController.tabBarController.tabBar.hidden = YES;
             [self.navigationController pushViewController:hometownVC animated:YES];
@@ -139,9 +143,7 @@ const static NSString *mapAPK = @"dhK73tBBx4BWr97HK8JnKocfz53ctjps";
 
 -(void)calculateRoutewithSelectedAnnotation:(CLLocationCoordinate2D)endCoordinate {
     [self.mapView removeOverlays:self.mapView.overlays];
-    
     CLLocationCoordinate2D startCoordinate = self.mapView.userLocation.location.coordinate;
-    
     MKPlacemark *startPlacemark = [[MKPlacemark alloc] initWithCoordinate:startCoordinate];
     MKPlacemark *endPlacemark = [[MKPlacemark alloc] initWithCoordinate:endCoordinate];
     MKMapItem *startItem = [[MKMapItem alloc] initWithPlacemark:startPlacemark];
@@ -196,6 +198,7 @@ const static NSString *mapAPK = @"dhK73tBBx4BWr97HK8JnKocfz53ctjps";
         return view;
     }
     return nil;
+
 }
 
 - (void)mapView:(MKMapView *)mapView didSelectAnnotationView:(MKAnnotationView *)view {
@@ -216,6 +219,7 @@ const static NSString *mapAPK = @"dhK73tBBx4BWr97HK8JnKocfz53ctjps";
                         options:UIViewAnimationOptionCurveEaseOut
                      animations:^{
         self.displayView.frame = finalFrame;
+        self.currentAnnotation = annotation;
     } completion:nil];
 
 }

@@ -54,14 +54,12 @@
     ];
 
     NSArray<BJProductModel *> *productModels = [BJProductModel productsWithArray:productData];
-    
     NSMutableArray *vcs = [NSMutableArray array];
     for (BJProductModel *model in productModels) {
         BJDetailViewController *vc = [[BJDetailViewController alloc] initWithModel:model];
         [vcs addObject:vc];
     }
     self.pageContentArray = [vcs copy];
-    
     [super viewDidLoad];
     [self setupViews];
 }
