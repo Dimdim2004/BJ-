@@ -141,7 +141,7 @@
     commityViewController.uploadPhotos = [uploadImageAry copy];
     commityViewController.model = [[BJCommityPostModel alloc] init];
     commityViewController.model.titleString = draModel.titleString;
-    commityViewController.model.contetnString = draModel.contentString;
+    commityViewController.model.contentString = draModel.contentString;
     commityViewController.type = 1;
     commityViewController.currentNoteId = draModel.noteId;
     [self presentViewController:commityViewController animated:YES completion:nil];

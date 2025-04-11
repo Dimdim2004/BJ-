@@ -20,6 +20,8 @@
 - (void)viewDidLoad {
     [self setUI];
     [self setupBindings];
+    self.view.backgroundColor = [UIColor clearColor];
+
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification  object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification  object:nil];
     [super viewDidLoad];
@@ -91,14 +93,11 @@
 }
 - (void)textFieldDidEndEditing:(UITextField *)textField {
     if (self.viewModel.authType == 0) {
-        NSLog(@"当前状态是修改密码");
         if (textField == _changeRepeatTextField) {
             self.viewModel.user.password = [textField.text copy];
             self.viewModel.user.rePassword = [textField.text copy];
-            NSLog(@"修改的是密码%@", self.viewModel.user.password);
         } else {
             self.viewModel.user.email = [textField.text copy];
-            NSLog(@"输入的是邮箱%@", self.viewModel.user.email);
         }
     } else {
         if (textField == _changeRepeatTextField) {

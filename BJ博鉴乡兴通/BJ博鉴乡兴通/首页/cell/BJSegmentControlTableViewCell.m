@@ -11,14 +11,13 @@
 #import "BJDynamicModel.h"
 #import "BJDynamicTableViewCell.h"
 #import "BJDynamicView.h"
-
+#import "BJNetworkingManger.h"
 
 
 @interface BJSegmentControlTableViewCell ()<UIScrollViewDelegate,BJDynamicTableViewCellDelegate,UIGestureRecognizerDelegate>
 
 @property (assign, nonatomic)BOOL isLocked;
 @property (strong, nonatomic)NSArray *array;
-@property (strong, nonatomic)NSArray<BJDynamicModel *> *dynamicModel;
 @property (strong, nonatomic)UIView *lineView;
 
 @end
@@ -45,15 +44,15 @@
 
 -(void)setupStickyView {
     
-    self.stickyView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, 40)];
+    self.stickyView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, 45)];
     self.stickyView.backgroundColor = [UIColor whiteColor];
     [self.contentView addSubview:self.stickyView];
-    
+
     self.array = @[@"关注", @"周边", @"精选",@"陕西省"];
     for(int i = 0; i < self.array.count; i++) {
         NSString *name = self.array[i];
         CGFloat width = [UIScreen mainScreen].bounds.size.width / self.array.count;
-        UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(i * width, 0, width, 40)];
+        UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(i * width, 0, width, 45)];
         [button setTitle:name forState:UIControlStateNormal];
         [button setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
         [button setTitleColor:[UIColor colorWithRed:16/255.0 green:89/255.0 blue:45/255.0 alpha:1] forState:UIControlStateSelected];
@@ -104,7 +103,7 @@
 
 
 -(void)setupLineView {
-    self.lineView = [[UIView alloc] initWithFrame:CGRectMake(17, 38, [UIScreen mainScreen].bounds.size.width / self.array.count - 15, 2)];
+    self.lineView = [[UIView alloc] initWithFrame:CGRectMake(17, 43, [UIScreen mainScreen].bounds.size.width / self.array.count - 15, 2)];
     self.lineView.clipsToBounds = YES;
     self.lineView.layer.cornerRadius = 1;
     self.lineView.backgroundColor = [UIColor colorWithRed:16/255.0 green:89/255.0 blue:45/255.0 alpha:1];
@@ -136,26 +135,18 @@
 }
 
 -(void)setupModel {
-    BJDynamicModel *model = [[BJDynamicModel alloc] init];
-    model.userName = @"旅行日记";
-    model.avatarUrl = @"https://example.com/avatars/travel_diary.jpg";
-    model.content = @"刚完成环青海湖骑行，全程360公里，蓝天白云和油菜花海交织的美景让人忘却疲惫🚴♀️！";
-    model.images = @[
-        @"1.png",
-        @"2.png",
-        @"3.png"
-    ];
-    model.numofLikes = @"12";
-    model.numofComment = @"5";
-    model.numofShare = @"3";
-    model.timeText = @"3小时前";
-    model.isLiked = NO;
-    self.dynamicModel = @[model, model, model,model,model];
+    
+    
 }
 
 - (void) setScrollViewOffsetWithTag:(NSInteger)tag animated:(BOOL)animated {
     [self.scrollView setContentOffset:CGPointMake(tag  * self.scrollView.frame.size.width, 0) animated:animated];
 }
+
+-(void)updateDynamicViews {
+    
+}
+
 -(void)setupScrollView {
     
     
@@ -182,7 +173,7 @@
 
     UIView *previousView = nil;
     for (int i = 0; i < 4; i++) {;
-        BJDynamicView *dynamicView = [[BJDynamicView alloc] initWithDynamicModel:self.dynamicModel];
+        BJDynamicView *dynamicView = [[BJDynamicView alloc] init];
         
         dynamicView.tag = 100 + i;
         dynamicView.backgroundColor = [UIColor whiteColor];

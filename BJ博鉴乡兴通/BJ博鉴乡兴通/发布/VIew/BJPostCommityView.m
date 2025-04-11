@@ -68,7 +68,6 @@
         make.height.equalTo(@50);
     }];
     UIColor* buttonColor = [UIColor colorWithRed:43.0 / 255.0 green:95.0 / 255.0 blue:51 / 255.0 alpha:1];
-    [self.postButton setTitle:@"发布动态" forState:UIControlStateNormal];
     self.postButton.layer.masksToBounds = YES;
     self.postButton.layer.cornerRadius = 10;
     self.postButton.backgroundColor = buttonColor;

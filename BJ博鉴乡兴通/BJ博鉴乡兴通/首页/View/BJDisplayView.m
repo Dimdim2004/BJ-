@@ -8,6 +8,7 @@
 #import "BJDisplayView.h"
 #import "BJDisplayModel.h"
 #import <Masonry.h>
+
 @interface BJDisplayView ()
 @property (nonatomic, strong) UIImageView *hometownImageView;
 @property (nonatomic, strong) UILabel *nameLabel;
@@ -34,6 +35,7 @@
     self.nameLabel.text = model.name;
     self.locationLabel.text = model.address;
     self.distanceLabel.text = model.distance;
+
     if (model.image) {
         self.hometownImageView.image = model.image;
     } else {

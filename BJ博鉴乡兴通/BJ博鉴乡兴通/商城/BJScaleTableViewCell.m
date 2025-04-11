@@ -56,7 +56,7 @@
    CGFloat itemWidth = screenWidth - 140;
    CGFloat itemSpacing = 40;
    
-    _layout.itemSize = CGSizeMake(itemWidth, 200);
+    _layout.itemSize = CGSizeMake(itemWidth, 180);
     _layout.minimumLineSpacing = 40;
 
     

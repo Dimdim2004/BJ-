@@ -54,11 +54,13 @@
         make.width.height.equalTo(@45);
         make.top.equalTo(@60);
     }];
-    // Do any additional setup after loading the view.
+
 }
+
 -(void)dismiss {
     [self dismissViewControllerAnimated:YES completion:nil];
 }
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     BJInvitationHeaderTableViewCell* headerCell = [tableView dequeueReusableCellWithIdentifier:@"header"];
     BJCommityPostLoactionTableViewCell* sceondCell = [tableView dequeueReusableCellWithIdentifier:@"preView"];
@@ -97,14 +99,5 @@
         return 70;
     }
 }
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 @end

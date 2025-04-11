@@ -22,6 +22,7 @@
     self.viewModel = [[BJCheckEmailViewModel alloc] init];
     [self setUI];
     [self setupBindings];
+    self.view.backgroundColor = [UIColor clearColor];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification  object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification  object:nil];
     // Do any additional setup after loading the view.

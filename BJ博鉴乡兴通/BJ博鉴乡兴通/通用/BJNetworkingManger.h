@@ -14,12 +14,14 @@
 @class BJAttentionDataModel;
 @class BJMyPageLikeModel;
 @class BJMyPageModel;
+@class BJUploadSuccessModel,BJCountryModel,BJDynamicModel,BJLocationModel;
 @class UIImage;
 NS_ASSUME_NONNULL_BEGIN
 
 @interface BJNetworkingManger : NSObject
 typedef void(^commentSuccess)(BJCommentsModel* commentModel);
 typedef void(^addressSuccess)(NSString* addressString);
+typedef void(^countryIDSuccess)(NSString* countryIDString);
 typedef void(^error)(NSError* error);
 typedef void(^uploadSuccess)(BJUploadSuccessModel* uploadModel);
 typedef void(^commitySuccess)(BJCommityModel* commityModel);
@@ -28,6 +30,10 @@ typedef void(^attentionSuccess)(BJAttentionDataModel* dataModel);
 typedef void(^attentionSuccess)(BJAttentionDataModel* dataModel);
 typedef void(^homeLikeSuccess)(BJMyPageLikeModel* dataModel);
 typedef void(^userSuccess)(BJMyPageModel* userModel);
+typedef void(^countrySuccess)(BJCountryModel* countryModel);
+typedef void(^dynamicSuccess)(NSArray<BJDynamicModel *>* dynamicModel);
+typedef void(^locationSuccess)(NSArray<BJLocationModel *>* locationModel);
+
 typedef void(^error)(NSError* error);
 @property (nonatomic, strong) NSString* token;
 @property (nonatomic, copy) NSString* email;
@@ -47,6 +53,14 @@ typedef void(^error)(NSError* error);
 - (void)likeWork:(NSInteger)workId andType:(NSInteger)type attenationSuccess:(attentionSuccess)success error:(error)error;
 - (void)searchUserWorksWithUserId:(NSInteger)userId WithPage:(NSInteger)pageId WithPageSize:(NSInteger)pageSize loadHomeSuccess:(homeLikeSuccess)success error:(error)error;
 - (void)deleteCommentId:(NSInteger)commentId WithWorkId:(NSInteger)workId WithType:(NSInteger)type loadSuccess:(attentionSuccess)deleteSuccess failure:(error)error;
+- (void)uploadWithComment:(NSString*)commentString andPraentId:(NSInteger)parentId replyId:(NSInteger)replyId  workId:(NSInteger)workId type:(NSInteger)type uploadSuccess:(uploadSuccess)uploadSuccess error:(error)error;
+
+- (void)loadWithCountryID:(NSInteger)countryID WithSuccess:(commitySuccess)success failure:(error)error;
+- (void)findTargetCountryWithLatitude:(CGFloat)latitude andLongitude:(CGFloat)longitude WithSuccess:(countrySuccess)success failure:(error)error;
+- (void)uploadWithParams:(NSDictionary*)params uploadSuccess:(countryIDSuccess)countryIDSuccess error:(error)error;
+-(void)loadCountryInfoWithCountryID:(NSInteger)countryID WithSuccess:(countrySuccess)success failure:(error)error;
+- (void)loadMainPageImage:(NSInteger)pageId PageSize:(NSInteger)pageSize WithSuccess:(dynamicSuccess)success failure:(error)returnError;
+-(void)loadAllCountryIDWithSuccess:(locationSuccess)success failure:(error)error;
 +(instancetype) sharedManger;
 @end
 

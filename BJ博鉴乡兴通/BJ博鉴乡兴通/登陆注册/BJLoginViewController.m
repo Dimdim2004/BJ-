@@ -48,7 +48,7 @@
     
     
     
-    self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"LoginBackView1.jpg"]];
+    self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"LoginBackView.png"]];
     self.backView = [[UIView alloc] init];
     self.backView.layer.masksToBounds = YES;
     self.backView.layer.cornerRadius = 30;
@@ -64,7 +64,7 @@
     self.logoLabel = [[UILabel alloc] init];
     self.logoLabel.text = @"原乡云道";
     self.logoLabel.font = [UIFont fontWithName:@"Joyfonts-QinglongGB-Flash-Black" size:75];
-    self.logoLabel.textColor = [UIColor colorWithRed:16/255.0 green:89/255.0 blue:45/255.0 alpha:1];
+    self.logoLabel.textColor = [UIColor whiteColor];
     [self.view addSubview:self.logoLabel];
     
     self.logoLabel.textAlignment = NSTextAlignmentCenter;
@@ -126,7 +126,7 @@
     }];
     [self.logoLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.equalTo(@0);
-        make.bottom.equalTo(self.backView.mas_top).offset(-120);
+        make.bottom.equalTo(self.backView.mas_top).offset(-70);
     }];
     self.passwordField.layer.masksToBounds = YES;
     self.passwordField.layer.cornerRadius = 10;
@@ -235,28 +235,26 @@
         make.height.equalTo(@20);
     }];
 }
+
 - (void)presentCheck {
-    NSLog(@"111");
     BJCheckEmailViewController* checkEmailViewController = [[BJCheckEmailViewController alloc] init];
-    checkEmailViewController.modalPresentationStyle = UIModalPresentationFullScreen;
     [self presentViewController:checkEmailViewController animated:YES completion:nil];
 }
+
 - (void)presentChange {
-    NSLog(@"111");
     BJFindPasswordViewController* changePasswordViewController = [[BJFindPasswordViewController alloc] init];
-    changePasswordViewController.modalPresentationStyle = UIModalPresentationFullScreen;
     BJFindingPasswordViewModel* changeModel = [[BJFindingPasswordViewModel alloc] initWithAuthTyoe:0];
     changePasswordViewController.viewModel = changeModel;
+    changePasswordViewController.modalPresentationStyle = UIModalPresentationPopover;
     [self presentViewController:changePasswordViewController animated:YES completion:nil];
 }
+
 - (void)quickPush {
     [self.delegate changeTab];
 }
 -(void)presentRegister {
-    NSLog(@"111");
-    BJRegisterViewController* registerViewController = [[BJRegisterViewController alloc] init];
-//    registerViewController.modalPresentationStyle = UIModalPresentationFullScreen;
 
+    BJRegisterViewController* registerViewController = [[BJRegisterViewController alloc] init];
     [self presentViewController:registerViewController animated:YES completion:nil];
 }
 - (void)setupBindings {

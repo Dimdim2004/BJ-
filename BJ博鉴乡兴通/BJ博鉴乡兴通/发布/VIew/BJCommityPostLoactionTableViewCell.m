@@ -32,8 +32,15 @@
         self.iconView.frame = CGRectMake(10, 7.5, 25, 25);
         
         [self.contentView addSubview:self.iconView];
+        
+        self.descLabel = [[UILabel alloc] init];
+        self.descLabel.textColor = [UIColor colorWithRed:16/255.0 green:89/255.0 blue:45/255.0 alpha:1];
+        self.descLabel.font = [UIFont systemFontOfSize:15];
+        self.descLabel.frame = CGRectMake(120, 5, 250, 30);
+        [self.contentView addSubview:self.descLabel];
     } else if ([self.reuseIdentifier isEqualToString:@"friendRange"]) {
         self.titleView = [[UITextField alloc] init];
+        self.titleView.enabled = NO;
         self.titleView.text = @"公开可见";
         self.titleView.enabled = NO;
         self.titleView.frame = CGRectMake(40, 5, 100, 30);

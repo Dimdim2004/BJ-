@@ -13,7 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 -(void)dynamicViewDidReachTopAndScrollUp;
 
 @end
-@interface BJHomePageViewController : UIViewController
+@interface BJHomePageViewController : UIViewController<UITableViewDelegate>
 
 @end
 

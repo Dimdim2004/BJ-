@@ -18,9 +18,9 @@ PODS:
     - LookinServer/Core (= 1.2.8)
   - LookinServer/Core (1.2.8)
   - Masonry (1.1.0)
-  - SDWebImage (5.19.7):
-    - SDWebImage/Core (= 5.19.7)
-  - SDWebImage/Core (5.19.7)
+  - SDWebImage (5.21.0):
+    - SDWebImage/Core (= 5.21.0)
+  - SDWebImage/Core (5.21.0)
   - TZImagePickerController (3.8.8):
     - TZImagePickerController/Basic (= 3.8.8)
     - TZImagePickerController/Location (= 3.8.8)
@@ -55,7 +55,7 @@ SPEC CHECKSUMS:
   AFNetworking: 3bd23d814e976cd148d7d44c3ab78017b744cd58
   LookinServer: 1b2b61c6402ae29fa22182d48f5cd067b4e99e80
   Masonry: 678fab65091a9290e40e2832a55e7ab731aad201
-  SDWebImage: 8a6b7b160b4d710e2a22b6900e25301075c34cb3
+  SDWebImage: f84b0feeb08d2d11e6a9b843cb06d75ebf5b8868
   TZImagePickerController: d084a7b97c82d387e7669dd86dc9a9057500aacf
   WCDB.objc: e3fb72b0efaa7500020b51de295b8ca4040fbd5c
   WCDBOptimizedSQLCipher: 9bceac087eff9625b151838d3a30364f53f71ad9

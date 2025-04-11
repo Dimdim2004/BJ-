@@ -19,6 +19,7 @@
         return ceil(twoLineHeight);
     }
 }
+
 - (CGFloat) LineHeight:(UIFont*)font Width:(CGFloat)width {
     NSString* textString = @"实例文本\n实例文本";
     CGRect textRect = [textString boundingRectWithSize:CGSizeMake(width, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName: font} context:nil];

@@ -25,6 +25,12 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) UITextView* textView;
 @property (nonatomic, assign) NSInteger type;
 @property (nonatomic, assign) NSInteger currentNoteId;
+
+- (NSString *)placeholderForFirstText;
+- (NSString *)placeholderForSecondText;
+- (NSString *)placeholderForButtonText;
+- (void)post:(UIButton *)sender;
+- (instancetype)initWithMaxCount:(NSInteger)maxCount andHidden:(BOOL)hidden;
 @end
 
 NS_ASSUME_NONNULL_END
