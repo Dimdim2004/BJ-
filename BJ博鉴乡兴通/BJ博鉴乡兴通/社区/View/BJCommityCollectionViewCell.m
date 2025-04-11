@@ -62,7 +62,7 @@
             make.right.equalTo(self.contentView);
             make.width.equalTo(@45);
             make.height.equalTo(@30);
-            make.bottom.equalTo(self.contentView).offset(-10);
+            make.bottom.equalTo(self.contentView).offset(-5);
         }];
         self.likeButton.titleLabel.font = [UIFont systemFontOfSize:13];
         [self.likeButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];

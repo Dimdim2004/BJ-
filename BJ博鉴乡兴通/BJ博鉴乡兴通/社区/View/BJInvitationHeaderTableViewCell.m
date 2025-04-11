@@ -26,6 +26,7 @@
         self.titleLabel = [[UILabel alloc] init];
         self.contentLabel = [[UILabel alloc] init];
         self.headScrollerView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, 393, 393)];
+        self.headScrollerView.bounces = NO;
         self.headScrollerView.contentSize = CGSizeMake(393, 0);
         self.headScrollerView.showsHorizontalScrollIndicator = NO;
         self.headScrollerView.showsVerticalScrollIndicator = NO;

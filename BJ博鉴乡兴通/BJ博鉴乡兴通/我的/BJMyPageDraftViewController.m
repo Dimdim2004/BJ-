@@ -24,14 +24,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [self loadDataFromTable];
-    UIColor* mycolor = [UIColor colorWithRed:250 / 255.0 green:250 / 255.0 blue:250 / 255.0 alpha:1];
-    self.view.backgroundColor = mycolor;
-    self.iView = [[BJMainCommunityView alloc] initWithFrame:CGRectMake(0, 90, 393, self.view.frame.size.height)];
-    [self.view addSubview:self.iView];
     
-    [self regiserCollectionView];
-    [self setTitleLabelAndButton];
     
     // Do any additional setup after loading the view.
 }
@@ -42,7 +35,7 @@
     label.text = @"草稿箱";
     UIButton* button = [UIButton buttonWithType:UIButtonTypeCustom];
     [button addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];
-    [button setImage:[UIImage imageNamed:@"back.png"] forState:UIControlStateNormal];
+    [button setImage:[UIImage imageNamed:@"back2.png"] forState:UIControlStateNormal];
     button.frame = CGRectMake(0, 50, 30, 30);
     [self.view addSubview:button];
 }
@@ -153,6 +146,16 @@
     commityViewController.currentNoteId = draModel.noteId;
     [self presentViewController:commityViewController animated:YES completion:nil];
     
+}
+- (void)viewWillAppear:(BOOL)animated {
+    [self loadDataFromTable];
+    UIColor* mycolor = [UIColor colorWithRed:250 / 255.0 green:250 / 255.0 blue:250 / 255.0 alpha:1];
+    self.view.backgroundColor = mycolor;
+    self.iView = [[BJMainCommunityView alloc] initWithFrame:CGRectMake(0, 90, 393, self.view.frame.size.height)];
+    [self.view addSubview:self.iView];
+    
+    [self regiserCollectionView];
+    [self setTitleLabelAndButton];
 }
 /*
 #pragma mark - Navigation

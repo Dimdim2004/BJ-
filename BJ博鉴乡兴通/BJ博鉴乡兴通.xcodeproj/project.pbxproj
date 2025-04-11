@@ -135,6 +135,7 @@
 		E91428642D8C6DAF001ED3F8 /* BJLocalDataManger.mm in Sources */ = {isa = PBXBuildFile; fileRef = E91428632D8C6DAE001ED3F8 /* BJLocalDataManger.mm */; };
 		E97523612D9E8FCD00EB8DAD /* BJMyPageDraftModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = E97523602D9E8FCD00EB8DAD /* BJMyPageDraftModel.mm */; };
 		E97523632DA12BB300EB8DAD /* lajitong.png in Resources */ = {isa = PBXBuildFile; fileRef = E97523622DA12BB300EB8DAD /* lajitong.png */; };
+		E97523652DA2461B00EB8DAD /* sousuo.png in Resources */ = {isa = PBXBuildFile; fileRef = E97523642DA2461A00EB8DAD /* sousuo.png */; };
 		E98A54F12D943B3100CDBE13 /* BJAttentionDataModel.m in Sources */ = {isa = PBXBuildFile; fileRef = E98A54F02D943B3100CDBE13 /* BJAttentionDataModel.m */; };
 		E98A54F42D94EE1A00CDBE13 /* BJMyPageView.m in Sources */ = {isa = PBXBuildFile; fileRef = E98A54F32D94EE1A00CDBE13 /* BJMyPageView.m */; };
 		E98A54F72D9594C800CDBE13 /* BJMyPageLikeModel.m in Sources */ = {isa = PBXBuildFile; fileRef = E98A54F62D9594C800CDBE13 /* BJMyPageLikeModel.m */; };
@@ -403,6 +404,7 @@
 		E975235F2D9E8FCD00EB8DAD /* BJMyPageDraftModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BJMyPageDraftModel.h; sourceTree = "<group>"; };
 		E97523602D9E8FCD00EB8DAD /* BJMyPageDraftModel.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BJMyPageDraftModel.mm; sourceTree = "<group>"; };
 		E97523622DA12BB300EB8DAD /* lajitong.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = lajitong.png; sourceTree = "<group>"; };
+		E97523642DA2461A00EB8DAD /* sousuo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sousuo.png; sourceTree = "<group>"; };
 		E98A54EF2D943B3100CDBE13 /* BJAttentionDataModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BJAttentionDataModel.h; sourceTree = "<group>"; };
 		E98A54F02D943B3100CDBE13 /* BJAttentionDataModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BJAttentionDataModel.m; sourceTree = "<group>"; };
 		E98A54F22D94EE1A00CDBE13 /* BJMyPageView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BJMyPageView.h; sourceTree = "<group>"; };
@@ -770,6 +772,7 @@
 		219F0E9B2D3E83D600F69C9B /* 图片 */ = {
 			isa = PBXGroup;
 			children = (
+				E97523642DA2461A00EB8DAD /* sousuo.png */,
 				21F520262DA54E35005EE089 /* apple.png */,
 				21F520282DA54E36005EE089 /* cha.png */,
 				21F5202A2DA54E37005EE089 /* heimi.png */,
@@ -1189,6 +1192,7 @@
 				219A06B72D780D5500EA43BA /* 3.png in Resources */,
 				219A06B92D78729400EA43BA /* 4.png in Resources */,
 				219A06BB2D788B6B00EA43BA /* 5.png in Resources */,
+				E97523652DA2461B00EB8DAD /* sousuo.png in Resources */,
 				216DB6B12D2FDEF3005BF4C2 /* Assets.xcassets in Resources */,
 				E9CBA33E2D78950C00113436 /* annotation.jpg in Resources */,
 				213582252D814131001F7459 /* comment.png in Resources */,

@@ -157,6 +157,7 @@
 }
 - (void)setNavgationBar {
     UINavigationBarAppearance* apperance = [[UINavigationBarAppearance alloc] init];
+    apperance.backgroundColor = UIColor.whiteColor;
     apperance.shadowColor = [UIColor clearColor];
     apperance.shadowImage = [[UIImage alloc] init];
     self.navigationController.navigationBar.standardAppearance = apperance;
@@ -164,7 +165,9 @@
     NSString* string = @"santiaogang.png";
     apperance.backgroundColor = UIColor.whiteColor;
     UIBarButtonItem* leftButton = [[UIBarButtonItem alloc] initWithCustomView:[[UIImageView alloc] initWithImage:[UIImage imageNamed:string]]];
+    UIBarButtonItem* rightButton = [[UIBarButtonItem alloc] initWithCustomView:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"sousuo.png"]]];
     self.navigationItem.leftBarButtonItem = leftButton;
+    self.navigationItem.rightBarButtonItem = rightButton;
 }
 - (void)loadImageWithAry:(NSArray*)ary {
     __weak id weakSelf = self;
@@ -215,6 +218,10 @@
         }];
         strongSelf.isLoading = NO;
         strongSelf->_pageId++;
+        if (strongSelf->_isLoadMore == NO) {
+            [footView endLoading];
+        }
+       
     });
 }
 - (void)regiserCollectionView {
@@ -233,6 +240,9 @@
    
 }
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
+    if (indexPath.section == 0) {
+        return;
+    }
     BJInvitationViewController* invitationViewController = [[BJInvitationViewController alloc] init];
     invitationViewController.hidesBottomBarWhenPushed = YES;
     if (self.iModel.count != 0) {
@@ -354,8 +364,7 @@
 }
 - (void)loadMore {
     if (_isLoadMore == NO) {
-        BJCommityFootReusableView* footView = [self visibleFooter];
-        [footView endLoading];
+        
         return;
     }
     if (self->_isLoading) {
@@ -426,11 +435,19 @@
     }
 }
 -(void)updateFavourite:(NSInteger)isFavourite andCommentCount:(NSInteger)commentCount withWorkId:(NSInteger)workId {
-    BJCommityModel* iModel;
+    BJMyPageDealModel* currentModel;
     BJCommityDataModel* dataModel;
-//    for (int i = 0; i < self.iModel.count; i++) {
-//        self.
-//    }
+    for (int i = 0; i < self.iModel.count; i++) {
+        currentModel = self.iModel[i];
+        if (currentModel.workId == workId) {
+            currentModel.likeCount = isFavourite != currentModel.isFavourte ? currentModel.likeCount : currentModel.likeCount + (isFavourite == 1 ? 1 : -1);
+            currentModel.isFavourte = isFavourite;
+            currentModel.commentCount = commentCount;
+            [self.iModel replaceObjectAtIndex:i withObject:currentModel];
+            //self.iModel replaceObjectAtIndex:i withObject:<#(nonnull BJMyPageDealModel *)#>
+            return;
+        }
+    }
 }
 /*
  #pragma mark - Navigation

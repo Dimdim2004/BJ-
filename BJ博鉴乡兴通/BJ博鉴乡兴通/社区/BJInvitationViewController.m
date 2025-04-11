@@ -95,8 +95,8 @@
     [self.iView.starButton addTarget:self action:@selector(selectLike:) forControlEvents:UIControlEventTouchUpInside];
     if (self.commityModel.isFavorite == 1) {
         self.iView.likeButton.selected = 1;
-        [self.iView.likeButton setTitle:[NSString stringWithFormat:@"%ld", self.commityModel.favoriteCount + 1] forState:UIControlStateSelected];
-        [self.iView.likeButton setTitle:[NSString stringWithFormat:@"%ld", self.commityModel.favoriteCount] forState:UIControlStateNormal];
+        [self.iView.likeButton setTitle:[NSString stringWithFormat:@"%ld", self.commityModel.favoriteCount] forState:UIControlStateSelected];
+        [self.iView.likeButton setTitle:[NSString stringWithFormat:@"%ld", self.commityModel.favoriteCount - 1] forState:UIControlStateNormal];
     } else {
         [self.iView.likeButton setTitle:[NSString stringWithFormat:@"%ld", self.commityModel.favoriteCount] forState:UIControlStateNormal];
         [self.iView.likeButton setTitle:[NSString stringWithFormat:@"%ld", self.commityModel.favoriteCount + 1] forState:UIControlStateSelected];
@@ -105,6 +105,7 @@
     NSLog(@"评论个数%ld, 文章内容%@, 文章标题%@", self.commityModel.commentCount, self.commityModel.content, self.commityModel.title);
     [self.iView.commentButton setTitle:[NSString stringWithFormat:@"%ld", self.commityModel.commentCount] forState:UIControlStateNormal];
 }
+
 - (void)registerTableview {
     [self.iView.mainView registerClass:[BJInvitationTableViewCell class] forCellReuseIdentifier:@"comments"];
     [self.iView.mainView registerClass:[BJInvitationHeaderTableViewCell class] forCellReuseIdentifier:@"header"];
@@ -276,7 +277,7 @@
         }
         if (indexPath.row == 0) {
             BJInvitationTableViewCell* commentCell = [self.iView.mainView dequeueReusableCellWithIdentifier:@"comments"];
-            [self addTapToCommentCell:commentCell];
+            [self addTapToCommentCell:commentCell atIndexPath:indexPath];
             //commentCell.selectionStyle = UITableViewCellSelectionStyleNone;
             BJSubCommentsModel* currentModel = self.commentModel.commentList[indexPath.section - 1];
             [commentCell.replyButton addTarget:self action:@selector(showKeyboard:) forControlEvents:UIControlEventTouchUpInside];
@@ -294,8 +295,12 @@
             }
             
             commentCell.textView.text = currentModel.content;
+            if ([currentModel.username isEqualToString:[BJNetworkingManger sharedManger].username]) {
+                commentCell.nameLabel.text = @"我";
+            } else {
+                commentCell.nameLabel.text = currentModel.username;
+            }
             
-            commentCell.nameLabel.text = currentModel.username;
             
             if ([currentModel.avatar isEqualToString:@""]) {
                 NSLog(@"设置默认图片");
@@ -318,7 +323,7 @@
         } else {
             NSLog(@"处理展开后的评论");
             BJInvitationSubCommentsTableViewCell* subCommentCell = [self.iView.mainView dequeueReusableCellWithIdentifier:@"subComments"];
-            [self addTapToCommentCell:subCommentCell];
+            [self addTapToCommentCell:subCommentCell atIndexPath:indexPath];
             subCommentCell.selectionStyle = UITableViewCellSelectionStyleNone;
             BJSubCommentsModel* currentModel = self.commentModel.commentList[indexPath.section - 1];
             NSInteger commentId = currentModel.commentId;
@@ -350,7 +355,16 @@
             subCommentCell.likeButton.selected = currentCommentModel.isLike;
             
             NSLog(@"当前这%ld行子评论对应的一个按钮是否被点过赞%d", indexPath.row - 1, currentCommentModel.isLike);
-            subCommentCell.nameLabel.text = [NSString stringWithFormat:@"%@回复%@", currentCommentModel.username, currentCommentModel.replyToUsername];
+            if (currentCommentModel.userId == [BJNetworkingManger sharedManger].userId && [currentCommentModel.replyToUsername isEqualToString:[BJNetworkingManger sharedManger].username]) {
+                subCommentCell.nameLabel.text = @"我";
+            } else if (currentCommentModel.userId == [BJNetworkingManger sharedManger].userId) {
+                subCommentCell.nameLabel.text = [NSString stringWithFormat:@"我回复%@", currentCommentModel.replyToUsername];
+            } else if ([currentCommentModel.replyToUsername isEqualToString:[BJNetworkingManger sharedManger].username]) {
+                subCommentCell.nameLabel.text = [NSString stringWithFormat:@"%@回复我", currentCommentModel.username];
+            } else {
+                subCommentCell.nameLabel.text = [NSString stringWithFormat:@"%@回复%@", currentCommentModel.username, currentCommentModel.replyToUsername];
+            }
+            
             [subCommentCell.likeButton addTarget:self action:@selector(selectLike:) forControlEvents:UIControlEventTouchUpInside];
             [subCommentCell.image sd_setImageWithURL:[NSURL URLWithString:currentCommentModel.avatar]];
             return subCommentCell;
@@ -658,7 +672,11 @@
     UIBarButtonItem* leftButton = [[UIBarButtonItem alloc] initWithCustomView:button];
     UIBarButtonItem* headButton = [[UIBarButtonItem alloc] initWithCustomView:iconButton];
     UILabel* nameLabel = [[UILabel alloc] init];
-    nameLabel.text = self.commityModel.username;
+    if ([self.commityModel.username isEqualToString:[BJNetworkingManger sharedManger].username]) {
+        nameLabel.text = @"我";
+    } else {
+        nameLabel.text = self.commityModel.username;
+    }
     UIBarButtonItem* titleButton = [[UIBarButtonItem alloc] initWithCustomView:nameLabel];
     
     self.navigationItem.leftBarButtonItems = @[leftButton, space, headButton, space, titleButton];
@@ -759,6 +777,10 @@
                     currentCommentModel.commentList = [NSMutableArray array];
                 }
                 BJSubCommentsModel* replyModel = self.commentModel.commentList[currentSection - 1];
+                postModel.replyId = strongSelf->_replyId;
+                
+                postModel.userId = [BJNetworkingManger sharedManger].userId;
+                NSLog(@"当前回复人的一个id%ld, 自己的一个id%ld", replyModel.replyId, replyModel.userId);
                 postModel.replyToUsername = [NSString stringWithFormat:@"%@", replyModel.username];
                 NSLog(@"%@", replyModel.username);
                 [currentCommentModel.commentList addObject:postModel];
@@ -778,21 +800,30 @@
                 [strongSelf.iView.mainView performBatchUpdates:^{
                         [strongSelf.iView.mainView insertSections:[NSIndexSet indexSetWithIndex:currentSection]
                                                 withRowAnimation:UITableViewRowAnimationAutomatic];
-                    } completion:nil];
+                } completion:^(BOOL finished) {
+                    strongSelf->_parentId = 0; //设置成默认状态
+                    strongSelf->_replyId = 0;//设置成默认状态
+                }];
             } else  if (!firstFlag) {
                 NSLog(@"该评论是二级评论");
                 [strongSelf.iView.mainView performBatchUpdates:^{
                     NSIndexPath* indexpath = [NSIndexPath indexPathForRow:1 inSection:currentSection];
                     [strongSelf.iView.mainView reloadSections:[NSIndexSet indexSetWithIndex:currentSection] withRowAnimation:UITableViewRowAnimationNone];
 //                    [strongSelf.iView.mainView insertRowsAtIndexPaths:@[indexpath] withRowAnimation:UITableViewRowAnimationAutomatic];
-                    } completion:nil];
+                    } completion:^(BOOL finished) {
+                        strongSelf->_parentId = 0; //设置成默认状态
+                        strongSelf->_replyId = 0;//设置成默认状态
+                    }];
             } else {
                 
                 NSLog(@"该评论是第一次发评论");
                 [strongSelf.iView.mainView performBatchUpdates:^{
                     NSIndexPath* indexpath = [NSIndexPath indexPathForRow:0 inSection:currentSection];
                     [strongSelf.iView.mainView reloadRowsAtIndexPaths:@[indexpath] withRowAnimation:UITableViewRowAnimationAutomatic];
-                    } completion:nil];
+                    } completion:^(BOOL finished) {
+                        strongSelf->_parentId = 0; //设置成默认状态
+                        strongSelf->_replyId = 0;//设置成默认状态
+                    }];
             }
             strongSelf.commityModel.commentCount += 1;
             [strongSelf.delegate updateFavourite:strongSelf.commityModel.isFavorite andCommentCount:strongSelf.commityModel.commentCount withWorkId:strongSelf.workId];
@@ -864,33 +895,42 @@
         NSLog(@"error");
     }];
 }
-- (void)addTapToCommentCell:(UITableViewCell*)cell {
+- (void)addTapToCommentCell:(UITableViewCell*)cell atIndexPath:(NSIndexPath*)indexPath {
     BOOL flag = NO;
     if (self.commityModel.userId == [BJNetworkingManger sharedManger].userId) {
         UITapGestureRecognizer* tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(pressCommentAlert:)];
         [cell addGestureRecognizer:tap];
-        
         return;
     }
     if ([cell isKindOfClass:[BJInvitationTableViewCell class]]) {
         BJInvitationTableViewCell* currentCell = (BJInvitationTableViewCell*)cell;
-        NSIndexPath* indexPath = [self.iView.mainView indexPathForCell:currentCell];
-        BJSubCommentsModel* commentModel = self.commentModel.commentList[indexPath.section];
+        BJSubCommentsModel* commentModel = self.commentModel.commentList[indexPath.section - 1];
         if ([BJNetworkingManger sharedManger].userId == commentModel.userId) {
             UITapGestureRecognizer* tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(pressCommentAlert:)];
+            [cell addGestureRecognizer:tap];
+        } else {
+            UITapGestureRecognizer* tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(pressNone:)];
             [cell addGestureRecognizer:tap];
         }
     } else if ([cell isKindOfClass:[BJInvitationSubCommentsTableViewCell class]]) {
         BJInvitationSubCommentsTableViewCell* currentCell = (BJInvitationSubCommentsTableViewCell*)cell;
-        NSIndexPath* indexPath = [self.iView.mainView indexPathForCell:currentCell];
-        BJSubCommentsModel* commentModel = self.commentModel.commentList[indexPath.section];
-        if ([BJNetworkingManger sharedManger].userId == commentModel.userId) {
+        BJSubCommentsModel* commentModel = self.commentModel.commentList[indexPath.section - 1];
+        BJCommentsModel* currentCommentModel = self.dicty[@(commentModel.commentId)];
+        BJSubCommentsModel* subCurrentCommentModel = currentCommentModel.commentList[indexPath.row - 1];
+        if ([BJNetworkingManger sharedManger].userId == subCurrentCommentModel.userId) {
             UITapGestureRecognizer* tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(pressCommentAlert:)];
+            [cell addGestureRecognizer:tap];
+        } else {
+            UITapGestureRecognizer* tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(pressNone:)];
             [cell addGestureRecognizer:tap];
         }
     }
-    
-   
+}
+- (void)pressNone:(UITapGestureRecognizer*)tap {
+    UIView* superView = tap.view;
+    UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"暂无删除权限" message:@"" preferredStyle:UIAlertControllerStyleActionSheet];
+    [alert addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:nil]];
+    [self presentViewController:alert animated:YES completion:nil];
 }
 - (void)pressCommentAlert:(UITapGestureRecognizer*)tap {
     UIView* superView = tap.view;
@@ -911,7 +951,7 @@
     }
     
     UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"删除评论" message:@"" preferredStyle:UIAlertControllerStyleActionSheet];
-    [alert addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+    [alert addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
         [self deleteCommentWithSection:section Row:row];
     }]];
     [alert addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleDefault handler:nil]];

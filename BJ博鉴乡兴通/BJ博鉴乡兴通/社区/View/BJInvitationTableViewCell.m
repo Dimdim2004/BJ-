@@ -13,7 +13,16 @@
     [super awakeFromNib];
     // Initialization code
 }
-
+- (void)prepareForReuse {
+    [super prepareForReuse];
+    self.commentButton.hidden = YES;
+    
+    [_timeLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
+        make.bottom.equalTo(self.commentButton.mas_top).offset(-5).priorityHigh();
+        make.left.equalTo(self.textView).offset(5);
+        make.width.equalTo(@50);
+    }];
+}
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
     [super setSelected:selected animated:animated];
 

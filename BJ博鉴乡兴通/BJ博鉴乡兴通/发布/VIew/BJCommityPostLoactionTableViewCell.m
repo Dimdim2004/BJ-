@@ -42,6 +42,7 @@
         self.titleView = [[UITextField alloc] init];
         self.titleView.enabled = NO;
         self.titleView.text = @"公开可见";
+        self.titleView.enabled = NO;
         self.titleView.frame = CGRectMake(40, 5, 100, 30);
         [self.contentView addSubview:self.titleView];
         self.iconView = [[UIImageView alloc] init];

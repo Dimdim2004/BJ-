@@ -12,7 +12,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 @protocol updateDataDelegate;
-@interface BJInvitationViewController : UIViewController<UITableViewDelegate, UITableViewDataSource, UIScrollViewDelegate, UITextViewDelegate>
+@interface BJInvitationViewController : UIViewController<UITableViewDelegate, UITableViewDataSource, UIScrollViewDelegate, UITextViewDelegate, UITableViewDataSourcePrefetching>
 @property (nonatomic, strong) BJInvitationView* iView;
 @property (nonatomic, strong) NSMutableDictionary* dary;
 @property (nonatomic, strong) BJCommentsModel* commentModel;

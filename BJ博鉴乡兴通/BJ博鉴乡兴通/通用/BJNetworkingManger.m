@@ -111,8 +111,10 @@ const NSString* mapAPK = @"dhK73tBBx4BWr97HK8JnKocfz53ctjps";
    
     manager.requestSerializer = [AFJSONRequestSerializer serializer];
     [manager.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Accept"];
-    NSString* bearerString = [NSString stringWithFormat:@"Bearer %@", self.token];
-    [manager.requestSerializer setValue:bearerString forHTTPHeaderField:@"Authorization"];
+    if (self.token) {
+        NSString* bearerString = [NSString stringWithFormat:@"Bearer %@", self.token];
+        [manager.requestSerializer setValue:bearerString forHTTPHeaderField:@"Authorization"];
+    }
     manager.responseSerializer = [AFJSONResponseSerializer serializer];
     
     [manager GET:string parameters:nil headers:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {

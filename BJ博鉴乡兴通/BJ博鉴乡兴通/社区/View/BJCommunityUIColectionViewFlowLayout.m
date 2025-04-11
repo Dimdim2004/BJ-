@@ -68,7 +68,7 @@
         currentMaxL = [colHeight[0] floatValue];
         maxHeight = MAX(maxHeight, currentMaxR);
         maxHeight = MAX(maxHeight, currentMaxL);
-        NSLog(@"%lf", maxHeight);
+        //NSLog(@"%lf", maxHeight);
     }
     UICollectionViewLayoutAttributes *footerAttributes = [UICollectionViewLayoutAttributes layoutAttributesForSupplementaryViewOfKind:UICollectionElementKindSectionFooter withIndexPath:[NSIndexPath indexPathForItem:0 inSection:self.sectionCount - 1]];
         
@@ -92,7 +92,7 @@
         CGFloat contentOffsetY = self.collectionView.contentOffset.y;
         CGRect frame = footerAttributes.frame;
         frame.origin.y = MAX(contentOffsetY + self.collectionView.bounds.size.height - frame.size.height - 30, maxHeight);
-        NSLog(@"footer的高度%lf", frame.origin.y);
+        //NSLog(@"footer的高度%lf", frame.origin.y);
         footerAttributes.frame = frame;
         footerAttributes.zIndex = 2028;  // 让 Footer 保持悬浮
     }
