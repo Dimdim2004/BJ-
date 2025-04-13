@@ -117,6 +117,9 @@
                         BJMyPagePostModel* postModel = postAry[i];
                         [self.iModel addObject:[postModel changeToShowModel]];
                         BJImageModel* imageModel = postModel.images[0];
+                        if (imageModel.url == nil) {
+                            continue;
+                        }
                         [strongSelf->_imageUrlAry addObject:imageModel.url];
                         CGFloat height = [postModel.title textHight:postModel.title andFont:[UIFont systemFontOfSize:17] Width:186.5] + 55;
                         NSLog(@"当前的一个默认高度%lf", height + 166.72);

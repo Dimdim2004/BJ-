@@ -438,7 +438,7 @@
                 for (int i = 0; i < commityModel.data.count; i++) {
                     @autoreleasepool {
                         BJCommityDataModel* data = commityModel.data[i];
-                        CGFloat height = [data.title textHight:data.title andFont:[UIFont systemFontOfSize:14] Width:186.5] + 55;
+                        CGFloat height = [data.title textHight:data.title andFont:[UIFont systemFontOfSize:17] Width:174] + 55;
                         BJImageModel* imageModel = data.images[0];
                         NSLog(@"当前图片的一个URL%@, %ld", imageModel.url, data.postId);
                         if (imageModel.url == nil) {
