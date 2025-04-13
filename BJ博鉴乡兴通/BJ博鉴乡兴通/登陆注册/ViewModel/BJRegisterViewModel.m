@@ -34,6 +34,9 @@
     BOOL isMatch = [pred evaluateWithObject:self.registerUser.password];
     return isMatch && self.registerUser.password.length >= 6;
 }
+- (BOOL) isValidComfirm {
+    return [self.registerUser.password isEqualToString:self.comfirmPassword];
+}
 - (BOOL)isValidRegister {
     return self.isValidEmail && self.isValidPassword && [self.comfirmPassword isEqualToString:self.registerUser.password];
 }

@@ -93,6 +93,7 @@
     self.headScrollerView.contentSize = CGSizeMake(393 * imageAry.count, 0);
     for (int i = 0; i < imageAry.count; i++) {
         UIImageView* iView = [[UIImageView alloc] initWithFrame:CGRectMake(i * 393, 0, 393, 393)];
+        
         iView.layer.masksToBounds = YES;
         iView.layer.cornerRadius = 10;
         iView.image = imageAry[i];
@@ -100,29 +101,65 @@
         
     }
 }
-- (void)addUrlImageToScrollerView:(NSArray<NSString*>*)imageAry {
-    if ([imageAry isEqualToArray:@[]]) {
-        return;
-    }
-    
+- (void)addUrlImageToScrollerView:(NSArray<NSString *> *)imageAry {
+    if (imageAry.count == 0) return;
+
     self.mypage.currentPage = 0;
     self.mypage.numberOfPages = imageAry.count;
-    
-    NSArray* buttonAry = [self.headScrollerView.subviews copy];
-    for (UIView* subView in buttonAry) {
-        if ([[subView class] isEqual: [UIButton class]] || [[subView class] isEqual: [UIImageView class]]) {
+
+    // 清除旧视图
+    for (UIView *subView in [self.headScrollerView.subviews copy]) {
+        if ([subView isKindOfClass:[UIImageView class]]) {
             [subView removeFromSuperview];
         }
     }
-    self.headScrollerView.contentSize = CGSizeMake(393 * imageAry.count, 0);
+
+    CGFloat viewWidth = 393;
+    CGFloat defaultHeight = 393;
+    __block CGFloat maxImageHeight = defaultHeight;
+
+    self.headScrollerView.contentSize = CGSizeMake(viewWidth * imageAry.count, 0);
+
+    __weak typeof(self) weakSelf = self;
+
     for (int i = 0; i < imageAry.count; i++) {
-        
-        UIImageView* iView = [[UIImageView alloc] initWithFrame:CGRectMake(i * 393, 0, 393, 393 )];
-        iView.layer.masksToBounds = YES;
-        iView.layer.cornerRadius = 10;
-        [iView sd_setImageWithURL:[NSURL URLWithString:imageAry[i]]];
-        [self.headScrollerView addSubview:iView];
+        NSString *urlString = imageAry[i];
+        CGRect initialFrame = CGRectMake(i * viewWidth, 0, viewWidth, defaultHeight);
+        UIImageView *imageView = [[UIImageView alloc] initWithFrame:initialFrame];
+        imageView.contentMode = UIViewContentModeScaleAspectFit;
+        imageView.backgroundColor = UIColor.lightGrayColor;
+        [self.headScrollerView addSubview:imageView];
+
+        __weak typeof(imageView) weakImageView = imageView;
+
+        [imageView sd_setImageWithURL:[NSURL URLWithString:urlString]
+                     completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
+            if (image) {
+                CGFloat imageHeight = image.size.height * viewWidth / image.size.width;
+
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    // 更新最大高度
+                    if (imageHeight > maxImageHeight) {
+                        maxImageHeight = imageHeight;
+
+                        // 更新 scrollView 高度约束
+                        __strong typeof(weakSelf) strongSelf = weakSelf;
+                        [strongSelf.headScrollerView mas_updateConstraints:^(MASConstraintMaker *make) {
+                            make.height.mas_equalTo(maxImageHeight);
+                        }];
+
+                        // 更新 scrollView contentSize
+                        strongSelf.headScrollerView.contentSize = CGSizeMake(viewWidth * imageAry.count, 0);
+                    }
+
+                    // 垂直居中显示
+                    CGFloat yOffset = imageHeight < maxImageHeight ? (maxImageHeight - imageHeight) / 2.0 : 0;
+                    weakImageView.frame = CGRectMake(i * viewWidth, yOffset, viewWidth, imageHeight);
+                });
+            }
+        }];
     }
 }
+
 
 @end

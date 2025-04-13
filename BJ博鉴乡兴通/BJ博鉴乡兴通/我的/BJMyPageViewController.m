@@ -449,6 +449,24 @@
         }
     }
 }
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:YES];
+    NSLog(@"viewWillApper");
+    _isLoadMore = YES;
+    BJCommityFootReusableView* footView = [self visibleFooter];
+    [footView resetLoading];
+    CGFloat y = self.mainView.collectionView.contentOffset.y;
+    CGFloat contentHeight = self.mainView.collectionView.contentSize.height;
+    CGFloat height = self.mainView.collectionView.bounds.size.height;
+    NSLog(@"%lf %lf, %lf, %lf", y, contentHeight, height, y + height);
+    if (y + height >= contentHeight - 10) {
+        NSLog(@"加载出问题");
+        self->_isLoading = NO;
+        BJCommityFootReusableView* footView = [self visibleFooter];
+        [footView startLoading:YES];
+        [self loadMore];
+    }
+}
 /*
  #pragma mark - Navigation
  

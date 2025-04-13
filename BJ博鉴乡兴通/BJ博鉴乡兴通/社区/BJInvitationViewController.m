@@ -363,6 +363,9 @@
                 subCommentCell.nameLabel.text = [NSString stringWithFormat:@"%@回复我", currentCommentModel.username];
             } else {
                 subCommentCell.nameLabel.text = [NSString stringWithFormat:@"%@回复%@", currentCommentModel.username, currentCommentModel.replyToUsername];
+                if ([currentCommentModel.replyToUsername isEqualToString: currentCommentModel.username]) {
+                    subCommentCell.nameLabel.text = [NSString stringWithFormat:@"%@", currentCommentModel.username];
+                }
             }
             
             [subCommentCell.likeButton addTarget:self action:@selector(selectLike:) forControlEvents:UIControlEventTouchUpInside];
@@ -728,10 +731,12 @@
         [btn setTitle:@"已关注" forState:UIControlStateNormal];
         [btn setTitleColor:UIColor.whiteColor forState:UIControlStateNormal];
         btn.backgroundColor = myColor;
+        [self.delegate updateAttention:btn.selected WithUserId:self.commityModel.userId];
     } else {
         [btn setTitle:@"关注" forState:UIControlStateNormal];
         btn.backgroundColor = UIColor.whiteColor;
         [btn setTitleColor:myColor forState:UIControlStateNormal];
+        [self.delegate updateAttention:btn.selected WithUserId:self.commityModel.userId];
     }
 }
 - (void)popViewController {

@@ -36,7 +36,7 @@
 - (BOOL)isValidLogin {
     return self.isValidEmail && self.isValidPassword;
 }
-- (void)submmitWithSuccess:(loginSuccess)success failure:(error)error {
+- (void)submmitWithSuccess:(loginSuccess)success failure:(error)returnError {
     AFHTTPSessionManager *manager = [BJNetworkingManger BJcreateAFHTTPSessionManagerWithBaseURLString:@"https://39.105.136.3:9797"];
     manager.requestSerializer = [AFJSONRequestSerializer serializer];
     manager.responseSerializer = [AFJSONResponseSerializer serializer];
@@ -48,11 +48,12 @@
         NSLog(@"success");
         BJLoginSuccessModel* userModel = [BJLoginSuccessModel yy_modelWithJSON:responseObject];
         NSLog(@"Success: %@", responseObject);
-        if (success && userModel.status == 1000) {
+        if (success) {
             success(userModel);
         }
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         NSLog(@"error");
+        returnError(error);
     }];
 }
 @end
