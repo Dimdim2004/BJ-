@@ -57,9 +57,9 @@
         } else if (self.viewModel.isValidPassword || self.viewModel.registerUser.password.length == 0) {
             [self showPasswordSuccessLabel];
         }
-        if (!self.viewModel.isValidPassword && self.viewModel.comfirmPassword.length) {
+        if (!self.viewModel.isValidComfirm && self.viewModel.comfirmPassword.length) {
             [self showComfirmErrorLabel];
-        } else if (self.viewModel.isValidPassword || self.viewModel.comfirmPassword.length == 0) {
+        } else if (self.viewModel.isValidComfirm || self.viewModel.comfirmPassword.length == 0) {
             [self showComfirmSuccessLabel];
         }
     }
@@ -228,21 +228,23 @@
     
     self.userErrorLabel = [[UILabel alloc] init];
     self.userErrorLabel.text = @"";
-    self.userErrorLabel.font = [UIFont systemFontOfSize:15];
+    self.userErrorLabel.font = [UIFont systemFontOfSize:10];
     [_backView addSubview:_userErrorLabel];
     self.userErrorLabel.textAlignment = NSTextAlignmentRight;
     self.userErrorLabel.textColor = UIColor.redColor;
     
     self.passwordErrorLabel = [[UILabel alloc] init];
     self.passwordErrorLabel.text = @"";
-    self.passwordErrorLabel.font = [UIFont systemFontOfSize:15];
+    self.passwordErrorLabel.font = [UIFont systemFontOfSize:10];
     [_backView addSubview:_passwordErrorLabel];
     self.passwordErrorLabel.textAlignment = NSTextAlignmentRight;
+    self.passwordErrorLabel.numberOfLines = 2;
     self.passwordErrorLabel.textColor = UIColor.redColor;
     
     self.repeatErrorLabel = [[UILabel alloc] init];
     self.repeatErrorLabel.text = @"";
-    self.repeatErrorLabel.font = [UIFont systemFontOfSize:15];
+    self.repeatErrorLabel.font = [UIFont systemFontOfSize:10];
+    
     [_backView addSubview:_repeatErrorLabel];
     self.repeatErrorLabel.textAlignment = NSTextAlignmentRight;
     self.repeatErrorLabel.textColor = UIColor.redColor;
@@ -327,7 +329,7 @@
     self.repeatErrorLabel.text = @"";
 }
 - (void)showPasswordErrorLabel {
-    self.passwordErrorLabel.text = @"大小写数字至少各1个";
+    self.passwordErrorLabel.text = @"大小写数字至少各1个,最短6位";
 }
 - (void)showPasswordSuccessLabel {
     self.passwordErrorLabel.text = @"";
@@ -399,7 +401,56 @@
     [self.viewModel removeObserver:self forKeyPath:@"registerUser.name"];
     [self.viewModel removeObserver:self forKeyPath:@"comfirmPassword"];
 }
-
+-(BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
+    if (textField == _registerPasswordTextField || textField == _registerRepeatTextField) {
+        NSCharacterSet *charSet = [[NSCharacterSet characterSetWithCharactersInString:@"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"] invertedSet];
+        NSString *filteredStr = [[string componentsSeparatedByCharactersInSet:charSet] componentsJoinedByString:@""];
+        if (range.length == 1 && string.length == 0) {
+            return YES;
+        } else if (textField.text.length >= 15) {
+            textField.text = [textField.text substringToIndex:15];
+            return NO;
+        } else if ([string isEqualToString:filteredStr] && textField.text.length <= 15) {
+            return YES;
+        }
+        return NO;
+    } else if (textField == _registerAccountTextField) {
+        NSCharacterSet *charSet = [[NSCharacterSet characterSetWithCharactersInString:@"@.ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"] invertedSet];
+        NSString *filteredStr = [[string componentsSeparatedByCharactersInSet:charSet] componentsJoinedByString:@""];
+        if (range.length == 1 && string.length == 0) {
+            return YES;
+        } else if (textField.text.length >= 19) {
+            textField.text = [textField.text substringToIndex:19];
+            return NO;
+        } else if ([string isEqualToString:filteredStr] && textField.text.length <= 19) {
+            return YES;
+        }
+        return NO;
+    } else if (textField == _registerUserTextField) {
+        
+        if (range.length == 1 && string.length == 0) {
+            return YES;
+        } else if (textField.text.length >= 10) {
+            textField.text = [textField.text substringToIndex:10];
+            return NO;
+        } else if ( textField.text.length <= 10) {
+            return YES;
+        }
+        return NO;
+    } else {
+        NSCharacterSet *charSet = [[NSCharacterSet characterSetWithCharactersInString:@"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"] invertedSet];
+        NSString *filteredStr = [[string componentsSeparatedByCharactersInSet:charSet] componentsJoinedByString:@""];
+        if (range.length == 1 && string.length == 0) {
+            return YES;
+        } else if (textField.text.length >= 6) {
+            textField.text = [textField.text substringToIndex:6];
+            return NO;
+        } else if ([string isEqualToString:filteredStr] && textField.text.length <= 6) {
+            return YES;
+        }
+        return NO;
+    }
+}
 /*
 #pragma mark - Navigation
 

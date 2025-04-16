@@ -11,6 +11,8 @@
 NS_ASSUME_NONNULL_BEGIN
 @protocol updateDataDelegate <NSObject>
 -(void)updateFavourite:(NSInteger)isFavourite andCommentCount:(NSInteger)commentCount withWorkId:(NSInteger)workId;
+@optional
+- (void)updateAttention:(NSInteger)attention WithUserId:(NSInteger)userId;
 @end
 @interface BJCommunityViewController : UIViewController <UICollectionViewDelegate, UICollectionViewDataSource, UIScrollViewDelegate, UICollectionViewDataSourcePrefetching, updateDataDelegate>
 @property (nonatomic, strong) BJMainCommunityView* iView;

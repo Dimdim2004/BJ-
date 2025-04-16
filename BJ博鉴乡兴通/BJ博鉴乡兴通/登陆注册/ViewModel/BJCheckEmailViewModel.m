@@ -38,9 +38,9 @@
         NSLog(@"success");
         BJCheckEmailModel* userModel = [BJCheckEmailModel yy_modelWithJSON:responseObject];
         NSLog(@"Success: %@", responseObject);
-        if (userModel.status == 1000) {
+        
             success(userModel);
-        }
+        
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         NSLog(@"error");
     }];

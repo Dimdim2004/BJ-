@@ -24,21 +24,30 @@
     maxHeight = 0;
     self.sectionCount = self.collectionView.numberOfSections;
     int count = 0;
-    NSInteger lastCount = [self.collectionView numberOfItemsInSection:0];
+    NSInteger lastCount = 0;
     //[sectionColHeights removeAllObjects];
     for (int section = 0; section < self.sectionCount; section++) {
         NSMutableArray *colHeight = [NSMutableArray arrayWithObjects:@(currentMaxL), @(currentMaxR), nil];
         [sectionColHeights addObject:colHeight];
         NSInteger sectionItemCount = [self.collectionView numberOfItemsInSection:section];
+        //NSLog(@"%ld", sectionItemCount);
         if (section > 0) {
-            lastCount = [self.collectionView numberOfItemsInSection:section - 1];
+            lastCount += [self.collectionView numberOfItemsInSection:section - 1];
+            //NSLog(@"%ld", lastCount);
         }
         for (NSInteger i = 0; i < sectionItemCount; i++) { //遍历每一个cell
             NSIndexPath* indexPath = [NSIndexPath indexPathForItem:i inSection:section];//获取对应的一个indexPath
             UICollectionViewLayoutAttributes* attributes = [UICollectionViewLayoutAttributes layoutAttributesForCellWithIndexPath:indexPath];//设置一个对应的布局
             CGFloat height;//设置高度
             if (self.itemHeight) {
-                height = [self.itemHeight[i + section * lastCount] floatValue];//设置高度
+               
+                
+                //NSLog(@"%ld itemCount", sectionItemCount);
+                height = [self.itemHeight[i + lastCount] floatValue];//设置高度
+                
+                if (i + lastCount == 23) {
+                    NSLog(@"123");
+                }
                 //NSLog(@"这%ld个item的高度%lf", i + section * lastCount, height);
             } else {
                 height = random() % 30 + 120;//设置高度
@@ -70,11 +79,13 @@
         maxHeight = MAX(maxHeight, currentMaxL);
         //NSLog(@"%lf", maxHeight);
     }
+    
     UICollectionViewLayoutAttributes *footerAttributes = [UICollectionViewLayoutAttributes layoutAttributesForSupplementaryViewOfKind:UICollectionElementKindSectionFooter withIndexPath:[NSIndexPath indexPathForItem:0 inSection:self.sectionCount - 1]];
         
     footerAttributes.frame = CGRectMake(0, maxHeight, self.collectionView.bounds.size.width, self.footerReferenceSize.height);
     footerAttributes.zIndex = 1024;  // 确保 Footer 不会被 Cell 遮挡
     [self.ary addObject:footerAttributes];
+    
 }
 
 - (NSArray<UICollectionViewLayoutAttributes *> *)layoutAttributesForElementsInRect:(CGRect)rect {

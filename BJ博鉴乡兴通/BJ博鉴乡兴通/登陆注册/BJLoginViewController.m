@@ -326,6 +326,11 @@
     [alert addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:nil]];
     [self presentViewController:alert animated:YES completion:nil];
 }
+- (void)showNetworingFailureAlert {
+    UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"失败" message:@"网络错误" preferredStyle:UIAlertControllerStyleAlert];
+    [alert addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:nil]];
+    [self presentViewController:alert animated:YES completion:nil];
+}
 - (void)showSuccessUserLabel {
     self.userErrorLabel.text = @"";
 }
@@ -353,7 +358,7 @@
         [BJNetworkingManger sharedManger].userId = userModel.data.user_id;
         NSLog(@"%ld", [BJNetworkingManger sharedManger].userId);
         } failure:^(NSError * _Nonnull error) {
-            [weakSelf showFailureAlert];
+            [weakSelf showNetworingFailureAlert];
             NSLog(@"error");
         }];
 }

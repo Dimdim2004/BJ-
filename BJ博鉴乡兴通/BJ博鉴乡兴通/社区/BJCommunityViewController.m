@@ -41,7 +41,7 @@
     _page = 1;
     _loadMore = YES;
     _isLoading = NO;
-    _pageSize = 8;
+    _pageSize = 6;
     [self setNavgationBar];
     id manger = [BJNetworkingManger sharedManger];
     self.model = [NSMutableArray array];
@@ -133,6 +133,14 @@
                     BJCommityDataModel* data = commityModel.data[i];
                     CGFloat height = [data.title textHight:data.title andFont:[UIFont systemFontOfSize:14] Width:186.5] + 55;
                     BJImageModel* imageModel = data.images[0];
+                    NSLog(@"当前图片的一个URL%@, %ld", imageModel.url, data.postId);
+                    if (imageModel.url == nil) {
+                        NSLog(@"报错在下拉加载模块");
+                        NSMutableArray* ary = [commityModel.data mutableCopy];
+                        [ary removeObject:data];
+                        commityModel.data = [NSArray arrayWithArray:ary];
+                        continue;
+                    }
                     [strongSelf->_imageURLAry addObject:imageModel.url];
                     [strongSelf->_heightAry addObject:[NSNumber numberWithFloat:(height)]];
                     [strongSelf->_calcutaeAry addObject:[NSNumber numberWithBool:NO]];
@@ -149,7 +157,7 @@
 - (void)loadImageWithAry:(NSArray*)ary {
     __weak id weakSelf = self;
     //NSLog(@"加载图片刷新瀑布流");
-    //NSLog(@"当前图片个数%d", ary.count);
+    NSLog(@"当前图片个数%d", ary.count);
     dispatch_group_t group = dispatch_group_create();
     for (int i = 0; i < ary.count; i++) {
         if ([self->_calcutaeAry[i] boolValue]) {
@@ -198,6 +206,8 @@
         BJCommunityUIColectionViewFlowLayout* flowLayout = (BJCommunityUIColectionViewFlowLayout*)collectionView.collectionViewLayout;
         [UIView setAnimationsEnabled:NO];
         flowLayout.itemHeight = [strongSelf->_heightAry copy];
+        NSLog(@"%ld", strongSelf->_heightAry.count);
+        NSLog(@"%ld", strongSelf->_imageAry.count);
         [strongSelf.iView.mainView performBatchUpdates:^{
             //NSLog(@"社区回调函数刷新瀑布流");
             //NSLog(@"%ld", strongSelf->_page - 1);
@@ -323,10 +333,15 @@
         } else {
             cell.profileView.image = [UIImage imageNamed:@"title.jpg"];
         }
+        NSInteger lastCount = 0;
+        for (int i = 0; i < indexPath.section; i++) {
+            lastCount += [self.iView.mainView numberOfItemsInSection:i];
+        }
         NSArray* ary = dataModel.images;
         if (self->_imageAry.count == self->_heightAry.count) {
             BJImageModel* imageModel = ary[0];
-            cell.imageView.image = self->_imageAry[indexPath.item + indexPath.section * _pageSize];
+            
+            cell.imageView.image = self->_imageAry[indexPath.item + lastCount];
             //NSLog(@"%ld", indexPath.row);
         } else {
             cell.imageView.image = [UIImage imageNamed:@"1.png"];
@@ -342,7 +357,7 @@
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
     if (self.model.count != 0) {
         BJCommityModel* commityModel = self.model[section];
-        //NSLog(@"%当前section的个数%ld", commityModel.data.count);
+        NSLog(@"%当前section的个数%ld", commityModel.data.count);
         return commityModel.data.count;
     } else {
         return 20;
@@ -419,11 +434,21 @@
             
             if (commityModel.data.count != 0) {
                 [self.model addObject:commityModel];
+                NSString* string;
                 for (int i = 0; i < commityModel.data.count; i++) {
                     @autoreleasepool {
                         BJCommityDataModel* data = commityModel.data[i];
-                        CGFloat height = [data.title textHight:data.title andFont:[UIFont systemFontOfSize:14] Width:186.5] + 55;
+                        CGFloat height = [data.title textHight:data.title andFont:[UIFont systemFontOfSize:17] Width:174] + 55;
                         BJImageModel* imageModel = data.images[0];
+                        NSLog(@"当前图片的一个URL%@, %ld", imageModel.url, data.postId);
+                        if (imageModel.url == nil) {
+                            NSLog(@"报错在预加载模块");
+                            NSMutableArray* ary = [commityModel.data mutableCopy];
+                            [ary removeObject:data];
+                            commityModel.data = [NSArray arrayWithArray:ary];
+                            i--;
+                            continue;
+                        }
                         [strongSelf->_imageURLAry addObject:imageModel.url];
                         [strongSelf->_heightAry addObject:[NSNumber numberWithFloat:(height)]];
                         [strongSelf->_calcutaeAry addObject:[NSNumber numberWithBool:NO]];
@@ -485,25 +510,37 @@
         
     }
 }
+- (void)updateAttention:(NSInteger)attention WithUserId:(NSInteger)userId {
+    for (int i = 0; i < self.model.count; i++) {
+        BJCommityModel* commityModel = self.model[i];
+        for (int j = 0; j < commityModel.data.count; j++) {
+            BJCommityDataModel* dataModel = commityModel.data[j];
+            if (dataModel.userId == userId) {
+                dataModel.isFollowing = attention;
+            }
+        }
+        
+    }
+}
 #pragma mark viewLoad
-//- (void)viewWillAppear:(BOOL)animated {
-//    [super viewWillAppear:YES];
-//    NSLog(@"viewWillApper");
-//    _loadMore = YES;
-//    BJCommityFootReusableView* footView = [self visibleFooter];
-//    [footView resetLoading];
-//    CGFloat y = self.iView.mainView.contentOffset.y;
-//    CGFloat contentHeight = self.iView.mainView.contentSize.height;
-//    CGFloat height = self.iView.mainView.bounds.size.height;
-//    NSLog(@"%lf %lf, %lf, %lf", y, contentHeight, height, y + height);
-//    if (y + height >= contentHeight - 10) {
-//        NSLog(@"加载出问题");
-//        self->_isLoading = NO;
-//        BJCommityFootReusableView* footView = [self visibleFooter];
-//        [footView startLoading:YES];
-//        [self loadMore];
-//    }
-//}
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:YES];
+    NSLog(@"viewWillApper");
+    _loadMore = YES;
+    BJCommityFootReusableView* footView = [self visibleFooter];
+    [footView resetLoading];
+    CGFloat y = self.iView.mainView.contentOffset.y;
+    CGFloat contentHeight = self.iView.mainView.contentSize.height;
+    CGFloat height = self.iView.mainView.bounds.size.height;
+    NSLog(@"%lf %lf, %lf, %lf", y, contentHeight, height, y + height);
+    if (y + height >= contentHeight - 10) {
+        NSLog(@"加载出问题");
+        self->_isLoading = NO;
+        BJCommityFootReusableView* footView = [self visibleFooter];
+        [footView startLoading:YES];
+        [self loadMore];
+    }
+}
 /*
 #pragma mark - Navigation
 

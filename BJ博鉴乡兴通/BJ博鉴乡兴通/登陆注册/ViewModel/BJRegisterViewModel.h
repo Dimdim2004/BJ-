@@ -18,7 +18,7 @@ typedef void(^error)(NSError* error);
 @property (nonatomic, readonly) BOOL isValidEmail;
 @property (nonatomic, readonly) BOOL isValidPassword;
 @property (nonatomic, readonly) BOOL isValidRegister;
-
+@property (nonatomic, readonly) BOOL isValidComfirm;
 @property (nonatomic, readonly) BOOL isSendCode;
 @property (nonatomic, copy) NSString* comfirmPassword;
 - (void)submmitWithSuccess:(registerSuccess)success failure:(error)error;

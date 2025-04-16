@@ -117,6 +117,9 @@
                         BJMyPagePostModel* postModel = postAry[i];
                         [self.iModel addObject:[postModel changeToShowModel]];
                         BJImageModel* imageModel = postModel.images[0];
+                        if (imageModel.url == nil) {
+                            continue;
+                        }
                         [strongSelf->_imageUrlAry addObject:imageModel.url];
                         CGFloat height = [postModel.title textHight:postModel.title andFont:[UIFont systemFontOfSize:17] Width:186.5] + 55;
                         NSLog(@"当前的一个默认高度%lf", height + 166.72);
@@ -447,6 +450,24 @@
             //self.iModel replaceObjectAtIndex:i withObject:<#(nonnull BJMyPageDealModel *)#>
             return;
         }
+    }
+}
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:YES];
+    NSLog(@"viewWillApper");
+    _isLoadMore = YES;
+    BJCommityFootReusableView* footView = [self visibleFooter];
+    [footView resetLoading];
+    CGFloat y = self.mainView.collectionView.contentOffset.y;
+    CGFloat contentHeight = self.mainView.collectionView.contentSize.height;
+    CGFloat height = self.mainView.collectionView.bounds.size.height;
+    NSLog(@"%lf %lf, %lf, %lf", y, contentHeight, height, y + height);
+    if (y + height >= contentHeight - 10) {
+        NSLog(@"加载出问题");
+        self->_isLoading = NO;
+        BJCommityFootReusableView* footView = [self visibleFooter];
+        [footView startLoading:YES];
+        [self loadMore];
     }
 }
 /*

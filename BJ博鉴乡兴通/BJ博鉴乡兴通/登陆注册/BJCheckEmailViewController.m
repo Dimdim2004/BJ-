@@ -55,6 +55,8 @@
             [self showUserErrorLabel];
         } else if (self.viewModel.isValidEmail || self.viewModel.user.email.length == 0) {
             [self showSuccessUserLabel];
+            self.codeButton.enabled = YES;
+            [self.codeButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         }
     }
 }
@@ -156,7 +158,7 @@
         make.height.equalTo(@40);
     }];
     
-    
+    _codeButton.enabled = NO;
     self.userErrorLabel = [[UILabel alloc] init];
     self.userErrorLabel.text = @"";
     self.userErrorLabel.font = [UIFont systemFontOfSize:15];
@@ -176,9 +178,22 @@
 - (void)back {
     [self dismissViewControllerAnimated:YES completion:nil];
 }
-
+-(BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
+    NSCharacterSet *charSet = [[NSCharacterSet characterSetWithCharactersInString:@"@.ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"] invertedSet];
+    NSString *filteredStr = [[string componentsSeparatedByCharactersInSet:charSet] componentsJoinedByString:@""];
+    if (range.length == 1 && string.length == 0) {
+        return YES;
+    } else if (textField.text.length >= 19) {
+        textField.text = [textField.text substringToIndex:19];
+        return NO;
+    } else if ([string isEqualToString:filteredStr] && textField.text.length <= 19) {
+        return YES;
+    }
+    return NO;
+    
+}
 - (void)showSuccessAlert {
-    UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"成功" message:@"注册成功" preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"成功" message:@"发送成功，请跳转至下一个页面" preferredStyle:UIAlertControllerStyleAlert];
     [alert addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         NSURL *url = [NSURL URLWithString:@"https://wap.mail.qq.com"];
         [UIApplication.sharedApplication openURL:url options:@{
@@ -196,13 +211,22 @@
     [alert addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:nil]];
     [self presentViewController:alert animated:YES completion:nil];
 }
+- (void)showEmailFailureAlert {
+    UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"失败" message:@"跳转失败，邮箱没注册过" preferredStyle:UIAlertControllerStyleAlert];
+    [alert addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:nil]];
+    [self presentViewController:alert animated:YES completion:nil];
+}
 - (void)checkEmail {
     __weak id weakSelf = self;
     NSLog(@"123");
     [self.viewModel submmitWithSuccess:^(BJCheckEmailModel * _Nonnull userModel) {
             
             NSLog(@"success");
+        if (userModel.status == 1000) {
             [weakSelf showSuccessAlert];
+        } else {
+            [weakSelf showEmailFailureAlert];
+        }
         } failure:^(NSError * _Nonnull error) {
             NSLog(@"error");
             [weakSelf showFailureAlert];

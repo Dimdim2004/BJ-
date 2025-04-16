@@ -54,6 +54,7 @@
 }
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context {
     if (self.viewModel.authType == 1) {
+        
         NSLog(@"当前状态是找回密码");
         if ([keyPath isEqualToString:@"user.password"] || [keyPath isEqualToString:@"user.rePassword"]) {
             NSLog(@"111");
@@ -297,8 +298,8 @@
 }
 - (void)dealloc {
     if (self.viewModel.authType == 1) {
-        [self.viewModel.user removeObserver:self forKeyPath:@"password"];
-        [self.viewModel.user removeObserver:self forKeyPath:@"rePassword"];
+        [self.viewModel removeObserver:self forKeyPath:@"user.password"];
+        [self.viewModel removeObserver:self forKeyPath:@"user.rePassword"];
     } else {
         [self.viewModel removeObserver:self forKeyPath:@"user.password"];
         [self.viewModel removeObserver:self forKeyPath:@"user.email"];
@@ -312,6 +313,7 @@
     // Get the new view controller using [segue destinationViewController].
     // Pass the selected object to the new view controller.
 }
+ 
 */
 
 @end
